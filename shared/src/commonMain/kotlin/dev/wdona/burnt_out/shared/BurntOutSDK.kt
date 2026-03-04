@@ -1,12 +1,12 @@
 package dev.wdona.burnt_out.shared
 
-import dev.wdona.burnt_out.Equipo
+import dev.wdona.burnt_out.shared.domain.Equipo
 import dev.wdona.burnt_out.shared.cache.AppDatabase
 import dev.wdona.burnt_out.shared.cache.DatabaseDriverFactory
 import dev.wdona.burnt_out.shared.network.KtorClient
-import dev.wdona.burnt_out.Tablero
-import dev.wdona.burnt_out.Tarea
-import dev.wdona.burnt_out.Usuario
+import dev.wdona.burnt_out.shared.domain.Tablero
+import dev.wdona.burnt_out.shared.domain.Tarea
+import dev.wdona.burnt_out.shared.domain.Usuario
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 

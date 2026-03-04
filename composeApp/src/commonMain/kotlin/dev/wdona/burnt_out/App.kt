@@ -7,15 +7,14 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import cafe.adriel.voyager.navigator.Navigator
-import dev.wdona.burnt_out.pantallas.MenuInicio
-import dev.wdona.burnt_out.shared.BurntOutSDK
-import dev.wdona.burnt_out.theme.CustomMaterialTheme
-import dev.wdona.burnt_out.theme.DarkColorScheme
-import dev.wdona.burnt_out.theme.LightColorScheme
-import dev.wdona.burnt_out.viewmodelfactories.EquipoViewModelFactory
-import dev.wdona.burnt_out.viewmodelfactories.PerfilViewModelFactory
-import dev.wdona.burnt_out.viewmodelfactories.TableroViewModelFactory
-import dev.wdona.burnt_out.viewmodelfactories.TareaViewModelFactory
+import dev.wdona.burnt_out.presentation.pantallas.MenuInicio
+import dev.wdona.burnt_out.presentation.theme.CustomMaterialTheme
+import dev.wdona.burnt_out.presentation.theme.DarkColorScheme
+import dev.wdona.burnt_out.presentation.theme.LightColorScheme
+import dev.wdona.burnt_out.presentation.viewmodelfactories.EquipoViewModelFactory
+import dev.wdona.burnt_out.presentation.viewmodelfactories.PerfilViewModelFactory
+import dev.wdona.burnt_out.presentation.viewmodelfactories.TableroViewModelFactory
+import dev.wdona.burnt_out.presentation.viewmodelfactories.TareaViewModelFactory
 
 import cafe.adriel.voyager.transitions.SlideTransition
 
