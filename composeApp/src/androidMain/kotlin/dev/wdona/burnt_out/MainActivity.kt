@@ -5,10 +5,10 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.remember
-import dev.wdona.burnt_out.presentation.viewmodelfactories.EquipoViewModelFactory
-import dev.wdona.burnt_out.presentation.viewmodelfactories.PerfilViewModelFactory
-import dev.wdona.burnt_out.presentation.viewmodelfactories.TableroViewModelFactory
-import dev.wdona.burnt_out.presentation.viewmodelfactories.TareaViewModelFactory
+import dev.wdona.burnt_out.presentation.viewmodel.viewmodelfactories.EquipoViewModelFactory
+import dev.wdona.burnt_out.presentation.viewmodel.viewmodelfactories.PerfilViewModelFactory
+import dev.wdona.burnt_out.presentation.viewmodel.viewmodelfactories.TableroViewModelFactory
+import dev.wdona.burnt_out.presentation.viewmodel.viewmodelfactories.TareaViewModelFactory
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
