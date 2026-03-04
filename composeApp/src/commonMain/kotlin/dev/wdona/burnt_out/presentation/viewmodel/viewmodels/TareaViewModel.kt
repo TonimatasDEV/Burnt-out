@@ -1,6 +1,5 @@
 package dev.wdona.burnt_out.presentation.viewmodel.viewmodels
 
-import dev.wdona.burnt_out.shared.BurntOutSDK
 import dev.wdona.burnt_out.shared.cache.DatabaseDriverFactory
 import dev.wdona.burnt_out.shared.domain.Tarea
 import kotlinx.coroutines.CoroutineScope
@@ -11,7 +10,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class TareaViewModel(databaseDriverFactory: DatabaseDriverFactory) {
-    private val sdk = BurntOutSDK(databaseDriverFactory)
     // Crea un CoroutineScope
     private val viewModelScope = CoroutineScope(Dispatchers.Main)
 
@@ -23,33 +21,4 @@ class TareaViewModel(databaseDriverFactory: DatabaseDriverFactory) {
     private val _listaTareas = MutableStateFlow<List<Tarea>>(emptyList())
     val listaTareas: StateFlow<List<Tarea>> = _listaTareas
 
-
-    fun crearTarea(idTarea: Long, nombreTarea: String, descripcion: String, idTablero: Long, ) {
-        val tareaLocal = Tarea(idTarea, nombreTarea, descripcion, "pendiente", idTablero, 0,
-            listOf(0))
-
-        // Primero offline, luego al servidor
-        _listaTareas.value = _listaTareas.value + tareaLocal
-
-        viewModelScope.launch {
-            try {
-                val tareaServidor = sdk.crearTarea(tareaLocal)
-
-
-            } catch (e: Exception) {
-                println("Error: ${e.message}")
-            }
-        }
-    }
-
-    fun cargarTareasPorTablero(idTablero: Long) {
-        viewModelScope.launch {
-            try {
-                val tareas = sdk.obtenerTareasPorTableroLocal(idTablero)
-                _listaTareas.value = tareas
-            } catch (e: Exception) {
-                println("Error cargando tareas: ${e.message}")
-            }
-        }
-    }
 }

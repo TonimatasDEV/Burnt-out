@@ -2,7 +2,7 @@ package dev.wdona.burnt_out.presentation.viewmodel.viewmodels
 
 import dev.wdona.burnt_out.shared.domain.Equipo
 import dev.wdona.burnt_out.shared.domain.Usuario
-import dev.wdona.burnt_out.shared.BurntOutSDK
+import dev.wdona.burnt_out.data.BurntOutSDK
 import dev.wdona.burnt_out.shared.cache.DatabaseDriverFactory
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -12,7 +12,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class EquipoViewModel(databaseDriverFactory: DatabaseDriverFactory) {
-    private val sdk = BurntOutSDK(databaseDriverFactory)
     // Crea un CoroutineScope
     private val viewModelScope = CoroutineScope(Dispatchers.Main)
 
@@ -33,51 +32,27 @@ class EquipoViewModel(databaseDriverFactory: DatabaseDriverFactory) {
     fun crearEquipo(idEquipo: Long, nombreEquipo: String, idOrganizacion: Long) {
         val equipoLocal = Equipo(idEquipo, nombreEquipo, 0, idOrganizacion, emptyList())
 
-        // Primero offline, luego al servidor
-        _listaEquipos.value = _listaEquipos.value + equipoLocal
-
         viewModelScope.launch {
-            try {
-                val equipoLocal = sdk.crearEquipo(equipoLocal)
 
-
-            } catch (e: Exception) {
-                println("Error: ${e.message}")
-            }
         }
     }
 
     fun cargarEquiposPorOrganizacion(idOrganizacion: Long) {
         viewModelScope.launch {
-            try {
-                val equipos = sdk.obtenerEquiposPorOrganizacionLocal(idOrganizacion)
-                _listaEquipos.value = equipos
-            } catch (e: Exception) {
-                println("Error cargando tareas: ${e.message}")
-            }
+
         }
     }
 
     fun cargarEquipoPorId(idEquipo: Long) : Equipo? {
         viewModelScope.launch {
-            try {
-                val equipo = sdk.obtenerEquipoPorIdLocal(idEquipo)
-                _uiStateEquipo.value = equipo
-            } catch (e: Exception) {
-                println("Error cargando equipo: ${e.message}")
-            }
+
         }
         return _uiStateEquipo.value
     }
 
     fun cargarMiembrosEquipo(idEquipo: Long) {
         viewModelScope.launch {
-            try {
-                val miembros = sdk.obtenerMiembrosDeEquipoLocal(idEquipo)
-                _listaMiembros.value = miembros
-            } catch (e: Exception) {
-                println("Error cargando miembros del equipo: ${e.message}")
-            }
+
         }
     }
 }

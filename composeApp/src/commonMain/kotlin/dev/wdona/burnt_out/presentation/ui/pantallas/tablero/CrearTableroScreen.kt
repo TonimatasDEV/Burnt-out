@@ -51,7 +51,7 @@ fun MenuCrearTableroContent(tableroViewModel: TableroViewModel, onVolver: () -> 
 
     val ejecutarEnvio: () -> Unit = {
         if (textStateNombreTablero.isNotBlank()) {
-            tableroViewModel.crearTablero(textStateNombreTablero)
+//            tableroViewModel.crearTablero(textStateNombreTablero)
 
             textStateNombreTablero = ""
             true

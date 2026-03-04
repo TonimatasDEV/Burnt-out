@@ -62,7 +62,7 @@ fun MenuCrearTareaContent(idTablero: Long, tareaViewModel: TareaViewModel, ajust
 
     val ejecutarEnvio = {
         if (textStateNombreTarea.isNotBlank()) {
-            tareaViewModel.crearTarea(0, textStateNombreTarea, textStateDescripcion, idTablero)
+//            tareaViewModel.crearTarea(0, textStateNombreTarea, textStateDescripcion, idTablero)
 
             textStateNombreTarea = ""
             textStateDescripcion = ""
