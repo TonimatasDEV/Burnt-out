@@ -1,4 +1,5 @@
 package dev.wdona.burnt_out.data.datasource.local
 
-interface PlaceHolderLocal {
+interface OperacionPendienteLocalDataSource {
+
 }

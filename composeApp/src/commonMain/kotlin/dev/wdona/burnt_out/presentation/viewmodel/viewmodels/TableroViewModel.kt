@@ -1,14 +1,12 @@
 package dev.wdona.burnt_out.presentation.viewmodel.viewmodels
 
-import dev.wdona.burnt_out.shared.cache.DatabaseDriverFactory
+import dev.wdona.burnt_out.shared.db.DatabaseDriverFactory
 import dev.wdona.burnt_out.shared.domain.Tablero
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.launch
-import kotlin.collections.plus
 
 class TableroViewModel(databaseDriverFactory: DatabaseDriverFactory) {
     // Crea un CoroutineScope

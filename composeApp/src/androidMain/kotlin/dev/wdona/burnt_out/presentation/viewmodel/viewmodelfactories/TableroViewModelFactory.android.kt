@@ -1,7 +1,7 @@
 package dev.wdona.burnt_out.presentation.viewmodel.viewmodelfactories
 
 import android.content.Context
-import dev.wdona.burnt_out.shared.cache.DatabaseDriverFactory
+import dev.wdona.burnt_out.shared.db.DatabaseDriverFactory
 import dev.wdona.burnt_out.presentation.viewmodel.viewmodels.TableroViewModel
 
 actual class TableroViewModelFactory(private val context: Context) {

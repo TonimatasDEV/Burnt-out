@@ -1,4 +1,4 @@
-package dev.wdona.burnt_out.shared.cache
+package dev.wdona.burnt_out.shared.db
 
 import app.cash.sqldelight.db.SqlDriver
 import app.cash.sqldelight.driver.jdbc.sqlite.JdbcSqliteDriver

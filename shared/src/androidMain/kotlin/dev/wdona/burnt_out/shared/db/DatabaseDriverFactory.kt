@@ -1,4 +1,4 @@
-package dev.wdona.burnt_out.shared.cache
+package dev.wdona.burnt_out.shared.db
 
 import android.content.Context
 import app.cash.sqldelight.db.SqlDriver

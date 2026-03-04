@@ -1,13 +1,12 @@
 package dev.wdona.burnt_out.presentation.viewmodel.viewmodels
 
-import dev.wdona.burnt_out.shared.cache.DatabaseDriverFactory
+import dev.wdona.burnt_out.shared.db.DatabaseDriverFactory
 import dev.wdona.burnt_out.shared.domain.Tarea
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.launch
 
 class TareaViewModel(databaseDriverFactory: DatabaseDriverFactory) {
     // Crea un CoroutineScope

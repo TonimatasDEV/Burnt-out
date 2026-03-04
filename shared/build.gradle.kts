@@ -4,7 +4,7 @@ plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.sqlDelight)
-    alias(libs.plugins.kotlinSerialization) // <-- CORREGIDO
+    alias(libs.plugins.kotlinSerialization)
 }
 
 kotlin {
@@ -53,7 +53,7 @@ android {
 sqldelight {
     databases {
         create("AppDatabase") {
-            packageName.set("dev.wdona.burnt_out.shared.cache")
+            packageName.set("dev.wdona.burnt_out.shared.db")
             verifyMigrations.set(false)
         }
     }

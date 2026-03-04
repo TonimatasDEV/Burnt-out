@@ -1,6 +1,6 @@
 package dev.wdona.burnt_out.presentation.viewmodel.viewmodels
 
-import dev.wdona.burnt_out.shared.cache.DatabaseDriverFactory
+import dev.wdona.burnt_out.shared.db.DatabaseDriverFactory
 import dev.wdona.burnt_out.shared.domain.Usuario
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

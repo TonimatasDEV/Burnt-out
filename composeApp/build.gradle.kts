@@ -89,7 +89,7 @@ compose.desktop {
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
             packageName = "dev.wdona.burnt_out"
-            packageVersion = "1.0.0"
+            packageVersion = "1.0.01"
         }
     }
 }
