@@ -26,6 +26,7 @@ import dev.wdona.burnt_out.presentation.ui.components.template.CrearTemplate
 import dev.wdona.burnt_out.presentation.ui.pantallas.SettingsScreen
 import dev.wdona.burnt_out.presentation.viewmodel.viewmodelfactories.TareaViewModelFactory
 import dev.wdona.burnt_out.presentation.viewmodel.viewmodels.TareaViewModel
+import dev.wdona.burnt_out.shared.domain.Tarea
 
 class MenuCrearTareaScreen(val factory: TareaViewModelFactory, val idTablero: Long) : Screen {
     @Composable
@@ -62,7 +63,16 @@ fun MenuCrearTareaContent(idTablero: Long, tareaViewModel: TareaViewModel, ajust
 
     val ejecutarEnvio = {
         if (textStateNombreTarea.isNotBlank()) {
-//            tareaViewModel.crearTarea(0, textStateNombreTarea, textStateDescripcion, idTablero)
+            val nuevaTarea = Tarea(
+                idTarea = 0, // La base de datos deberia generar el ID
+                titulo = textStateNombreTarea,
+                descripcion = textStateDescripcion,
+                estado = "PENDIENTE",
+                idTableroPerteneciente = idTablero,
+                idUsuarioAsignado = 1, // TODO: Coger el usuario actual
+                idSubtareas = emptyList()
+            )
+            tareaViewModel.crearTarea(nuevaTarea)
 
             textStateNombreTarea = ""
             textStateDescripcion = ""

@@ -16,24 +16,19 @@ class TareaDaoImpl(appDatabase: AppDatabase) : TareaDao {
 
     override suspend fun getTareaById(idTarea: Long): Tarea {
         return TareaMapper.toDomain(
-            queries.getTareaById(idTarea)
+            queries.getTareaById(idTarea).executeAsOne()
         )
     }
 
-    override suspend fun crearTarea(tarea: Tarea) : Boolean {
-        try {
-            queries.insertTarea(
-                Titulo = tarea.titulo,
-                Descripcion = tarea.descripcion,
-                Estado = tarea.estado,
-                FK_ID_Tabl = tarea.idTableroPerteneciente,
-                FK_ID_Usuario = tarea.idUsuarioAsignado
-            )
-        } catch (e: Exception) {
-            e.printStackTrace()
-            return false
-        }
-        return true
+    override suspend fun crearTarea(tarea: Tarea) : Long {
+        queries.insertTarea(
+            Titulo = tarea.titulo,
+            Descripcion = tarea.descripcion,
+            Estado = tarea.estado,
+            FK_ID_Tabl = tarea.idTableroPerteneciente,
+            FK_ID_Usuario = tarea.idUsuarioAsignado
+        )
+        return queries.lastInsertRowId().executeAsOne()
     }
 
     override suspend fun actualizarTarea(tarea: Tarea) : Boolean {

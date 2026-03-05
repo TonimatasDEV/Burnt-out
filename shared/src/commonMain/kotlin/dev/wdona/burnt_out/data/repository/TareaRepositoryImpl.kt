@@ -47,25 +47,30 @@ class TareaRepositoryImpl(
     }
 
     override suspend fun crearTarea(tarea: Tarea) {
+        var idLocal: Long = -1
         try {
-            local.crearTarea(tarea)
+            idLocal = local.crearTarea(tarea)
         } catch (e: Exception) {
             println("Error local al crear tarea: ${e.message}")
         }
 
         repositoryScope.launch {
             var exito = false
+            var idRemoto: Long = -1
             try {
-                exito = remote.crearTarea(tarea)
+                idRemoto = remote.crearTarea(tarea) // FIXME
+                exito = idRemoto != -1L
             } catch (e: Exception) {
                 println("Servidor offline al crear tarea: ${e.message}")
             }
 
             try {
+                val idParaPendiente = if (exito) idRemoto else idLocal
+                
                 pendiente.insertOperacionPendiente(
                     TipoAccion.CREACION.getNombreAccion(),
                     Entity.TAREA.getNombreEntity(),
-                    tarea.idTarea,
+                    idParaPendiente,
                     TareaMapper.toJson(tarea),
                     System.currentTimeMillis(),
                     if (exito) 1L else 0L
