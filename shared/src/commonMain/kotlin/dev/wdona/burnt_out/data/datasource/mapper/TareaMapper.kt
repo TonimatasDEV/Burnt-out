@@ -4,7 +4,8 @@ import app.cash.sqldelight.Query
 import dev.wdona.burnt_out.domain.json.TareaJsonFields
 import dev.wdona.burnt_out.shared.domain.Tarea
 import dev.wdona.burntout.shared.db.TareaEntity
-
+import kotlinx.serialization.json.buildJsonObject
+import kotlinx.serialization.json.JsonPrimitive
 
 class TareaMapper {
     companion object {
@@ -52,15 +53,15 @@ class TareaMapper {
         }
 
         fun toJson(tarea: Tarea): String {
-            return """{
-                "${TareaJsonFields.ID}": ${tarea.idTarea},
-                "${TareaJsonFields.NOMBRE}": "${tarea.titulo}",
-                "${TareaJsonFields.DESCRIPCION}": "${tarea.descripcion ?: ""}",
-                "${TareaJsonFields.ESTADO}": "${tarea.estado}",
-                "${TareaJsonFields.ID_TABLERO}": ${tarea.idTableroPerteneciente},
-                "${TareaJsonFields.ID_USUARIO_ASIGNADO}": ${tarea.idUsuarioAsignado},
-                "${TareaJsonFields.ID_SUBTAREAS}": ${tarea.idSubtareas ?: emptyList()}
-            }"""
+            return buildJsonObject {
+                put(TareaJsonFields.ID.nombreCampo, JsonPrimitive(tarea.idTarea))
+                put(TareaJsonFields.NOMBRE.nombreCampo, JsonPrimitive(tarea.titulo))
+                put(TareaJsonFields.DESCRIPCION.nombreCampo, JsonPrimitive(tarea.descripcion ?: ""))
+                put(TareaJsonFields.ESTADO.nombreCampo, JsonPrimitive(tarea.estado))
+                put(TareaJsonFields.ID_TABLERO.nombreCampo, JsonPrimitive(tarea.idTableroPerteneciente))
+                put(TareaJsonFields.ID_USUARIO_ASIGNADO.nombreCampo, JsonPrimitive(tarea.idUsuarioAsignado))
+                put(TareaJsonFields.ID_SUBTAREAS.nombreCampo, JsonPrimitive(tarea.idSubtareas.toString()))
+            }.toString()
         }
     }
 }

@@ -1,8 +1,48 @@
 package dev.wdona.burnt_out.data.dao.impl
 
 import dev.wdona.burnt_out.data.dao.TableroDao
+import dev.wdona.burnt_out.data.datasource.mapper.TableroMapper
 import dev.wdona.burnt_out.shared.db.AppDatabase
+import dev.wdona.burnt_out.shared.domain.Tablero
 
 class TableroDaoImpl(appDatabase: AppDatabase) : TableroDao {
     private val queries = appDatabase.appDatabaseQueries
+
+    override suspend fun getTableroById(idTablero: Long): Tablero {
+        val entity = queries.getTableroById(idTablero).executeAsOne()
+        return TableroMapper.toDomain(entity)
+    }
+
+    override suspend fun getTablerosByOrg(idOrg: Long): List<Tablero> {
+        return queries.getTablerosByOrg(idOrg).executeAsList().map {
+            TableroMapper.toDomain(it)
+        }
+    }
+
+    override suspend fun insertTablero(tablero: Tablero): Boolean {
+        return try {
+            queries.insertTablero(tablero.titulo, tablero.idEquipo, tablero.idOrganizacion)
+            true
+        } catch (e: Exception) {
+            false
+        }
+    }
+
+    override suspend fun updateTablero(tablero: Tablero): Boolean {
+        return try {
+            queries.updateTablero(tablero.titulo, tablero.idEquipo, tablero.idTablero)
+            true
+        } catch (e: Exception) {
+            false
+        }
+    }
+
+    override suspend fun deleteTablero(idTablero: Long): Boolean {
+        return try {
+            queries.deleteTablero(idTablero)
+            true
+        } catch (e: Exception) {
+            false
+        }
+    }
 }

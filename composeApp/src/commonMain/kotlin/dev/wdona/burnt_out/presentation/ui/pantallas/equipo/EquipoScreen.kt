@@ -47,12 +47,12 @@ class EquipoScreen(val factory: EquipoViewModelFactory) : Screen {
     @Composable
     fun EquipoContent(viewModel: EquipoViewModel, onVolver: () -> Unit) {
         val equipo by viewModel.uiStateEquipo.collectAsState()
-        val miembros: List<Usuario>? by viewModel.listaMiembros.collectAsState()
+        val miembros by viewModel.listaMiembros.collectAsState()
 
         Scaffold(
             topBar = {
                 TopAppBar(
-                    title = { Text("Mi equipo") },
+                    title = { Text(equipo?.titulo ?: "Mi equipo") },
                     navigationIcon = {
                         BotonVolver { onVolver() }
                     }
@@ -68,7 +68,7 @@ class EquipoScreen(val factory: EquipoViewModelFactory) : Screen {
                     modifier = Modifier
                         .fillMaxWidth()
                 ) {
-                    items(miembros ?: emptyList()) { miembro ->
+                    items(miembros) { miembro ->
                         CardMiembro(miembro.idUsuario, miembro.nombre)
                     }
                 }

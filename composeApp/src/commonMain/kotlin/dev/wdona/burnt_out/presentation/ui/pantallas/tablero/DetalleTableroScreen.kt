@@ -41,7 +41,7 @@ class DetalleTableroScreen(val idTablero: Long, val nombreTablero: String, val t
 
         // Cargar tareas cuando se abre la pantalla
         LaunchedEffect(idTablero) {
-//            tareaViewModel.cargarTareasPorTablero(idTablero)
+            tareaViewModel.cargarTareas(idTablero)
         }
 
         DetalleTableroContent(tareaViewModel = tareaViewModel,

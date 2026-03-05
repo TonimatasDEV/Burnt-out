@@ -1,13 +1,13 @@
 package dev.wdona.burnt_out.presentation.viewmodel.viewmodelfactories
 
 import dev.wdona.burnt_out.data.api.impl.EquipoApiImpl
-import dev.wdona.burnt_out.data.dao.EquipoRepository
 import dev.wdona.burnt_out.data.dao.impl.EquipoDaoImpl
 import dev.wdona.burnt_out.data.dao.impl.OperacionPendienteDaoImpl
 import dev.wdona.burnt_out.data.datasource.local.impl.EquipoLocalDataSourceImpl
 import dev.wdona.burnt_out.data.datasource.local.impl.OperacionPendienteLocalDataSourceImpl
 import dev.wdona.burnt_out.data.datasource.remote.impl.EquipoRemoteDataSourceImpl
 import dev.wdona.burnt_out.data.repository.EquipoRepositoryImpl
+import dev.wdona.burnt_out.domain.repository.EquipoRepository
 import dev.wdona.burnt_out.shared.db.DatabaseDriverFactory
 import dev.wdona.burnt_out.presentation.viewmodel.viewmodels.EquipoViewModel
 import dev.wdona.burnt_out.shared.db.AppDatabase

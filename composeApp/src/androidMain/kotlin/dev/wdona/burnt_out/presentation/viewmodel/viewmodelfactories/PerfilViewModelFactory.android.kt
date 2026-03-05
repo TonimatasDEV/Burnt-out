@@ -2,13 +2,13 @@ package dev.wdona.burnt_out.presentation.viewmodel.viewmodelfactories
 
 import android.content.Context
 import dev.wdona.burnt_out.data.api.impl.UsuarioApiImpl
-import dev.wdona.burnt_out.data.dao.UsuarioRepository
 import dev.wdona.burnt_out.data.dao.impl.OperacionPendienteDaoImpl
 import dev.wdona.burnt_out.data.dao.impl.UsuarioDaoImpl
 import dev.wdona.burnt_out.data.datasource.local.impl.OperacionPendienteLocalDataSourceImpl
 import dev.wdona.burnt_out.data.datasource.local.impl.UsuarioLocalDataSourceImpl
 import dev.wdona.burnt_out.data.datasource.remote.impl.UsuarioRemoteDataSourceImpl
 import dev.wdona.burnt_out.data.repository.UsuarioRepositoryImpl
+import dev.wdona.burnt_out.domain.repository.UsuarioRepository
 import dev.wdona.burnt_out.shared.db.DatabaseDriverFactory
 import dev.wdona.burnt_out.presentation.viewmodel.viewmodels.PerfilViewModel
 import dev.wdona.burnt_out.shared.db.AppDatabase

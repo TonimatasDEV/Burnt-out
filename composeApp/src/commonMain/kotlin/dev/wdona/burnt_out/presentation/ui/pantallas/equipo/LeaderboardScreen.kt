@@ -32,7 +32,7 @@ class LeaderboardScreen(val factory: EquipoViewModelFactory, val idOrg: Long) : 
         val viewModel = remember { factory.create() }
 
         LaunchedEffect(idOrg) {
-            viewModel.cargarEquiposPorOrganizacion(idOrg)
+            viewModel.cargarEquipos(idOrg)
         }
 
         LeaderboardContent(viewModel) { navigator.pop() }

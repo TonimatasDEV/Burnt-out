@@ -23,6 +23,7 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import dev.wdona.burnt_out.presentation.ui.components.template.CrearTemplate
+import dev.wdona.burnt_out.shared.domain.Tablero
 
 
 class MenuCrearTableroScreen(val factory: TableroViewModelFactory) : Screen {
@@ -51,7 +52,13 @@ fun MenuCrearTableroContent(tableroViewModel: TableroViewModel, onVolver: () -> 
 
     val ejecutarEnvio: () -> Unit = {
         if (textStateNombreTablero.isNotBlank()) {
-//            tableroViewModel.crearTablero(textStateNombreTablero)
+            tableroViewModel.crearTablero(
+                Tablero(
+                    0L,
+                    textStateNombreTablero,
+                    1L, // FIXME
+                    1L) // FIXME
+            )
 
             textStateNombreTablero = ""
             true
