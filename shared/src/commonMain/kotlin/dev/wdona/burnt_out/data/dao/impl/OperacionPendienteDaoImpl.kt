@@ -1,44 +1,41 @@
 package dev.wdona.burnt_out.data.dao.impl
 
 import dev.wdona.burnt_out.data.dao.OperacionPendienteDao
+import dev.wdona.burnt_out.data.datasource.mapper.OperacionPendienteMapper
 import dev.wdona.burnt_out.domain.model.OperacionPendiente
 import dev.wdona.burnt_out.shared.db.AppDatabase
-import dev.wdona.burntout.shared.db.OperacionPendienteEntity
-
-/*
-    ID_Accion INTEGER NOT NULL,
-    tipo_accion TEXT NOT NULL,
-    tabla_afectada TEXT NOT NULL,
-    id_afectado INTEGER NOT NULL,
-    datos_json TEXT NOT NULL,
-    timestamp_creacion INTEGER NOT NULL,
-    sincronizado INTEGER DEFAULT 0,
-    PRIMARY KEY (ID_Accion)
- */
 
 class OperacionPendienteDaoImpl(appDatabase: AppDatabase) : OperacionPendienteDao {
     private val queries = appDatabase.appDatabaseQueries
 
-    override suspend fun getOperacionesPendientes(): List<OperacionPendienteEntity> {
+    override suspend fun getOperacionesPendientes(): List<OperacionPendiente> {
         return queries.getOperacionesPendientes(50).executeAsList().map {
-            Mapper
+            OperacionPendienteMapper.toDomain(it)
         }
     }
 
-    override suspend fun insertOperacionPendiente(operacionPendiente: OperacionPendienteEntity) {
-
+    override suspend fun insertOperacionPendiente(tipoAccion: String, tablaAfectada: String, idAfectado: Long, datosJson: String, timestampCreacion: Long) {
+        queries.insertOperacionPendiente(
+            tipo_accion = tipoAccion,
+            tabla_afectada = tablaAfectada,
+            id_afectado = idAfectado,
+            datos_json = datosJson,
+            timestamp_creacion = timestampCreacion
+        )
     }
 
-    override suspend fun deleteOperacionPendientePorEstado(id: Long) {
+    override suspend fun deleteOperacionPendientePorEstado(estado: Long) {
+        queries.deleteOperacionesPorEstado(estado)
     }
 
-    override suspend fun cambiarEstadoOperacion(operacionPendiente: OperacionPendienteEntity) {
-
+    override suspend fun cambiarEstadoOperacion(sincronizado: Long, idOperacion: Long) {
+        queries.cambiarEstadoOperacionPendiente(
+            sincronizado = sincronizado,
+            ID_Operacion = idOperacion
+        )
     }
 
     override suspend fun deleteOperacionPendiente(idOperacion: Long) {
-
+        queries.deleteOperacionesPendientesById(idOperacion)
     }
-
-
 }

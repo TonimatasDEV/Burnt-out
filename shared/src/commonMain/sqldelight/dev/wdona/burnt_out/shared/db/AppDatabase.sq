@@ -91,7 +91,7 @@ CREATE TABLE ResponderEntity (
 );
 
 CREATE TABLE OperacionPendienteEntity (
-    ID_Accion INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    ID_Operacion INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     tipo_accion TEXT NOT NULL,
     tabla_afectada TEXT NOT NULL,
     id_afectado INTEGER NOT NULL,
@@ -149,10 +149,10 @@ SELECT * FROM OperacionPendienteEntity WHERE sincronizado = 0 ORDER BY timestamp
 LIMIT ?;
 
 deleteOperacionesPendientesById:
-DELETE FROM OperacionPendienteEntity WHERE ID_Accion = ?;
+DELETE FROM OperacionPendienteEntity WHERE ID_Operacion = ?;
 
 cambiarEstadoOperacionPendiente:
-UPDATE OperacionPendienteEntity SET sincronizado = ? WHERE ID_Accion = ?;
+UPDATE OperacionPendienteEntity SET sincronizado = ? WHERE ID_Operacion = ?;
 
 deleteOperacionesPorEstado:
 DELETE FROM OperacionPendienteEntity WHERE sincronizado = ?;
