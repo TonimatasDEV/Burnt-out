@@ -35,7 +35,7 @@ class TablerosScreen(val tableroFactory: TableroViewModelFactory, val tareaViewM
         val idOrg = 1L
 
         LaunchedEffect(idOrg) {
-//            tableroViewModel.cargarTablerosPorOrganizacion(idOrg)
+            tableroViewModel.cargarTableros(idOrg)
         }
 
         MenuTableros(

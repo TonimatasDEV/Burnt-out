@@ -3,6 +3,7 @@ package dev.wdona.burnt_out.shared.network
 import dev.wdona.burnt_out.API_PATH
 import dev.wdona.burnt_out.SERVER_PORT
 import io.ktor.client.HttpClient
+import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.defaultRequest
 import io.ktor.http.ContentType
@@ -18,6 +19,12 @@ object ApiClient {
                 ignoreUnknownKeys = true
                 useAlternativeNames = false
             })
+        }
+
+        install(HttpTimeout) {
+            requestTimeoutMillis = 5000 // FIXME
+            connectTimeoutMillis = 5000
+            socketTimeoutMillis = 5000
         }
 
         defaultRequest {

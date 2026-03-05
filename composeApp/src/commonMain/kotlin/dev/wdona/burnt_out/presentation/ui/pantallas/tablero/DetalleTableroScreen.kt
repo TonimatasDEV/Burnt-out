@@ -2,6 +2,7 @@ package dev.wdona.burnt_out.presentation.ui.pantallas.tablero
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -33,10 +34,6 @@ class DetalleTableroScreen(val idTablero: Long, val nombreTablero: String, val t
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
-
-//        val perfilViewModel = remember { perfilFactory.create() }
-//        val equipoViewModel = remember { equipoFactory.create() }
-
         val tareaViewModel = remember { tareaViewModelFactory.create() }
 
         // Cargar tareas cuando se abre la pantalla
@@ -44,7 +41,8 @@ class DetalleTableroScreen(val idTablero: Long, val nombreTablero: String, val t
             tareaViewModel.cargarTareas(idTablero)
         }
 
-        DetalleTableroContent(tareaViewModel = tareaViewModel,
+        DetalleTableroContent(
+            tareaViewModel = tareaViewModel,
             nombreTablero = nombreTablero,
             idTablero = idTablero,
             onVolver = { navigator.pop() },
@@ -62,7 +60,13 @@ class DetalleTableroScreen(val idTablero: Long, val nombreTablero: String, val t
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
-fun DetalleTableroContent(tareaViewModel: TareaViewModel, nombreTablero: String, idTablero: Long ,onVolver: () -> Unit, onIrACrearTarea: (Long) -> Unit) {
+fun DetalleTableroContent(
+    tareaViewModel: TareaViewModel,
+    nombreTablero: String,
+    idTablero: Long,
+    onVolver: () -> Unit,
+    onIrACrearTarea: (Long) -> Unit
+) {
     val listaTareas by tareaViewModel.listaTareas.collectAsState()
 
     Scaffold(
@@ -71,26 +75,39 @@ fun DetalleTableroContent(tareaViewModel: TareaViewModel, nombreTablero: String,
         }
     ) { paddingValues ->
         Column(
-            modifier = Modifier.padding(paddingValues)
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues)
         ) {
             Button(
                 onClick = { onIrACrearTarea(idTablero) },
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
+                    .padding(8.dp)
             ) {
                 Text("Crear tarea")
             }
-            LazyColumn(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(12.dp),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(paddingValues)
 
-            ) {
-                items(listaTareas) { tarea ->
-                    CardTarea(tarea.titulo)
+            if (listaTareas.isEmpty()) {
+                Text(
+                    text = "No hay tareas en este tablero (o el servidor no responde)",
+                    modifier = Modifier
+                        .align(Alignment.CenterHorizontally)
+                        .padding(16.dp)
+                )
+            } else {
+                LazyColumn(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(12.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f) // Ocupa el espacio restante
+                ) {
+                    items(listaTareas) { tarea ->
+                        CardTarea(tarea.titulo)
+                    }
                 }
             }
         }
     }
 }
-

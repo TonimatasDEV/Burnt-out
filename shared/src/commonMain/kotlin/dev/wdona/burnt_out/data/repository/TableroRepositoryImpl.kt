@@ -8,6 +8,9 @@ import dev.wdona.burnt_out.domain.entity.Entity
 import dev.wdona.burnt_out.domain.model.TipoAccion
 import dev.wdona.burnt_out.domain.repository.TableroRepository
 import dev.wdona.burnt_out.shared.domain.Tablero
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class TableroRepositoryImpl(
     private val local: TableroLocalDataSource,
@@ -15,24 +18,30 @@ class TableroRepositoryImpl(
     private val pendiente: OperacionPendienteLocalDataSource
 ) : TableroRepository {
 
+    private val repositoryScope = CoroutineScope(Dispatchers.Default)
+
     override suspend fun getTablerosByOrg(idOrg: Long): List<Tablero> {
-        try {
-            val tableros = remote.getTablerosByOrg(idOrg)
-            local.eliminarTablerosPorOrg(idOrg)
-            tableros.forEach { local.crearTablero(it) }
-        } catch (e: Exception) {
-            println("Error al obtener tableros del servidor: ${e.message}")
+        repositoryScope.launch {
+            try {
+                val tableros = remote.getTablerosByOrg(idOrg)
+                local.eliminarTablerosPorOrg(idOrg)
+                tableros.forEach { local.crearTablero(it) }
+            } catch (e: Exception) {
+                println("Servidor offline (getTablerosByOrg): ${e.message}")
+            }
         }
         return local.getTablerosByOrg(idOrg)
     }
 
     override suspend fun getTableroById(idTablero: Long): Tablero? {
-        try {
-            val tablero = remote.getTableroById(idTablero)
-            local.eliminarTablero(tablero.idTablero)
-            local.crearTablero(tablero)
-        } catch (e: Exception) {
-            println("Error al obtener tablero del servidor: ${e.message}")
+        repositoryScope.launch {
+            try {
+                val tablero = remote.getTableroById(idTablero)
+                local.eliminarTablero(tablero.idTablero)
+                local.crearTablero(tablero)
+            } catch (e: Exception) {
+                println("Servidor offline (getTableroById): ${e.message}")
+            }
         }
         return local.getTableroById(idTablero)
     }
@@ -41,27 +50,29 @@ class TableroRepositoryImpl(
         try {
             local.crearTablero(tablero)
         } catch (e: Exception) {
-            println("Error al crear tablero localmente: ${e.message}")
+            println("Error local al crear tablero: ${e.message}")
         }
 
-        var exito = false
-        try {
-            exito = remote.crearTablero(tablero)
-        } catch (e: Exception) {
-            println("Error al crear tablero en el servidor: ${e.message}")
-        }
+        repositoryScope.launch {
+            var exito = false
+            try {
+                exito = remote.crearTablero(tablero)
+            } catch (e: Exception) {
+                println("Servidor offline al crear tablero: ${e.message}")
+            }
 
-        try {
-            pendiente.insertOperacionPendiente(
-                TipoAccion.CREACION.getNombreAccion(),
-                Entity.TABLERO.getNombreEntity(),
-                tablero.idTablero,
-                TableroMapper.toJson(tablero),
-                System.currentTimeMillis(),
-                if (exito) 1L else 0L
-            )
-        } catch (e: Exception) {
-            println("Error al registrar operación pendiente: ${e.message}")
+            try {
+                pendiente.insertOperacionPendiente(
+                    TipoAccion.CREACION.getNombreAccion(),
+                    Entity.TABLERO.getNombreEntity(),
+                    tablero.idTablero,
+                    TableroMapper.toJson(tablero),
+                    System.currentTimeMillis(),
+                    if (exito) 1L else 0L
+                )
+            } catch (e: Exception) {
+                println("Error al registrar operación pendiente: ${e.message}")
+            }
         }
     }
 
@@ -69,27 +80,29 @@ class TableroRepositoryImpl(
         try {
             local.actualizarTablero(tablero)
         } catch (e: Exception) {
-            println("Error al actualizar tablero localmente: ${e.message}")
+            println("Error local al actualizar tablero: ${e.message}")
         }
 
-        var exito = false
-        try {
-            exito = remote.actualizarTablero(tablero)
-        } catch (e: Exception) {
-            println("Error al actualizar tablero en el servidor: ${e.message}")
-        }
+        repositoryScope.launch {
+            var exito = false
+            try {
+                exito = remote.actualizarTablero(tablero)
+            } catch (e: Exception) {
+                println("Servidor offline al actualizar tablero: ${e.message}")
+            }
 
-        try {
-            pendiente.insertOperacionPendiente(
-                TipoAccion.ACTUALIZACION.getNombreAccion(),
-                Entity.TABLERO.getNombreEntity(),
-                tablero.idTablero,
-                TableroMapper.toJson(tablero),
-                System.currentTimeMillis(),
-                if (exito) 1L else 0L
-            )
-        } catch (e: Exception) {
-            println("Error al registrar operación pendiente: ${e.message}")
+            try {
+                pendiente.insertOperacionPendiente(
+                    TipoAccion.ACTUALIZACION.getNombreAccion(),
+                    Entity.TABLERO.getNombreEntity(),
+                    tablero.idTablero,
+                    TableroMapper.toJson(tablero),
+                    System.currentTimeMillis(),
+                    if (exito) 1L else 0L
+                )
+            } catch (e: Exception) {
+                println("Error al registrar operación pendiente: ${e.message}")
+            }
         }
     }
 
@@ -97,27 +110,29 @@ class TableroRepositoryImpl(
         try {
             local.eliminarTablero(idTablero)
         } catch (e: Exception) {
-            println("Error al eliminar tablero localmente: ${e.message}")
+            println("Error local al eliminar tablero: ${e.message}")
         }
 
-        var exito = false
-        try {
-            exito = remote.eliminarTablero(idTablero)
-        } catch (e: Exception) {
-            println("Error al eliminar tablero en el servidor: ${e.message}")
-        }
+        repositoryScope.launch {
+            var exito = false
+            try {
+                exito = remote.eliminarTablero(idTablero)
+            } catch (e: Exception) {
+                println("Servidor offline al eliminar tablero: ${e.message}")
+            }
 
-        try {
-            pendiente.insertOperacionPendiente(
-                TipoAccion.ELIMINACION.getNombreAccion(),
-                Entity.TABLERO.getNombreEntity(),
-                idTablero,
-                "",
-                System.currentTimeMillis(),
-                if (exito) 1L else 0L
-            )
-        } catch (e: Exception) {
-            println("Error al registrar operación pendiente: ${e.message}")
+            try {
+                pendiente.insertOperacionPendiente(
+                    TipoAccion.ELIMINACION.getNombreAccion(),
+                    Entity.TABLERO.getNombreEntity(),
+                    idTablero,
+                    "",
+                    System.currentTimeMillis(),
+                    if (exito) 1L else 0L
+                )
+            } catch (e: Exception) {
+                println("Error al registrar operación pendiente: ${e.message}")
+            }
         }
     }
 }
