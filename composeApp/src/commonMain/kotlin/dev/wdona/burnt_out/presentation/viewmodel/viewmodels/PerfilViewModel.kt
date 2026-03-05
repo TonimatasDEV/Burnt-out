@@ -1,6 +1,6 @@
 package dev.wdona.burnt_out.presentation.viewmodel.viewmodels
 
-import dev.wdona.burnt_out.shared.db.DatabaseDriverFactory
+import dev.wdona.burnt_out.data.dao.UsuarioRepository
 import dev.wdona.burnt_out.shared.domain.Usuario
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
-class PerfilViewModel(databaseDriverFactory: DatabaseDriverFactory) {
+class PerfilViewModel(private val repository: UsuarioRepository) {
     // Crea un CoroutineScope
     private val viewModelScope = CoroutineScope(Dispatchers.Main)
 

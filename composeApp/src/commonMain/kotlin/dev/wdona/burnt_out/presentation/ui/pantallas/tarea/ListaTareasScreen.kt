@@ -20,8 +20,8 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import dev.wdona.burnt_out.presentation.ui.components.common.InfoTopBarCustom
 import dev.wdona.burnt_out.presentation.ui.components.tarea.CardTarea
-import dev.wdona.burnt_out.presentation.viewmodel.viewmodels.TareaViewModel
 import dev.wdona.burnt_out.presentation.viewmodel.viewmodelfactories.TareaViewModelFactory
+import dev.wdona.burnt_out.presentation.viewmodel.viewmodels.TareaViewModel
 
 class ListaTareasScreen(val tareaFactory: TareaViewModelFactory) : Screen {
     @Composable

@@ -1,6 +1,7 @@
 package dev.wdona.burnt_out.data.datasource.mapper
 
 import app.cash.sqldelight.Query
+import dev.wdona.burnt_out.domain.json.TareaJsonFields
 import dev.wdona.burnt_out.shared.domain.Tarea
 import dev.wdona.burntout.shared.db.TareaEntity
 
@@ -50,5 +51,16 @@ class TareaMapper {
             return toDomain(tareaEntity.executeAsOne())
         }
 
+        fun toJson(tarea: Tarea): String {
+            return """{
+                "${TareaJsonFields.ID}": ${tarea.idTarea},
+                "${TareaJsonFields.NOMBRE}": "${tarea.titulo}",
+                "${TareaJsonFields.DESCRIPCION}": "${tarea.descripcion ?: ""}",
+                "${TareaJsonFields.ESTADO}": "${tarea.estado}",
+                "${TareaJsonFields.ID_TABLERO}": ${tarea.idTableroPerteneciente},
+                "${TareaJsonFields.ID_USUARIO_ASIGNADO}": ${tarea.idUsuarioAsignado},
+                "${TareaJsonFields.ID_SUBTAREAS}": ${tarea.idSubtareas ?: emptyList()}
+            }"""
+        }
     }
 }

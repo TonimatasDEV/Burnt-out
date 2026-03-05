@@ -20,38 +20,73 @@ class TareaDaoImpl(appDatabase: AppDatabase) : TareaDao {
         )
     }
 
-    override suspend fun crearTarea(tarea: Tarea) {
-        return queries.insertTarea(
-            Titulo = tarea.titulo,
-            Descripcion = tarea.descripcion,
-            Estado = tarea.estado,
-            FK_ID_Tabl = tarea.idTableroPerteneciente,
-            FK_ID_Usuario = tarea.idUsuarioAsignado
-        )
+    override suspend fun crearTarea(tarea: Tarea) : Boolean {
+        try {
+            queries.insertTarea(
+                Titulo = tarea.titulo,
+                Descripcion = tarea.descripcion,
+                Estado = tarea.estado,
+                FK_ID_Tabl = tarea.idTableroPerteneciente,
+                FK_ID_Usuario = tarea.idUsuarioAsignado
+            )
+        } catch (e: Exception) {
+            e.printStackTrace()
+            return false
+        }
+        return true
     }
 
-    override suspend fun actualizarTarea(tarea: Tarea) {
-        return queries.updateTareaById(
-            ID_Tarea = tarea.idTarea,
-            Titulo = tarea.titulo,
-            Descripcion = tarea.descripcion,
-            Estado = tarea.estado
-        )
+    override suspend fun actualizarTarea(tarea: Tarea) : Boolean {
+        try {
+            queries.updateTareaById(
+                ID_Tarea = tarea.idTarea,
+                Titulo = tarea.titulo,
+                Descripcion = tarea.descripcion,
+                Estado = tarea.estado
+            )
+        } catch (e: Exception) {
+            e.printStackTrace()
+            return false
+        }
+
+        return true
     }
 
-    override suspend fun eliminarTarea(tareaId: Long){
-        return queries.deleteTareaById(tareaId)
+    override suspend fun eliminarTarea(tareaId: Long) : Boolean {
+        try {
+            queries.deleteTareaById(tareaId)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            return false
+        }
+
+        return true
     }
 
-    override suspend fun insertOrUpdateTarea(tarea: Tarea) {
-        return queries.insertOrUpdateTarea(
-            ID_Tarea = tarea.idTarea,
-            Titulo = tarea.titulo,
-            Descripcion = tarea.descripcion,
-            Estado = tarea.estado,
-            FK_ID_Tabl = tarea.idTableroPerteneciente,
-            FK_ID_Usuario = tarea.idUsuarioAsignado
-        )
+    override suspend fun insertOrUpdateTarea(tarea: Tarea) : Boolean {
+        try {
+            queries.insertOrUpdateTarea(
+                ID_Tarea = tarea.idTarea,
+                Titulo = tarea.titulo,
+                Descripcion = tarea.descripcion,
+                Estado = tarea.estado,
+                FK_ID_Tabl = tarea.idTableroPerteneciente,
+                FK_ID_Usuario = tarea.idUsuarioAsignado
+            )
+        } catch (e: Exception) {
+            e.printStackTrace()
+            return false
+        }
+
+        return true
+    }
+
+    override suspend fun eliminarTareasByTableroId(tableroId: Long) {
+        try {
+            queries.deleteTareasByTablero(tableroId)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 
 }

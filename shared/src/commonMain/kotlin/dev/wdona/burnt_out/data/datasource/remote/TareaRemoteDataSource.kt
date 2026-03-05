@@ -5,5 +5,4 @@ import dev.wdona.burnt_out.shared.domain.Tarea
 import io.ktor.client.statement.HttpResponse
 
 interface TareaRemoteDataSource : TareaDataSource {
-    override suspend fun crearTarea(tarea: Tarea) ;
 }

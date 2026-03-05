@@ -14,13 +14,14 @@ class OperacionPendienteDaoImpl(appDatabase: AppDatabase) : OperacionPendienteDa
         }
     }
 
-    override suspend fun insertOperacionPendiente(tipoAccion: String, tablaAfectada: String, idAfectado: Long, datosJson: String, timestampCreacion: Long) {
+    override suspend fun insertOperacionPendiente(tipoAccion: String, tablaAfectada: String, idAfectado: Long, datosJson: String, timestampCreacion: Long, sincronizado: Long) {
         queries.insertOperacionPendiente(
             tipo_accion = tipoAccion,
             tabla_afectada = tablaAfectada,
             id_afectado = idAfectado,
             datos_json = datosJson,
-            timestamp_creacion = timestampCreacion
+            timestamp_creacion = timestampCreacion,
+            sincronizado = sincronizado
         )
     }
 

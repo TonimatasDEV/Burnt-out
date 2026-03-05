@@ -3,6 +3,7 @@ package dev.wdona.burnt_out.data.api.impl
 import dev.wdona.burnt_out.data.api.TareaApi
 import dev.wdona.burnt_out.shared.domain.Tarea
 import dev.wdona.burnt_out.shared.network.ApiClient
+import dev.wdona.burnt_out.shared.network.ApiClient.client
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
@@ -24,17 +25,15 @@ class TareaApiImpl(private val client: HttpClient = ApiClient.client) : TareaApi
                     "&idUsuarioAsignado=${tarea.idUsuarioAsignado}"
         )
 
-    override suspend fun actualizarTarea(tarea: Tarea) {
+    override suspend fun actualizarTarea(tarea: Tarea) : HttpResponse =
         client.post(
             "/actualizar/tarea/idTarea=${tarea.idTarea}" +
                     "&titulo=${tarea.titulo}" +
                     "&descripcion=${tarea.descripcion}" +
                     "&estado=${tarea.estado}"
         )
-    }
 
-    override suspend fun eliminarTarea(idTarea: Long) {
-        client.post("/eliminar/tarea/idTarea=$idTarea")
+    override suspend fun eliminarTarea(idTarea: Long): HttpResponse {
+        return client.post("/eliminar/tarea/idTarea=$idTarea")
     }
-
 }

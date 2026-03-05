@@ -1,4 +1,4 @@
-package dev.wdona.burnt_out.data.dao
+package dev.wdona.burnt_out.domain.repository
 
 interface OrganizacionRepository {
 }

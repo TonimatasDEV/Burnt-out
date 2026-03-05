@@ -4,15 +4,10 @@ import dev.wdona.burnt_out.domain.model.OperacionPendiente
 
 
 interface OperacionesPendientesRepository {
-    suspend fun agregarOperacionPendiente(
-        tipoAccion: String,
-        tablaAfectada: String,
-        idAfectado: Long,
-        datosJson: String
-    );
-
-    suspend fun obtenerOperacionesPendientes(): List<OperacionPendiente>
-
-    suspend fun marcarOperacionComoSincronizada(idAccion: Long)
+    suspend fun getOperacionesPendientes(): List<OperacionPendiente>;
+    suspend fun insertOperacionPendiente(tipoAccion: String, tablaAfectada: String, idAfectado: Long, datosJson: String, timestampCreacion: Long);
+    suspend fun deleteOperacionPendientePorEstado(estado: Long);
+    suspend fun cambiarEstadoOperacion(sincronizado: Long, idOperacion: Long);
+    suspend fun deleteOperacionPendiente(idOperacion: Long);
 
 }

@@ -23,4 +23,8 @@ class TareaLocalDataSourceImpl(private val dao: TareaDao) : TareaLocalDataSource
     override suspend fun eliminarTarea(tareaId: Long) =
         dao.eliminarTarea(tareaId)
 
+    override suspend fun eliminarTareasPorTablero(idTablero: Long) {
+        dao.eliminarTareasByTableroId(idTablero)
+    }
+
 }

@@ -1,8 +1,8 @@
 package dev.wdona.burnt_out.presentation.viewmodel.viewmodels
 
+import dev.wdona.burnt_out.data.dao.EquipoRepository
 import dev.wdona.burnt_out.shared.domain.Equipo
 import dev.wdona.burnt_out.shared.domain.Usuario
-import dev.wdona.burnt_out.shared.db.DatabaseDriverFactory
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class EquipoViewModel(databaseDriverFactory: DatabaseDriverFactory) {
+class EquipoViewModel(repository: EquipoRepository) {
     // Crea un CoroutineScope
     private val viewModelScope = CoroutineScope(Dispatchers.Main)
 

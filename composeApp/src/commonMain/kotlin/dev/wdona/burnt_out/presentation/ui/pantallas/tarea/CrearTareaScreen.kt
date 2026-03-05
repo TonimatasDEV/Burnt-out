@@ -24,8 +24,8 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import dev.wdona.burnt_out.presentation.ui.components.template.CrearTemplate
 import dev.wdona.burnt_out.presentation.ui.pantallas.SettingsScreen
-import dev.wdona.burnt_out.presentation.viewmodel.viewmodels.TareaViewModel
 import dev.wdona.burnt_out.presentation.viewmodel.viewmodelfactories.TareaViewModelFactory
+import dev.wdona.burnt_out.presentation.viewmodel.viewmodels.TareaViewModel
 
 class MenuCrearTareaScreen(val factory: TareaViewModelFactory, val idTablero: Long) : Screen {
     @Composable

@@ -14,9 +14,9 @@ import dev.wdona.burnt_out.presentation.ui.theme.LightColorScheme
 import dev.wdona.burnt_out.presentation.viewmodel.viewmodelfactories.EquipoViewModelFactory
 import dev.wdona.burnt_out.presentation.viewmodel.viewmodelfactories.PerfilViewModelFactory
 import dev.wdona.burnt_out.presentation.viewmodel.viewmodelfactories.TableroViewModelFactory
-import dev.wdona.burnt_out.presentation.viewmodel.viewmodelfactories.TareaViewModelFactory
 
 import cafe.adriel.voyager.transitions.SlideTransition
+import dev.wdona.burnt_out.presentation.viewmodel.viewmodelfactories.TareaViewModelFactory
 
 
 @OptIn(ExperimentalMaterial3Api::class)

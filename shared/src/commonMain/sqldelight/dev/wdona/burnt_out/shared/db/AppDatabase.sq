@@ -139,10 +139,13 @@ UPDATE TareaEntity SET Titulo = ?, Descripcion = ?, Estado = ? WHERE ID_Tarea = 
 deleteTareaById:
 DELETE FROM TareaEntity WHERE ID_Tarea = ?;
 
+deleteTareasByTablero:
+DELETE FROM TareaEntity WHERE FK_ID_Tabl = ?;
+
 -- ===== Operaciones Pendientes =====
 insertOperacionPendiente:
-INSERT INTO OperacionPendienteEntity(tipo_accion, tabla_afectada, id_afectado, datos_json, timestamp_creacion)
-VALUES(?, ?, ?, ?, ?);
+INSERT INTO OperacionPendienteEntity(tipo_accion, tabla_afectada, id_afectado, datos_json, timestamp_creacion, sincronizado)
+VALUES(?, ?, ?, ?, ?, ?);
 
 getOperacionesPendientes:
 SELECT * FROM OperacionPendienteEntity WHERE sincronizado = 0 ORDER BY timestamp_creacion
