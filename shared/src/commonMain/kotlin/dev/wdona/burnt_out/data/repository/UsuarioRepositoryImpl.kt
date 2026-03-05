@@ -8,6 +8,11 @@ import dev.wdona.burnt_out.domain.entity.Entity
 import dev.wdona.burnt_out.domain.model.TipoAccion
 import dev.wdona.burnt_out.domain.repository.UsuarioRepository
 import dev.wdona.burnt_out.shared.domain.Usuario
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.IO
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class UsuarioRepositoryImpl(
     private val local: UsuarioLocalDataSource,
@@ -15,129 +20,154 @@ class UsuarioRepositoryImpl(
     private val pendiente: OperacionPendienteLocalDataSource
 ) : UsuarioRepository {
 
-    override suspend fun getUserById(idUsuario: Long): Usuario {
-        try {
-            val usuario = remote.getUserById(idUsuario)
-            local.eliminarUsuario(usuario.idUsuario)
-            local.crearUsuario(usuario)
-        } catch (e: Exception) {
-            println("Error al obtener usuario del servidor: ${e.message}")
+    private val repositoryScope = CoroutineScope(Dispatchers.Default)
+
+    override suspend fun getUserById(idUsuario: Long): Usuario = withContext(Dispatchers.IO) {
+        repositoryScope.launch {
+            try {
+                val usuario = remote.getUserById(idUsuario)
+                local.eliminarUsuario(usuario.idUsuario)
+                local.crearUsuario(usuario)
+            } catch (e: Exception) {
+                println("Servidor offline (getUserById): ${e.message}")
+            }
         }
-        return local.getUserById(idUsuario)
+        local.getUserById(idUsuario)
     }
 
-    override suspend fun getUsuariosByOrg(idOrg: Long): List<Usuario> {
-        try {
-            val usuarios = remote.getUsuariosByOrg(idOrg)
-            local.eliminarUsuariosPorOrg(idOrg)
-            usuarios.forEach { local.crearUsuario(it) }
-        } catch (e: Exception) {
-            println("Error al obtener usuarios del servidor: ${e.message}")
+    override suspend fun getUsuariosByOrg(idOrg: Long): List<Usuario> = withContext(Dispatchers.IO) {
+        repositoryScope.launch {
+            try {
+                val usuarios = remote.getUsuariosByOrg(idOrg)
+                local.eliminarUsuariosPorOrg(idOrg)
+                usuarios.forEach { local.crearUsuario(it) }
+            } catch (e: Exception) {
+                println("Servidor offline (getUsuariosByOrg): ${e.message}")
+            }
         }
-        return local.getUsuariosByOrg(idOrg)
+        local.getUsuariosByOrg(idOrg)
     }
 
-    override suspend fun getUsuariosByEquipo(idEquipo: Long): List<Usuario> {
-        // FIXME FALTA SINCRONIZAR REMOTE
-        return local.getUsuariosByEquipo(idEquipo)
+    override suspend fun getUsuariosByEquipo(idEquipo: Long): List<Usuario> = withContext(Dispatchers.IO) {
+        // FIXME: Sincronizar remote si existe endpoint
+        local.getUsuariosByEquipo(idEquipo)
     }
 
     override suspend fun crearUsuario(usuario: Usuario) {
-        try {
-            local.crearUsuario(usuario)
-        } catch (e: Exception) {
-            println("Error al crear usuario localmente: ${e.message}")
+        withContext(Dispatchers.IO) {
+            try {
+                local.crearUsuario(usuario)
+            } catch (e: Exception) {
+                println("Error local al crear usuario: ${e.message}")
+            }
         }
 
-        var exito = false
-        try {
-            exito = remote.crearUsuario(usuario)
-        } catch (e: Exception) {
-            println("Error al crear usuario en el servidor: ${e.message}")
-        }
+        repositoryScope.launch {
+            var exito = false
+            try {
+                exito = remote.crearUsuario(usuario)
+            } catch (e: Exception) {
+                println("Servidor offline al crear usuario: ${e.message}")
+            }
 
-        try {
-            pendiente.insertOperacionPendiente(
-                TipoAccion.CREACION.getNombreAccion(),
-                Entity.USUARIO.getNombreEntity(),
-                usuario.idUsuario,
-                UsuarioMapper.toJson(usuario),
-                System.currentTimeMillis(),
-                if (exito) 1L else 0L
-            )
-        } catch (e: Exception) {
-            println("Error al registrar operación pendiente: ${e.message}")
+            withContext(Dispatchers.IO) {
+                try {
+                    pendiente.insertOperacionPendiente(
+                        TipoAccion.CREACION.getNombreAccion(),
+                        Entity.USUARIO.getNombreEntity(),
+                        usuario.idUsuario,
+                        UsuarioMapper.toJson(usuario),
+                        System.currentTimeMillis(),
+                        if (exito) 1L else 0L
+                    )
+                } catch (e: Exception) {
+                    println("Error al registrar operación pendiente: ${e.message}")
+                }
+            }
         }
     }
 
     override suspend fun actualizarUsuario(usuario: Usuario) {
-        try {
-            local.actualizarUsuario(usuario)
-        } catch (e: Exception) {
-            println("Error al actualizar usuario localmente: ${e.message}")
+        withContext(Dispatchers.IO) {
+            try {
+                local.actualizarUsuario(usuario)
+            } catch (e: Exception) {
+                println("Error local al actualizar usuario: ${e.message}")
+            }
         }
 
-        var exito = false
-        try {
-            exito = remote.actualizarUsuario(usuario)
-        } catch (e: Exception) {
-            println("Error al actualizar usuario en el servidor: ${e.message}")
-        }
+        repositoryScope.launch {
+            var exito = false
+            try {
+                exito = remote.actualizarUsuario(usuario)
+            } catch (e: Exception) {
+                println("Servidor offline al actualizar usuario: ${e.message}")
+            }
 
-        try {
-            pendiente.insertOperacionPendiente(
-                TipoAccion.ACTUALIZACION.getNombreAccion(),
-                Entity.USUARIO.getNombreEntity(),
-                usuario.idUsuario,
-                UsuarioMapper.toJson(usuario),
-                System.currentTimeMillis(),
-                if (exito) 1L else 0L
-            )
-        } catch (e: Exception) {
-            println("Error al registrar operación pendiente: ${e.message}")
+            withContext(Dispatchers.IO) {
+                try {
+                    pendiente.insertOperacionPendiente(
+                        TipoAccion.ACTUALIZACION.getNombreAccion(),
+                        Entity.USUARIO.getNombreEntity(),
+                        usuario.idUsuario,
+                        UsuarioMapper.toJson(usuario),
+                        System.currentTimeMillis(),
+                        if (exito) 1L else 0L
+                    )
+                } catch (e: Exception) {
+                    println("Error al registrar operación pendiente: ${e.message}")
+                }
+            }
         }
     }
 
     override suspend fun eliminarUsuario(idUsuario: Long) {
-        try {
-            local.eliminarUsuario(idUsuario)
-        } catch (e: Exception) {
-            println("Error al eliminar usuario localmente: ${e.message}")
+        withContext(Dispatchers.IO) {
+            try {
+                local.eliminarUsuario(idUsuario)
+            } catch (e: Exception) {
+                println("Error local al eliminar usuario: ${e.message}")
+            }
         }
 
-        var exito = false
-        try {
-            exito = remote.eliminarUsuario(idUsuario)
-        } catch (e: Exception) {
-            println("Error al eliminar usuario en el servidor: ${e.message}")
-        }
+        repositoryScope.launch {
+            var exito = false
+            try {
+                exito = remote.eliminarUsuario(idUsuario)
+            } catch (e: Exception) {
+                println("Servidor offline al eliminar usuario: ${e.message}")
+            }
 
-        try {
-            pendiente.insertOperacionPendiente(
-                TipoAccion.ELIMINACION.getNombreAccion(),
-                Entity.USUARIO.getNombreEntity(),
-                idUsuario,
-                "",
-                System.currentTimeMillis(),
-                if (exito) 1L else 0L
-            )
-        } catch (e: Exception) {
-            println("Error al registrar operación pendiente: ${e.message}")
+            withContext(Dispatchers.IO) {
+                try {
+                    pendiente.insertOperacionPendiente(
+                        TipoAccion.ELIMINACION.getNombreAccion(),
+                        Entity.USUARIO.getNombreEntity(),
+                        idUsuario,
+                        "",
+                        System.currentTimeMillis(),
+                        if (exito) 1L else 0L
+                    )
+                } catch (e: Exception) {
+                    println("Error al registrar operación pendiente: ${e.message}")
+                }
+            }
         }
     }
 
     override suspend fun updateRiesgoBurnout(idUsuario: Long, riesgo: Double) {
-        try {
-            // TODO: Actualizar en el servidor??
-            local.updateRiesgoBurnout(idUsuario, riesgo)
-        } catch (e: Exception) {
-            println("Error al actualizar riesgo: ${e.message}")
+        withContext(Dispatchers.IO) {
+            try {
+                local.updateRiesgoBurnout(idUsuario, riesgo)
+            } catch (e: Exception) {
+                println("Error al actualizar riesgo: ${e.message}")
+            }
         }
     }
 
-    override suspend fun login(username: String, contrasena: String): Usuario {
-        return remote.login(username, contrasena).also {
-            local.crearUsuario(it)
-        }
+    override suspend fun login(username: String, contrasena: String): Usuario = withContext(Dispatchers.IO) {
+        val usuario = remote.login(username, contrasena)
+        local.crearUsuario(usuario)
+        usuario
     }
 }

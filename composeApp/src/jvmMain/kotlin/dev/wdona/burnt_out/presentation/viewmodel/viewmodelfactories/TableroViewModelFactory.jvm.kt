@@ -8,14 +8,12 @@ import dev.wdona.burnt_out.data.datasource.local.impl.TableroLocalDataSourceImpl
 import dev.wdona.burnt_out.data.datasource.remote.impl.TableroRemoteDataSourceImpl
 import dev.wdona.burnt_out.data.repository.TableroRepositoryImpl
 import dev.wdona.burnt_out.domain.repository.TableroRepository
-import dev.wdona.burnt_out.shared.db.DatabaseDriverFactory
 import dev.wdona.burnt_out.presentation.viewmodel.viewmodels.TableroViewModel
-import dev.wdona.burnt_out.shared.db.AppDatabase
+import dev.wdona.burnt_out.shared.db.DatabaseInit
 
 actual class TableroViewModelFactory {
     actual fun create(): TableroViewModel {
-        val driverFactory = DatabaseDriverFactory()
-        val database = AppDatabase(driverFactory.createDriver())
+        val database = DatabaseInit.getDatabase()
 
         val dao = TableroDaoImpl(database)
         val api = TableroApiImpl()

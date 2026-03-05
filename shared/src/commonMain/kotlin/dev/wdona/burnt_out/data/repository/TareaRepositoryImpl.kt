@@ -11,6 +11,7 @@ import dev.wdona.burnt_out.shared.domain.Tarea
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class TareaRepositoryImpl(
     private val local: TareaLocalDataSource,
@@ -20,7 +21,7 @@ class TareaRepositoryImpl(
 
     private val repositoryScope = CoroutineScope(Dispatchers.Default)
 
-    override suspend fun getTareasByTableroId(tableroId: Long): List<Tarea> {
+    override suspend fun getTareasByTableroId(tableroId: Long): List<Tarea> = withContext(Dispatchers.IO) {
         repositoryScope.launch {
             try {
                 val tareas = remote.getTareasByTablero(tableroId)
@@ -30,10 +31,10 @@ class TareaRepositoryImpl(
                 println("Servidor offline (getTareas): ${e.message}")
             }
         }
-        return local.getTareasByTablero(tableroId)
+        local.getTareasByTablero(tableroId)
     }
 
-    override suspend fun getTareaById(idTarea: Long, idTablero: Long): Tarea? {
+    override suspend fun getTareaById(idTarea: Long, idTablero: Long): Tarea? = withContext(Dispatchers.IO) {
         repositoryScope.launch {
             try {
                 val tarea = remote.getTareaById(idTarea, idTablero)
@@ -43,49 +44,52 @@ class TareaRepositoryImpl(
                 println("Servidor offline (getTareaById): ${e.message}")
             }
         }
-        return local.getTareaById(idTarea, idTablero)
+        local.getTareaById(idTarea, idTablero)
     }
 
     override suspend fun crearTarea(tarea: Tarea) {
-        var idLocal: Long = -1
-        try {
-            idLocal = local.crearTarea(tarea)
-        } catch (e: Exception) {
-            println("Error local al crear tarea: ${e.message}")
+        withContext(Dispatchers.IO) {
+            try {
+                local.crearTarea(tarea)
+            } catch (e: Exception) {
+                println("Error local al crear tarea: ${e.message}")
+            }
         }
 
         repositoryScope.launch {
-            var exito = false
+            var exitoRemoto = false
             var idRemoto: Long = -1
             try {
-                idRemoto = remote.crearTarea(tarea) // FIXME
-                exito = idRemoto != -1L
+                idRemoto = remote.crearTarea(tarea)
+                exitoRemoto = idRemoto != -1L
             } catch (e: Exception) {
                 println("Servidor offline al crear tarea: ${e.message}")
             }
 
-            try {
-                val idParaPendiente = if (exito) idRemoto else idLocal
-                
-                pendiente.insertOperacionPendiente(
-                    TipoAccion.CREACION.getNombreAccion(),
-                    Entity.TAREA.getNombreEntity(),
-                    idParaPendiente,
-                    TareaMapper.toJson(tarea),
-                    System.currentTimeMillis(),
-                    if (exito) 1L else 0L
-                )
-            } catch (e: Exception) {
-                println("Error al registrar operación pendiente: ${e.message}")
+            withContext(Dispatchers.IO) {
+                try {
+                    pendiente.insertOperacionPendiente(
+                        TipoAccion.CREACION.getNombreAccion(),
+                        Entity.TAREA.getNombreEntity(),
+                        if (exitoRemoto) idRemoto else 0L,
+                        TareaMapper.toJson(tarea),
+                        System.currentTimeMillis(),
+                        if (exitoRemoto) 1L else 0L
+                    )
+                } catch (e: Exception) {
+                    println("Error al registrar operación pendiente: ${e.message}")
+                }
             }
         }
     }
 
     override suspend fun actualizarTarea(tarea: Tarea) {
-        try {
-            local.actualizarTarea(tarea)
-        } catch (e: Exception) {
-            println("Error local al actualizar tarea: ${e.message}")
+        withContext(Dispatchers.IO) {
+            try {
+                local.actualizarTarea(tarea)
+            } catch (e: Exception) {
+                println("Error local al actualizar tarea: ${e.message}")
+            }
         }
 
         repositoryScope.launch {
@@ -96,26 +100,30 @@ class TareaRepositoryImpl(
                 println("Servidor offline al actualizar tarea: ${e.message}")
             }
 
-            try {
-                pendiente.insertOperacionPendiente(
-                    TipoAccion.ACTUALIZACION.getNombreAccion(),
-                    Entity.TAREA.getNombreEntity(),
-                    tarea.idTarea,
-                    TareaMapper.toJson(tarea),
-                    System.currentTimeMillis(),
-                    if (exito) 1L else 0L
-                )
-            } catch (e: Exception) {
-                println("Error al registrar operación pendiente: ${e.message}")
+            withContext(Dispatchers.IO) {
+                try {
+                    pendiente.insertOperacionPendiente(
+                        TipoAccion.ACTUALIZACION.getNombreAccion(),
+                        Entity.TAREA.getNombreEntity(),
+                        tarea.idTarea,
+                        TareaMapper.toJson(tarea),
+                        System.currentTimeMillis(),
+                        if (exito) 1L else 0L
+                    )
+                } catch (e: Exception) {
+                    println("Error al registrar operación pendiente: ${e.message}")
+                }
             }
         }
     }
 
     override suspend fun eliminarTarea(idTarea: Long) {
-        try {
-            local.eliminarTarea(idTarea)
-        } catch (e: Exception) {
-            println("Error local al eliminar tarea: ${e.message}")
+        withContext(Dispatchers.IO) {
+            try {
+                local.eliminarTarea(idTarea)
+            } catch (e: Exception) {
+                println("Error local al eliminar tarea: ${e.message}")
+            }
         }
 
         repositoryScope.launch {
@@ -126,17 +134,19 @@ class TareaRepositoryImpl(
                 println("Servidor offline al eliminar tarea: ${e.message}")
             }
 
-            try {
-                pendiente.insertOperacionPendiente(
-                    TipoAccion.ELIMINACION.getNombreAccion(),
-                    Entity.TAREA.getNombreEntity(),
-                    idTarea,
-                    "",
-                    System.currentTimeMillis(),
-                    if (exito) 1L else 0L
-                )
-            } catch (e: Exception) {
-                println("Error al registrar operación pendiente: ${e.message}")
+            withContext(Dispatchers.IO) {
+                try {
+                    pendiente.insertOperacionPendiente(
+                        TipoAccion.ELIMINACION.getNombreAccion(),
+                        Entity.TAREA.getNombreEntity(),
+                        idTarea,
+                        "",
+                        System.currentTimeMillis(),
+                        if (exito) 1L else 0L
+                    )
+                } catch (e: Exception) {
+                    println("Error al registrar operación pendiente: ${e.message}")
+                }
             }
         }
     }

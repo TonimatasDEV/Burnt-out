@@ -11,11 +11,11 @@ import dev.wdona.burnt_out.data.repository.TareaRepositoryImpl
 import dev.wdona.burnt_out.shared.db.DatabaseDriverFactory
 import dev.wdona.burnt_out.presentation.viewmodel.viewmodels.TareaViewModel
 import dev.wdona.burnt_out.shared.db.AppDatabase
+import dev.wdona.burnt_out.shared.db.DatabaseInit
 
 actual class TareaViewModelFactory {
     actual fun create(): TareaViewModel {
-        val driverFactory = DatabaseDriverFactory()
-        val database = AppDatabase(driverFactory.createDriver())
+        val database = DatabaseInit.getDatabase()
 
         val dao = TareaDaoImpl(database)
         val api = TareaApiImpl()

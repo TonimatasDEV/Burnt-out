@@ -10,14 +10,12 @@ import dev.wdona.burnt_out.data.datasource.local.impl.UsuarioLocalDataSourceImpl
 import dev.wdona.burnt_out.data.datasource.remote.impl.EquipoRemoteDataSourceImpl
 import dev.wdona.burnt_out.data.repository.EquipoRepositoryImpl
 import dev.wdona.burnt_out.domain.repository.EquipoRepository
-import dev.wdona.burnt_out.shared.db.DatabaseDriverFactory
 import dev.wdona.burnt_out.presentation.viewmodel.viewmodels.EquipoViewModel
-import dev.wdona.burnt_out.shared.db.AppDatabase
+import dev.wdona.burnt_out.shared.db.DatabaseInit
 
 actual class EquipoViewModelFactory {
     actual fun create(): EquipoViewModel {
-        val driverFactory = DatabaseDriverFactory()
-        val database = AppDatabase(driverFactory.createDriver())
+        val database = DatabaseInit.getDatabase()
 
         val dao = EquipoDaoImpl(database)
         val api = EquipoApiImpl()

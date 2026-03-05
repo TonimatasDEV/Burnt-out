@@ -8,24 +8,30 @@ import dev.wdona.burnt_out.presentation.viewmodel.viewmodelfactories.EquipoViewM
 import dev.wdona.burnt_out.presentation.viewmodel.viewmodelfactories.PerfilViewModelFactory
 import dev.wdona.burnt_out.presentation.viewmodel.viewmodelfactories.TableroViewModelFactory
 import dev.wdona.burnt_out.presentation.viewmodel.viewmodelfactories.TareaViewModelFactory
+import dev.wdona.burnt_out.shared.db.DatabaseDriverFactory
+import dev.wdona.burnt_out.shared.db.DatabaseInit
 
-fun main() = application {
-    Window(
-        onCloseRequest = ::exitApplication,
-        alwaysOnTop = true,
-        title = "Burnt out",
-        icon = org.jetbrains.compose.resources.painterResource(Res.drawable.logoBurntOutIcon)
+fun main() {
+    val driver = DatabaseDriverFactory().createDriver()
+    DatabaseInit.init(driver)
 
-    ) {
-        val tareaViewModelFactory = TareaViewModelFactory()
-        val equipoViewModelFactory = EquipoViewModelFactory()
-        val perfilViewModelFactory = PerfilViewModelFactory()
-        val tableroViewModelFactory = TableroViewModelFactory()
-        App(
-            tareaViewModelFactory,
-            equipoViewModelFactory = equipoViewModelFactory,
-            perfilViewModelFactory = perfilViewModelFactory,
-            tableroViewModelFactory = tableroViewModelFactory
-        )
+    application {
+        Window(
+            onCloseRequest = ::exitApplication,
+            alwaysOnTop = true,
+            title = "Burnt out",
+            icon = org.jetbrains.compose.resources.painterResource(Res.drawable.logoBurntOutIcon)
+        ) {
+            val tareaViewModelFactory = TareaViewModelFactory()
+            val equipoViewModelFactory = EquipoViewModelFactory()
+            val perfilViewModelFactory = PerfilViewModelFactory()
+            val tableroViewModelFactory = TableroViewModelFactory()
+            App(
+                tareaViewModelFactory,
+                equipoViewModelFactory = equipoViewModelFactory,
+                perfilViewModelFactory = perfilViewModelFactory,
+                tableroViewModelFactory = tableroViewModelFactory
+            )
+        }
     }
 }

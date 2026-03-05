@@ -8,14 +8,12 @@ import dev.wdona.burnt_out.data.datasource.local.impl.UsuarioLocalDataSourceImpl
 import dev.wdona.burnt_out.data.datasource.remote.impl.UsuarioRemoteDataSourceImpl
 import dev.wdona.burnt_out.data.repository.UsuarioRepositoryImpl
 import dev.wdona.burnt_out.domain.repository.UsuarioRepository
-import dev.wdona.burnt_out.shared.db.DatabaseDriverFactory
 import dev.wdona.burnt_out.presentation.viewmodel.viewmodels.PerfilViewModel
-import dev.wdona.burnt_out.shared.db.AppDatabase
+import dev.wdona.burnt_out.shared.db.DatabaseInit
 
 actual class PerfilViewModelFactory {
     actual fun create(): PerfilViewModel {
-        val driverFactory = DatabaseDriverFactory()
-        val database = AppDatabase(driverFactory.createDriver())
+        val database = DatabaseInit.getDatabase()
 
         val dao = UsuarioDaoImpl(database)
         val api = UsuarioApiImpl()

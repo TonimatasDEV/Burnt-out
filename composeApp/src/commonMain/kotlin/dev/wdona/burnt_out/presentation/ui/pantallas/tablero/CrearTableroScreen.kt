@@ -61,6 +61,7 @@ fun MenuCrearTableroContent(tableroViewModel: TableroViewModel, onVolver: () -> 
             )
 
             textStateNombreTablero = ""
+            onVolver()
             true
         }
         false
