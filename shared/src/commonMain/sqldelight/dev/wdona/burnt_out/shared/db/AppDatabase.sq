@@ -133,8 +133,14 @@ VALUES(?, ?, ?, ?, ?, ?);
 getTareaById:
 SELECT * FROM TareaEntity WHERE ID_Tarea = ?;
 
+getTareasByTablero:
+SELECT * FROM TareaEntity WHERE FK_ID_Tabl = ?;
+
 updateTareaById:
 UPDATE TareaEntity SET Titulo = ?, Descripcion = ?, Estado = ? WHERE ID_Tarea = ?;
+
+assignTareaToUsuario:
+UPDATE TareaEntity SET FK_ID_Usuario = ? WHERE ID_Tarea = ?;
 
 deleteTareaById:
 DELETE FROM TareaEntity WHERE ID_Tarea = ?;
@@ -160,25 +166,27 @@ UPDATE OperacionPendienteEntity SET sincronizado = ? WHERE ID_Operacion = ?;
 deleteOperacionesPorEstado:
 DELETE FROM OperacionPendienteEntity WHERE sincronizado = ?;
 
-
--- ===== OTROS =====
-
+-- ==== Tableros ====
 insertTablero:
 INSERT INTO TableroEntity(Titulo, FK_ID_Equipo, FK_ID_Org)
 VALUES(?, ?, ?);
 
-insertEquipo:
-INSERT INTO EquipoEntity(Titulo, FK_ID_Org)
-VALUES(?, ?);
-
-getTareasByTablero:
-SELECT * FROM TareaEntity WHERE FK_ID_Tabl = ?;
+getTableroById:
+SELECT * FROM TableroEntity WHERE ID_Tabl = ?;
 
 getTablerosByOrg:
 SELECT * FROM TableroEntity WHERE FK_ID_Org = ?;
 
-getUserById:
-SELECT * FROM UsuarioEntity WHERE ID_Usuario = ?;
+updateTablero:
+UPDATE TableroEntity SET Titulo = ?, FK_ID_Equipo = ? WHERE ID_Tabl = ?;
+
+deleteTablero:
+DELETE FROM TableroEntity WHERE ID_Tabl = ?;
+
+-- ===== Equipos =====
+insertEquipo:
+INSERT INTO EquipoEntity(Titulo, FK_ID_Org)
+VALUES(?, ?);
 
 getEquipoById:
 SELECT * FROM EquipoEntity WHERE ID_Equipo = ?;
@@ -186,23 +194,105 @@ SELECT * FROM EquipoEntity WHERE ID_Equipo = ?;
 getEquiposByOrg:
 SELECT * FROM EquipoEntity WHERE FK_ID_Org = ?;
 
+updateEquipo:
+UPDATE EquipoEntity SET Titulo = ? WHERE ID_Equipo = ?;
+
+deleteEquipo:
+DELETE FROM EquipoEntity WHERE ID_Equipo = ?;
+
+updatePuntuacionEquipo:
+UPDATE EquipoEntity SET Puntuacion = Puntuacion + ? WHERE ID_Equipo = ?;
+
+getLeaderboard:
+SELECT * FROM EquipoEntity ORDER BY Puntuacion DESC;
+
+-- ==== Usuarios ====
+insertUsuario:
+INSERT INTO UsuarioEntity(Username, Contrasena, Nombre, Riesgo_Burnout, Descripcion, FK_ID_Organizacion)
+VALUES(?, ?, ?, ?, ?, ?);
+
+getUserById:
+SELECT * FROM UsuarioEntity WHERE ID_Usuario = ?;
+
+getUsuariosByOrg:
+SELECT * FROM UsuarioEntity WHERE FK_ID_Organizacion = ?;
+
+getUsuarioByUsername:
+SELECT * FROM UsuarioEntity WHERE Username = ?;
+
 getUsuariosByEquipo:
 SELECT u.*
 FROM UsuarioEntity u JOIN User_TeamEntity ut ON u.ID_Usuario = ut.ID_Usuario
 WHERE ut.ID_Equipo = ?;
+
+updateUsuario:
+UPDATE UsuarioEntity SET Username = ?, Contrasena = ?, Nombre = ?, Riesgo_Burnout = ?, Descripcion = ? WHERE ID_Usuario = ?;
+
+deleteUsuario:
+DELETE FROM UsuarioEntity WHERE ID_Usuario = ?;
+
+updateRiesgoBurnout:
+UPDATE UsuarioEntity SET Riesgo_Burnout = ? WHERE ID_Usuario = ?;
+
+getUsuariosConRiesgoAlto:
+SELECT * FROM UsuarioEntity WHERE Riesgo_Burnout > ?;
+
+-- ====== SUBTAREAS ======
+insertSubtarea:
+INSERT INTO SubtareaEntity(Titulo, Completado, FK_ID_Tarea) VALUES(?, ?, ?);
+
+getSubtareasByTarea:
+SELECT * FROM SubtareaEntity WHERE FK_ID_Tarea = ?;
+
+updateSubtarea:
+UPDATE SubtareaEntity SET Titulo = ?, Completado = ? WHERE ID_Subtarea = ?;
+
+deleteSubtarea:
+DELETE FROM SubtareaEntity WHERE ID_Subtarea = ?;
+
+-- ====== PREGUNTAS / ENCUESTAS ======
+insertPregunta:
+INSERT INTO PreguntaEntity(Pregunta, FK_ID_Org) VALUES(?, ?);
+
+getPreguntasByOrg:
+SELECT * FROM PreguntaEntity WHERE FK_ID_Org = ?;
+
+updatePregunta:
+UPDATE PreguntaEntity SET Pregunta = ? WHERE ID_Pregunta = ?;
+
+deletePregunta:
+DELETE FROM PreguntaEntity WHERE ID_Pregunta = ?;
+
+-- ====== RESPUESTAS ======
+insertRespuesta:
+INSERT OR REPLACE INTO ResponderEntity(ID_Usuario, ID_Pregunta, Anonimo, Respuesta)
+VALUES(?, ?, ?, ?);
+
+getRespuestasByPregunta:
+SELECT r.Respuesta, r.Anonimo, u.Nombre
+FROM ResponderEntity r JOIN UsuarioEntity u ON r.ID_Usuario = u.ID_Usuario
+WHERE r.ID_Pregunta = ?;
+
+getRespuestasByUser:
+SELECT * FROM ResponderEntity WHERE ID_Usuario = ?;
+
+-- ====== AJUSTES USUARIO ======
+insertOrUpdateAjusteUser:
+INSERT OR REPLACE INTO Ajuste_UserEntity(ID_Usuario, ID_Ajuste, Valor_Ajuste)
+VALUES(?, ?, ?);
 
 getAjustesByUser:
 SELECT a.Nombre_Ajuste, au.Valor_Ajuste
 FROM AjusteEntity a JOIN Ajuste_UserEntity au ON a.ID_Ajuste = au.ID_Ajuste
 WHERE au.ID_Usuario = ?;
 
+-- ====== EQUIPOS - USUARIOS ======
+insertUserTeam:
+INSERT OR IGNORE INTO User_TeamEntity(ID_Usuario, ID_Equipo) VALUES(?, ?);
+
+deleteUserTeam:
+DELETE FROM User_TeamEntity WHERE ID_Usuario = ? AND ID_Equipo = ?;
+
+-- ===== OTROS =====
 getOrganizacionById:
 SELECT * FROM OrganizacionEntity WHERE ID_Org = ?;
-
-getPreguntasByOrg:
-SELECT * FROM PreguntaEntity WHERE FK_ID_Org = ?;
-
-getRespuestasByPregunta:
-SELECT r.Respuesta, r.Anonimo, u.Nombre
-FROM ResponderEntity r JOIN UsuarioEntity u ON r.ID_Usuario = u.ID_Usuario
-WHERE r.ID_Pregunta = ?;
