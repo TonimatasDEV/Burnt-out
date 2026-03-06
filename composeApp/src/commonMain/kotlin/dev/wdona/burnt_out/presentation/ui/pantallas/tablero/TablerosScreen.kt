@@ -1,37 +1,46 @@
 package dev.wdona.burnt_out.presentation.ui.pantallas.tablero
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.material3.Button
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExtendedFloatingActionButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.model.rememberScreenModel
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
-import dev.wdona.burnt_out.presentation.ui.components.common.InfoTopBarCustom
+import dev.wdona.burnt_out.presentation.ui.components.common.InfoTopBarCustomTitle
 import dev.wdona.burnt_out.presentation.ui.components.tablero.CardTablero
 import dev.wdona.burnt_out.presentation.viewmodel.viewmodelfactories.TableroViewModelFactory
 import dev.wdona.burnt_out.presentation.viewmodel.viewmodelfactories.TareaViewModelFactory
 import dev.wdona.burnt_out.presentation.viewmodel.viewmodels.TableroViewModel
 
-class TablerosScreen(val tableroFactory: TableroViewModelFactory, val tareaViewModelFactory: TareaViewModelFactory) : Screen {
+class TablerosScreen(
+    private val tableroFactory: TableroViewModelFactory,
+    private val tareaViewModelFactory: TareaViewModelFactory
+) : Screen {
+
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
+
         val tableroViewModel: TableroViewModel = rememberScreenModel { tableroFactory.create() }
         val idOrg = 1L
 
@@ -40,63 +49,76 @@ class TablerosScreen(val tableroFactory: TableroViewModelFactory, val tareaViewM
         }
 
         MenuTableros(
-            onVolver = { navigator.pop() },
-                onIrACrearTablero = {
-                    navigator.push(MenuCrearTableroScreen(tableroFactory))
-                                    },
             tableroViewModel = tableroViewModel,
-            onVerTablero = {
-                idTablero, nombreTablero ->
-                    println("Entra a ver tablero")
-                    println(idTablero)
-                    navigator.push(
-                        DetalleTableroScreen(
-                            idTablero = idTablero,
-                            nombreTablero = nombreTablero,
-                            tareaViewModelFactory = tareaViewModelFactory
-                        )
+            onVolver = { 
+                navigator.pop()
+            },
+            onIrACrearTablero = { 
+                navigator.push(MenuCrearTableroScreen(tableroFactory)) 
+            },
+            onVerTablero = { idTablero, nombreTablero ->
+                navigator.push(
+                    DetalleTableroScreen(
+                        idTablero = idTablero,
+                        nombreTablero = nombreTablero,
+                        tareaViewModelFactory = tareaViewModelFactory
                     )
+                )
             }
         )
     }
 
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
-    fun MenuTableros(tableroViewModel: TableroViewModel, onVolver: () -> Unit, onIrACrearTablero: () -> Unit = {}, onVerTablero: (Long, String) -> Unit) {
+    fun MenuTableros(
+        tableroViewModel: TableroViewModel,
+        onVolver: () -> Unit,
+        onIrACrearTablero: () -> Unit,
+        onVerTablero: (Long, String) -> Unit
+    ) {
         val listaTableros by tableroViewModel.listaTableros.collectAsState()
 
         Scaffold(
             topBar = {
-                InfoTopBarCustom("Tableros", onVolver)
+                InfoTopBarCustomTitle("Mis Tableros", )
+            },
+            floatingActionButton = {
+                ExtendedFloatingActionButton(
+                    onClick = onIrACrearTablero,
+                    icon = { Icon(Icons.Default.Add, contentDescription = "Crear") },
+                    text = { Text("Nuevo Tablero") },
+                    shape = RoundedCornerShape(16.dp)
+                )
             }
         ) { paddingValues ->
-            Column (modifier = Modifier.padding(paddingValues)
-            ) {
-                Button(
-                    onClick = { onIrACrearTablero() },
-                    modifier = Modifier
-                        .padding(start = 16.dp)
+            if (listaTableros.isEmpty()) {
+                Box(
+                    modifier = Modifier.fillMaxSize().padding(paddingValues),
+                    contentAlignment = androidx.compose.ui.Alignment.Center
                 ) {
-                    Text("Crear nuevo tablero")
+                    Text(
+                        "No hay tableros aun",
+                        style = MaterialTheme.typography.bodyLarge,
+                    )
                 }
+            } else {
                 LazyVerticalGrid(
-                    columns = GridCells.Adaptive(minSize = 200.dp), // el min size es el tamanio ancho de cada tarjeta
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                    columns = GridCells.Adaptive(minSize = 160.dp),
+                    horizontalArrangement = Arrangement.spacedBy(16.dp),
+                    verticalArrangement = Arrangement.spacedBy(16.dp),
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 24.dp)
+                        .fillMaxSize()
+                        .padding(paddingValues)
+                        .padding(horizontal = 16.dp, vertical = 16.dp)
                 ) {
                     items(listaTableros) { tablero ->
-                        CardTablero(tablero.titulo, onClick = {
-                            onVerTablero(tablero.idTablero, tablero.titulo)
-                            println("Entra a ver tablero")
-                            print("Id tablero: ${tablero.idTablero}")
-                        })
+                        CardTablero(
+                            tituloTablero = tablero.titulo,
+                            onClick = { onVerTablero(tablero.idTablero, tablero.titulo) }
+                        )
                     }
                 }
             }
-
         }
     }
 }

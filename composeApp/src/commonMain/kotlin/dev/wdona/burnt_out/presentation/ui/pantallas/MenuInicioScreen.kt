@@ -28,11 +28,12 @@ import dev.wdona.burnt_out.presentation.ui.pantallas.equipo.LeaderboardScreen
 import dev.wdona.burnt_out.presentation.ui.pantallas.perfil.PerfilScreen
 import dev.wdona.burnt_out.presentation.ui.pantallas.tablero.TablerosScreen
 import dev.wdona.burnt_out.presentation.viewmodel.viewmodelfactories.EquipoViewModelFactory
+import dev.wdona.burnt_out.presentation.viewmodel.viewmodelfactories.LeaderboardViewModelFactory
 import dev.wdona.burnt_out.presentation.viewmodel.viewmodelfactories.PerfilViewModelFactory
 import dev.wdona.burnt_out.presentation.viewmodel.viewmodelfactories.TableroViewModelFactory
 import dev.wdona.burnt_out.presentation.viewmodel.viewmodelfactories.TareaViewModelFactory
 
-class MenuInicio(val equipoFactory: EquipoViewModelFactory, val tableroFactory: TableroViewModelFactory, val perfilFactory: PerfilViewModelFactory, val tareaViewModelFactory: TareaViewModelFactory) : Screen {
+class MenuInicio(val equipoFactory: EquipoViewModelFactory, val tableroFactory: TableroViewModelFactory, val perfilFactory: PerfilViewModelFactory, val tareaViewModelFactory: TareaViewModelFactory, val leaderboardFactory: LeaderboardViewModelFactory) : Screen {
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
@@ -45,7 +46,7 @@ class MenuInicio(val equipoFactory: EquipoViewModelFactory, val tableroFactory: 
                 )
             ) },
             onNavegarAPerfil = { navigator.push(PerfilScreen(perfilFactory)) },
-            onNavegarALeaderboard = { navigator.push(LeaderboardScreen(equipoFactory, 1L)) }, // TODO: COGER ID DE LA ORG DEL USUARIO ACTIVO
+            onNavegarALeaderboard = { navigator.push(LeaderboardScreen(leaderboardFactory, 1L)) }, // TODO: COGER ID DE LA ORG DEL USUARIO ACTIVO
             onNavegarAEquipo = { navigator.push(EquipoScreen(equipoFactory)) }
         )
     }

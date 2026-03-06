@@ -36,6 +36,7 @@ class UsuarioDaoImpl(appDatabase: AppDatabase) : UsuarioDao {
     override suspend fun insertUsuario(usuario: Usuario): Boolean {
         return try {
             queries.insertUsuario(
+                usuario.idUsuario,
                 usuario.username,
                 usuario.password,
                 usuario.nombre,

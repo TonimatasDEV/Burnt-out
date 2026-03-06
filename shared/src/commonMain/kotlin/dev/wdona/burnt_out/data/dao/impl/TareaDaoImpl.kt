@@ -22,6 +22,7 @@ class TareaDaoImpl(appDatabase: AppDatabase) : TareaDao {
 
     override suspend fun crearTarea(tarea: Tarea) : Long {
         queries.insertTarea(
+            ID_Tarea = tarea.idTarea,
             Titulo = tarea.titulo,
             Descripcion = tarea.descripcion,
             Estado = tarea.estado,

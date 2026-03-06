@@ -21,9 +21,15 @@ class EquipoDaoImpl(appDatabase: AppDatabase) : EquipoDao {
 
     override suspend fun insertEquipo(equipo: Equipo): Boolean {
         return try {
-            queries.insertEquipo(equipo.titulo, equipo.idOrganizacion)
+            queries.insertEquipo(
+                ID_Equipo = equipo.idEquipo,
+                Titulo = equipo.titulo,
+                Puntuacion = equipo.puntuacion ?: 0,
+                FK_ID_Org = equipo.idOrganizacion
+            )
             true
         } catch (e: Exception) {
+            e.printStackTrace()
             false
         }
     }

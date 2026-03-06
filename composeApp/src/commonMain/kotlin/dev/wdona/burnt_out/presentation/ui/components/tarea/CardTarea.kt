@@ -14,15 +14,16 @@ import androidx.compose.ui.unit.dp
 fun CardTarea(tituloTarea: String) {
     OutlinedButton (
         modifier = Modifier
-            .fillMaxWidth(1f/3f)
             .padding(16.dp),
         onClick = {
 
         }
+
     ) {
         Text(text = tituloTarea,
             textAlign = TextAlign.Center,
             modifier = Modifier.fillMaxWidth()
         )
+
     }
 }

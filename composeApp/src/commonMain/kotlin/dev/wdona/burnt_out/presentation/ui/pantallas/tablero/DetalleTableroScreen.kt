@@ -16,7 +16,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -24,7 +23,7 @@ import cafe.adriel.voyager.core.model.rememberScreenModel
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
-import dev.wdona.burnt_out.presentation.ui.components.common.InfoTopBarCustom
+import dev.wdona.burnt_out.presentation.ui.components.common.InfoTopBarCustomOnVolver
 import dev.wdona.burnt_out.presentation.ui.components.tarea.CardTarea
 import dev.wdona.burnt_out.presentation.ui.pantallas.tarea.MenuCrearTareaScreen
 import dev.wdona.burnt_out.presentation.viewmodel.viewmodelfactories.TareaViewModelFactory
@@ -72,7 +71,7 @@ fun DetalleTableroContent(
 
     Scaffold(
         topBar = {
-            InfoTopBarCustom(nombreTablero, onVolver)
+            InfoTopBarCustomOnVolver(nombreTablero, onVolver)
         }
     ) { paddingValues ->
         Column(

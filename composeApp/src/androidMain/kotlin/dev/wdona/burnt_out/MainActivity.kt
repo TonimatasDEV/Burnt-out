@@ -6,6 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.remember
 import dev.wdona.burnt_out.presentation.viewmodel.viewmodelfactories.EquipoViewModelFactory
+import dev.wdona.burnt_out.presentation.viewmodel.viewmodelfactories.LeaderboardViewModelFactory
 import dev.wdona.burnt_out.presentation.viewmodel.viewmodelfactories.PerfilViewModelFactory
 import dev.wdona.burnt_out.presentation.viewmodel.viewmodelfactories.TableroViewModelFactory
 import dev.wdona.burnt_out.presentation.viewmodel.viewmodelfactories.TareaViewModelFactory
@@ -20,8 +21,10 @@ class MainActivity : ComponentActivity() {
             val equipoViewModelFactory = remember { EquipoViewModelFactory(applicationContext) }
             val perfilViewModelFactory = remember { PerfilViewModelFactory(applicationContext) }
             val tableroViewModelFactory = remember { TableroViewModelFactory(applicationContext) }
+            val leaderboardViewModelFactory = remember { LeaderboardViewModelFactory(applicationContext) }
 
-            App(tareaFactory, equipoViewModelFactory, perfilViewModelFactory, tableroViewModelFactory)
+
+            App(tareaFactory, equipoViewModelFactory, perfilViewModelFactory, tableroViewModelFactory, leaderboardViewModelFactory)
         }
     }
 }

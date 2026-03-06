@@ -12,7 +12,6 @@ import dev.wdona.burnt_out.shared.domain.Equipo
 import dev.wdona.burnt_out.shared.domain.Usuario
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.IO
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -29,26 +28,33 @@ class EquipoRepositoryImpl(
         repositoryScope.launch {
             try {
                 val equipos = remote.getEquiposByOrg(idOrg)
-                local.eliminarEquiposPorOrg(idOrg)
-                equipos.forEach { local.crearEquipo(it) }
+                // Sincronización atómica: Insert or Replace gestionado por el DAO
+                equipos.forEach { local.insertEquipo(it) }
             } catch (e: Exception) {
                 println("Servidor offline (getEquiposByOrg): ${e.message}")
             }
         }
-        local.getEquiposByOrg(idOrg)
+        try {
+            local.getEquiposByOrg(idOrg)
+        } catch (e: Exception) {
+            emptyList()
+        }
     }
 
     override suspend fun getEquipoById(idEquipo: Long): Equipo? = withContext(Dispatchers.IO) {
         repositoryScope.launch {
             try {
                 val equipo = remote.getEquipoById(idEquipo)
-                local.eliminarEquipo(equipo.idEquipo)
-                local.crearEquipo(equipo)
+                local.insertEquipo(equipo)
             } catch (e: Exception) {
                 println("Servidor offline (getEquipoById): ${e.message}")
             }
         }
-        local.getEquipoById(idEquipo)
+        try {
+            local.getEquipoById(idEquipo)
+        } catch (e: Exception) {
+            null
+        }
     }
 
     override suspend fun crearEquipo(equipo: Equipo) {
@@ -156,13 +162,16 @@ class EquipoRepositoryImpl(
     override suspend fun getMiembrosEquipo(idEquipo: Long): List<Usuario> = withContext(Dispatchers.IO) {
         repositoryScope.launch {
             try {
-                val miembros = remote.getMiembrosEquipo(idEquipo)
-                // Aquí se podría actualizar la caché de usuarios si fuera necesario
+                remote.getMiembrosEquipo(idEquipo)
             } catch (e: Exception) {
                 println("Servidor offline (getMiembrosEquipo): ${e.message}")
             }
         }
-        usuarioLocal.getUsuariosByEquipo(idEquipo)
+        try {
+            usuarioLocal.getUsuariosByEquipo(idEquipo)
+        } catch (e: Exception) {
+            emptyList()
+        }
     }
 
     override suspend fun updatePuntuacion(idEquipo: Long, puntos: Long) {

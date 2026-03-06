@@ -5,6 +5,7 @@ import dev.wdona.burnt_out.shared.domain.Equipo
 interface EquipoLocalDataSource {
     suspend fun getEquipoById(idEquipo: Long): Equipo?
     suspend fun getEquiposByOrg(idOrg: Long): List<Equipo>
+    suspend fun insertEquipo(equipo: Equipo): Boolean
     suspend fun crearEquipo(equipo: Equipo): Boolean
     suspend fun actualizarEquipo(equipo: Equipo): Boolean
     suspend fun eliminarEquipo(idEquipo: Long): Boolean

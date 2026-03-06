@@ -14,18 +14,19 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.model.rememberScreenModel
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
-import dev.wdona.burnt_out.presentation.ui.components.common.InfoTopBarCustom
+import dev.wdona.burnt_out.presentation.ui.components.common.InfoTopBarCustomTitle
 import dev.wdona.burnt_out.presentation.viewmodel.viewmodelfactories.EquipoViewModelFactory
+import dev.wdona.burnt_out.presentation.viewmodel.viewmodelfactories.LeaderboardViewModelFactory
 import dev.wdona.burnt_out.presentation.viewmodel.viewmodels.EquipoViewModel
+import dev.wdona.burnt_out.presentation.viewmodel.viewmodels.LeaderboardViewModel
 
-class LeaderboardScreen(val factory: EquipoViewModelFactory, val idOrg: Long) : Screen {
+class LeaderboardScreen(val factory: LeaderboardViewModelFactory, val idOrg: Long) : Screen {
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow // Para poder volver o ir a otra
@@ -33,34 +34,31 @@ class LeaderboardScreen(val factory: EquipoViewModelFactory, val idOrg: Long) : 
         val viewModel = rememberScreenModel { factory.create() }
 
         LaunchedEffect(idOrg) {
-            viewModel.cargarEquipos(idOrg)
+            viewModel.cargarLeaderboard(idOrg)
         }
 
-        LeaderboardContent(viewModel) { navigator.pop() }
-
+        LeaderboardContent(viewModel)
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LeaderboardContent(equipoViewModel: EquipoViewModel, onVolver: () -> Unit) {
-    val listaEquipos by equipoViewModel.listaEquipos.collectAsState()
+fun LeaderboardContent(leaderboardViewModel: LeaderboardViewModel) {
+    val listaEquipos by leaderboardViewModel.leaderboard.collectAsState()
+    
     Scaffold(
-        topBar = {
-            InfoTopBarCustom("Leaderboard", onVolver)
-        }
+        topBar = { InfoTopBarCustomTitle("Leaderboard") }
     ) { paddingValues ->
-        Column (modifier = Modifier.padding(paddingValues).fillMaxWidth()
-        ) {
+        Column(modifier = Modifier.padding(paddingValues).fillMaxWidth()) {
             LazyVerticalGrid(
-                columns = GridCells.Adaptive(minSize = 400.dp), // el min size es el tamanio ancho de cada tarjeta
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp),
+                columns = GridCells.Adaptive(minSize = 300.dp),
+                horizontalArrangement = Arrangement.spacedBy(16.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 16.dp, vertical = 24.dp)
+                    .padding(16.dp)
             ) {
-                items(listaEquipos) { equipo ->
+                items(listaEquipos, key = { it.idEquipo }) { equipo ->
                     CardEquipo(
                         nombreEquipo = equipo.titulo,
                         puntosEquipo = equipo.puntuacion
@@ -73,7 +71,8 @@ fun LeaderboardContent(equipoViewModel: EquipoViewModel, onVolver: () -> Unit) {
 
 @Composable
 fun CardEquipo(nombreEquipo: String, puntosEquipo: Long?) {
-    Column {
-        Text("$nombreEquipo tiene ${puntosEquipo ?: "0"} puntos")
+    Column(modifier = Modifier.padding(8.dp)) {
+        Text(text = nombreEquipo, style = androidx.compose.material3.MaterialTheme.typography.titleMedium)
+        Text(text = "Puntos: ${puntosEquipo ?: 0}", style = androidx.compose.material3.MaterialTheme.typography.bodyMedium)
     }
 }

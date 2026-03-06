@@ -110,24 +110,24 @@ lastInsertRowId:
 SELECT last_insert_rowid();
 
 insertOrgbase:
-INSERT OR IGNORE INTO OrganizacionEntity(Org_Name) VALUES('Organizacion Predeterminada');
+INSERT OR IGNORE INTO OrganizacionEntity(ID_Org, Org_Name) VALUES(1, 'Organizacion Predeterminada');
 
 insertEquipoBase:
-INSERT OR IGNORE INTO EquipoEntity(Titulo, FK_ID_Org) VALUES('Equipo Predeterminado', 1);
+INSERT OR IGNORE INTO EquipoEntity(ID_Equipo, Titulo, FK_ID_Org) VALUES(1, 'Equipo Predeterminado', 1);
 
 insertAjustes:
-INSERT OR IGNORE INTO AjusteEntity(Nombre_Ajuste) VALUES('Notificaciones');
-INSERT OR IGNORE INTO AjusteEntity(Nombre_Ajuste) VALUES('Tema Oscuro');
+INSERT OR IGNORE INTO AjusteEntity(ID_Ajuste, Nombre_Ajuste) VALUES(1, 'Notificaciones');
+INSERT OR IGNORE INTO AjusteEntity(ID_Ajuste, Nombre_Ajuste) VALUES(2, 'Tema Oscuro');
 
 insertUsuarioBase:
-INSERT OR IGNORE INTO UsuarioEntity(Username, Contrasena, Nombre, FK_ID_Organizacion) VALUES('User', '********', 'Usuario Base', 1);
+INSERT OR IGNORE INTO UsuarioEntity(ID_Usuario, Username, Contrasena, Nombre, FK_ID_Organizacion) VALUES(1, 'User', '********', 'Usuario Base', 1);
 INSERT OR IGNORE INTO User_TeamEntity(ID_Usuario, ID_Equipo) VALUES(1, 1);
 
 -- ====== TAREAS ======
 
 insertTarea:
-INSERT INTO TareaEntity(Titulo, Descripcion, Estado, FK_ID_Tabl, FK_ID_Usuario)
-VALUES(?, ?, ?, ?, ?);
+INSERT OR REPLACE INTO TareaEntity(ID_Tarea, Titulo, Descripcion, Estado, FK_ID_Tabl, FK_ID_Usuario)
+VALUES(?, ?, ?, ?, ?, ?);
 
 insertOrUpdateTarea:
 INSERT OR REPLACE INTO TareaEntity(ID_Tarea, Titulo, Descripcion, Estado, FK_ID_Tabl, FK_ID_Usuario)
@@ -171,8 +171,8 @@ DELETE FROM OperacionPendienteEntity WHERE sincronizado = ?;
 
 -- ==== Tableros ====
 insertTablero:
-INSERT INTO TableroEntity(Titulo, FK_ID_Equipo, FK_ID_Org)
-VALUES(?, ?, ?);
+INSERT OR REPLACE INTO TableroEntity(ID_Tabl, Titulo, FK_ID_Equipo, FK_ID_Org)
+VALUES(?, ?, ?, ?);
 
 getTableroById:
 SELECT * FROM TableroEntity WHERE ID_Tabl = ?;
@@ -186,10 +186,13 @@ UPDATE TableroEntity SET Titulo = ?, FK_ID_Equipo = ? WHERE ID_Tabl = ?;
 deleteTablero:
 DELETE FROM TableroEntity WHERE ID_Tabl = ?;
 
+deleteTablerosByOrg:
+DELETE FROM TableroEntity WHERE FK_ID_Org = ?;
+
 -- ===== Equipos =====
 insertEquipo:
-INSERT INTO EquipoEntity(Titulo, FK_ID_Org)
-VALUES(?, ?);
+INSERT OR REPLACE INTO EquipoEntity(ID_Equipo, Titulo, Puntuacion, FK_ID_Org)
+VALUES(?, ?, ?, ?);
 
 getEquipoById:
 SELECT * FROM EquipoEntity WHERE ID_Equipo = ?;
@@ -203,6 +206,9 @@ UPDATE EquipoEntity SET Titulo = ? WHERE ID_Equipo = ?;
 deleteEquipo:
 DELETE FROM EquipoEntity WHERE ID_Equipo = ?;
 
+deleteEquiposByOrg:
+DELETE FROM EquipoEntity WHERE FK_ID_Org = ?;
+
 updatePuntuacionEquipo:
 UPDATE EquipoEntity SET Puntuacion = Puntuacion + ? WHERE ID_Equipo = ?;
 
@@ -211,8 +217,8 @@ SELECT * FROM EquipoEntity ORDER BY Puntuacion DESC;
 
 -- ==== Usuarios ====
 insertUsuario:
-INSERT INTO UsuarioEntity(Username, Contrasena, Nombre, Riesgo_Burnout, Descripcion, FK_ID_Organizacion)
-VALUES(?, ?, ?, ?, ?, ?);
+INSERT OR REPLACE INTO UsuarioEntity(ID_Usuario, Username, Contrasena, Nombre, Riesgo_Burnout, Descripcion, FK_ID_Organizacion)
+VALUES(?, ?, ?, ?, ?, ?, ?);
 
 getUserById:
 SELECT * FROM UsuarioEntity WHERE ID_Usuario = ?;
@@ -234,6 +240,9 @@ UPDATE UsuarioEntity SET Username = ?, Contrasena = ?, Nombre = ?, Riesgo_Burnou
 deleteUsuario:
 DELETE FROM UsuarioEntity WHERE ID_Usuario = ?;
 
+deleteUsuariosByOrg:
+DELETE FROM UsuarioEntity WHERE FK_ID_Organizacion = ?;
+
 updateRiesgoBurnout:
 UPDATE UsuarioEntity SET Riesgo_Burnout = ? WHERE ID_Usuario = ?;
 
@@ -242,7 +251,7 @@ SELECT * FROM UsuarioEntity WHERE Riesgo_Burnout > ?;
 
 -- ====== SUBTAREAS ======
 insertSubtarea:
-INSERT INTO SubtareaEntity(Titulo, Completado, FK_ID_Tarea) VALUES(?, ?, ?);
+INSERT OR REPLACE INTO SubtareaEntity(ID_Subtarea, Titulo, Completado, FK_ID_Tarea) VALUES(?, ?, ?, ?);
 
 getSubtareasByTarea:
 SELECT * FROM SubtareaEntity WHERE FK_ID_Tarea = ?;
@@ -255,7 +264,7 @@ DELETE FROM SubtareaEntity WHERE ID_Subtarea = ?;
 
 -- ====== PREGUNTAS / ENCUESTAS ======
 insertPregunta:
-INSERT INTO PreguntaEntity(Pregunta, FK_ID_Org) VALUES(?, ?);
+INSERT OR REPLACE INTO PreguntaEntity(ID_Pregunta, Pregunta, FK_ID_Org) VALUES(?, ?, ?);
 
 getPreguntasByOrg:
 SELECT * FROM PreguntaEntity WHERE FK_ID_Org = ?;

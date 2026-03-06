@@ -13,6 +13,10 @@ class EquipoLocalDataSourceImpl(private val equipoDao: EquipoDao) : EquipoLocalD
         return equipoDao.getEquiposByOrg(idOrg)
     }
 
+    override suspend fun insertEquipo(equipo: Equipo): Boolean {
+        return equipoDao.insertEquipo(equipo)
+    }
+
     override suspend fun crearEquipo(equipo: Equipo): Boolean {
         return equipoDao.insertEquipo(equipo)
     }

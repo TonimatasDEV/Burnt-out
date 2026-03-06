@@ -10,7 +10,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -44,10 +43,7 @@ class MenuCrearTableroScreen(val factory: TableroViewModelFactory) : Screen {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MenuCrearTableroContent(tableroViewModel: TableroViewModel, onVolver: () -> Unit) {
-    // Actualiza la informacion segun uiState
-    // val uiState by viewModel.uiState.collectAsState()
     var textStateNombreTablero by remember { mutableStateOf("") }
-    val listaComponentes by tableroViewModel.listaTableros.collectAsState()
 
     val navigator = LocalNavigator.currentOrThrow
 
@@ -63,9 +59,9 @@ fun MenuCrearTableroContent(tableroViewModel: TableroViewModel, onVolver: () -> 
 
             textStateNombreTablero = ""
             onVolver()
-            true
+
         }
-        false
+
     }
     CrearTemplate(
         titulo = "Crear Tablero",
@@ -79,7 +75,7 @@ fun MenuCrearTableroContent(tableroViewModel: TableroViewModel, onVolver: () -> 
                 .padding(horizontal = 16.dp),
             horizontalAlignment = Alignment.CenterHorizontally) {
             OutlinedTextField(
-                value = textStateNombreTablero, // El valor que se muestra
+                value = textStateNombreTablero,
                 onValueChange = { newText ->
                     textStateNombreTablero = newText },
                 label = { Text("Titulo") },

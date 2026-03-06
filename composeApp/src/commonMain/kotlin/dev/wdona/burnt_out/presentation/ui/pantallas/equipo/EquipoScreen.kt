@@ -25,6 +25,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.model.rememberScreenModel
+import dev.wdona.burnt_out.presentation.ui.components.common.InfoTopBarCustomTitle
 import dev.wdona.burnt_out.shared.domain.Usuario
 
 class EquipoScreen(val factory: EquipoViewModelFactory) : Screen {
@@ -52,12 +53,7 @@ class EquipoScreen(val factory: EquipoViewModelFactory) : Screen {
 
         Scaffold(
             topBar = {
-                TopAppBar(
-                    title = { Text(equipo?.titulo ?: "Mi equipo") },
-                    navigationIcon = {
-                        BotonVolver { onVolver() }
-                    }
-                )
+                InfoTopBarCustomTitle(equipo?.titulo ?: "Mi equipo")
             }
         ) { paddingValues ->
             Column (modifier = Modifier.padding(paddingValues)

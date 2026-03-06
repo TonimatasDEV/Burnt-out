@@ -21,7 +21,7 @@ class TableroDaoImpl(appDatabase: AppDatabase) : TableroDao {
 
     override suspend fun insertTablero(tablero: Tablero): Boolean {
         return try {
-            queries.insertTablero(tablero.titulo, tablero.idEquipo, tablero.idOrganizacion)
+            queries.insertTablero(tablero.idTablero, tablero.titulo, tablero.idEquipo, tablero.idOrganizacion)
             true
         } catch (e: Exception) {
             false

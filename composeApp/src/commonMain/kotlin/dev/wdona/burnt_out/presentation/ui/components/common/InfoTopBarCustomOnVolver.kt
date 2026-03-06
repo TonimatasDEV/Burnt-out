@@ -7,7 +7,7 @@ import androidx.compose.runtime.Composable
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-fun InfoTopBarCustom(
+fun InfoTopBarCustomOnVolver(
     title: String,
     onVolver: () -> Unit
 ) {

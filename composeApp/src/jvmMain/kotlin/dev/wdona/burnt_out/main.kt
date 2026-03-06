@@ -5,6 +5,7 @@ import androidx.compose.ui.window.application
 import burnt_out.composeapp.generated.resources.Res
 import burnt_out.composeapp.generated.resources.logoBurntOutIcon
 import dev.wdona.burnt_out.presentation.viewmodel.viewmodelfactories.EquipoViewModelFactory
+import dev.wdona.burnt_out.presentation.viewmodel.viewmodelfactories.LeaderboardViewModelFactory
 import dev.wdona.burnt_out.presentation.viewmodel.viewmodelfactories.PerfilViewModelFactory
 import dev.wdona.burnt_out.presentation.viewmodel.viewmodelfactories.TableroViewModelFactory
 import dev.wdona.burnt_out.presentation.viewmodel.viewmodelfactories.TareaViewModelFactory
@@ -26,11 +27,14 @@ fun main() {
             val equipoViewModelFactory = EquipoViewModelFactory()
             val perfilViewModelFactory = PerfilViewModelFactory()
             val tableroViewModelFactory = TableroViewModelFactory()
+            val leaderboardViewModelFactory = LeaderboardViewModelFactory()
+
             App(
                 tareaViewModelFactory,
                 equipoViewModelFactory = equipoViewModelFactory,
                 perfilViewModelFactory = perfilViewModelFactory,
-                tableroViewModelFactory = tableroViewModelFactory
+                tableroViewModelFactory = tableroViewModelFactory,
+                leaderboardViewModelFactory = leaderboardViewModelFactory
             )
         }
     }
