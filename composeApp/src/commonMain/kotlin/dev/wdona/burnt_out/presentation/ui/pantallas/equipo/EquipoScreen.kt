@@ -24,6 +24,7 @@ import dev.wdona.burnt_out.presentation.viewmodel.viewmodels.EquipoViewModel
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.unit.dp
+import cafe.adriel.voyager.core.model.rememberScreenModel
 import dev.wdona.burnt_out.shared.domain.Usuario
 
 class EquipoScreen(val factory: EquipoViewModelFactory) : Screen {
@@ -31,7 +32,7 @@ class EquipoScreen(val factory: EquipoViewModelFactory) : Screen {
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow // Para poder volver o ir a otra
 
-        val viewModel = remember { factory.create() }
+        val viewModel = rememberScreenModel { factory.create() }
         val idEquipo = 1L // TODO: COGER ID DEL EQUIPO DEL USUARIO ACTIVO
 
         LaunchedEffect(idEquipo) {

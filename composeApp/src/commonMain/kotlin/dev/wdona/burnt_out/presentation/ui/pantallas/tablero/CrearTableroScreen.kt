@@ -19,6 +19,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
+import cafe.adriel.voyager.core.model.rememberScreenModel
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
@@ -30,7 +31,7 @@ class MenuCrearTableroScreen(val factory: TableroViewModelFactory) : Screen {
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow // Para poder volver o ir a otra
-        val viewModel: TableroViewModel = remember { factory.create() }
+        val viewModel: TableroViewModel = rememberScreenModel { factory.create() }
 
         MenuCrearTableroContent(
             tableroViewModel = viewModel,

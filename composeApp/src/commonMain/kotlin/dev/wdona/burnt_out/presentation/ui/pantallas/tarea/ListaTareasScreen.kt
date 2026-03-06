@@ -16,6 +16,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import cafe.adriel.voyager.core.model.rememberScreenModel
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
@@ -28,7 +29,7 @@ class ListaTareasScreen(val tareaFactory: TareaViewModelFactory, val idTablero: 
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
-        val tareaViewModel: TareaViewModel = remember { tareaFactory.create() }
+        val tareaViewModel: TareaViewModel = rememberScreenModel { tareaFactory.create() }
 
 
 

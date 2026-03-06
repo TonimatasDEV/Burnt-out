@@ -17,6 +17,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import cafe.adriel.voyager.core.model.rememberScreenModel
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
@@ -29,7 +30,7 @@ class LeaderboardScreen(val factory: EquipoViewModelFactory, val idOrg: Long) : 
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow // Para poder volver o ir a otra
 
-        val viewModel = remember { factory.create() }
+        val viewModel = rememberScreenModel { factory.create() }
 
         LaunchedEffect(idOrg) {
             viewModel.cargarEquipos(idOrg)

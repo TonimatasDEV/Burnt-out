@@ -1,5 +1,7 @@
 package dev.wdona.burnt_out.presentation.viewmodel.viewmodels
 
+import cafe.adriel.voyager.core.model.ScreenModel
+import cafe.adriel.voyager.core.model.screenModelScope
 import dev.wdona.burnt_out.domain.repository.TableroRepository
 import dev.wdona.burnt_out.shared.domain.Tablero
 import kotlinx.coroutines.CoroutineScope
@@ -9,9 +11,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class TableroViewModel(private val repository: TableroRepository) {
-    private val viewModelScope = CoroutineScope(Dispatchers.Main)
-
+class TableroViewModel(private val repository: TableroRepository) : ScreenModel {
     private val _uiState = MutableStateFlow<Tablero?>(null)
     val uiState: StateFlow<Tablero?> = _uiState.asStateFlow()
 
@@ -19,33 +19,33 @@ class TableroViewModel(private val repository: TableroRepository) {
     val listaTableros: StateFlow<List<Tablero>> = _listaTableros
 
     fun cargarTableros(idOrg: Long) {
-        viewModelScope.launch {
+        screenModelScope.launch {
             _listaTableros.value = repository.getTablerosByOrg(idOrg)
         }
     }
 
     fun cargarTableroPorId(idTablero: Long) {
-        viewModelScope.launch {
+        screenModelScope.launch {
             _uiState.value = repository.getTableroById(idTablero)
         }
     }
 
     fun crearTablero(tablero: Tablero) {
-        viewModelScope.launch {
+        screenModelScope.launch {
             repository.crearTablero(tablero)
             cargarTableros(tablero.idOrganizacion)
         }
     }
 
     fun actualizarTablero(tablero: Tablero) {
-        viewModelScope.launch {
+        screenModelScope.launch {
             repository.actualizarTablero(tablero)
             cargarTableros(tablero.idOrganizacion)
         }
     }
 
     fun eliminarTablero(idTablero: Long, idOrg: Long) {
-        viewModelScope.launch {
+        screenModelScope.launch {
             repository.eliminarTablero(idTablero)
             cargarTableros(idOrg)
         }

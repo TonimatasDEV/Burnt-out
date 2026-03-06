@@ -18,6 +18,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import cafe.adriel.voyager.core.model.rememberScreenModel
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
@@ -31,7 +32,7 @@ class TablerosScreen(val tableroFactory: TableroViewModelFactory, val tareaViewM
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
-        val tableroViewModel: TableroViewModel = remember { tableroFactory.create() }
+        val tableroViewModel: TableroViewModel = rememberScreenModel { tableroFactory.create() }
         val idOrg = 1L
 
         LaunchedEffect(idOrg) {

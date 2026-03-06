@@ -1,5 +1,7 @@
 package dev.wdona.burnt_out.presentation.viewmodel.viewmodels
 
+import cafe.adriel.voyager.core.model.ScreenModel
+import cafe.adriel.voyager.core.model.screenModelScope
 import dev.wdona.burnt_out.domain.repository.UsuarioRepository
 import dev.wdona.burnt_out.shared.domain.Usuario
 import kotlinx.coroutines.CoroutineScope
@@ -9,9 +11,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class PerfilViewModel(private val repository: UsuarioRepository) {
-    private val viewModelScope = CoroutineScope(Dispatchers.Main)
-
+class PerfilViewModel(private val repository: UsuarioRepository) : ScreenModel {
     private val _uiState = MutableStateFlow<Usuario?>(null)
     val uiState: StateFlow<Usuario?> = _uiState.asStateFlow()
 
@@ -19,7 +19,7 @@ class PerfilViewModel(private val repository: UsuarioRepository) {
     val listaUsuarios: StateFlow<List<Usuario>> = _listaUsuarios.asStateFlow()
 
     fun cargarUsuario(idUsuario: Long) {
-        viewModelScope.launch {
+        screenModelScope.launch {
             try {
                 _uiState.value = repository.getUserById(idUsuario)
             } catch (e: Exception) {
@@ -29,27 +29,27 @@ class PerfilViewModel(private val repository: UsuarioRepository) {
     }
 
     fun cargarUsuariosPorOrg(idOrg: Long) {
-        viewModelScope.launch {
+        screenModelScope.launch {
             _listaUsuarios.value = repository.getUsuariosByOrg(idOrg)
         }
     }
 
     fun actualizarPerfil(usuario: Usuario) {
-        viewModelScope.launch {
+        screenModelScope.launch {
             repository.actualizarUsuario(usuario)
             _uiState.value = usuario
         }
     }
 
     fun eliminarPerfil(idUsuario: Long) {
-        viewModelScope.launch {
+        screenModelScope.launch {
             repository.eliminarUsuario(idUsuario)
             _uiState.value = null
         }
     }
 
     fun login(username: String, contrasena: String, onResult: (Boolean) -> Unit) {
-        viewModelScope.launch {
+        screenModelScope.launch {
             try {
                 val user = repository.login(username, contrasena)
                 _uiState.value = user
@@ -62,7 +62,7 @@ class PerfilViewModel(private val repository: UsuarioRepository) {
     }
 
     fun actualizarRiesgo(idUsuario: Long, riesgo: Double) {
-        viewModelScope.launch {
+        screenModelScope.launch {
             repository.updateRiesgoBurnout(idUsuario, riesgo)
             cargarUsuario(idUsuario)
         }
