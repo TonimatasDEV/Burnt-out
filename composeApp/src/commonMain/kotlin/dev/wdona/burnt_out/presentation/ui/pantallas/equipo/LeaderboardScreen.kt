@@ -8,7 +8,6 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -18,19 +17,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.model.rememberScreenModel
 import cafe.adriel.voyager.core.screen.Screen
-import cafe.adriel.voyager.navigator.LocalNavigator
-import cafe.adriel.voyager.navigator.currentOrThrow
-import dev.wdona.burnt_out.presentation.ui.components.common.InfoTopBarCustomTitle
-import dev.wdona.burnt_out.presentation.viewmodel.viewmodelfactories.EquipoViewModelFactory
+import dev.wdona.burnt_out.presentation.ui.components.template.ScaffoldBase
 import dev.wdona.burnt_out.presentation.viewmodel.viewmodelfactories.LeaderboardViewModelFactory
-import dev.wdona.burnt_out.presentation.viewmodel.viewmodels.EquipoViewModel
 import dev.wdona.burnt_out.presentation.viewmodel.viewmodels.LeaderboardViewModel
 
 class LeaderboardScreen(val factory: LeaderboardViewModelFactory, val idOrg: Long) : Screen {
     @Composable
     override fun Content() {
-        val navigator = LocalNavigator.currentOrThrow // Para poder volver o ir a otra
-
         val viewModel = rememberScreenModel { factory.create() }
 
         LaunchedEffect(idOrg) {
@@ -46,24 +39,18 @@ class LeaderboardScreen(val factory: LeaderboardViewModelFactory, val idOrg: Lon
 fun LeaderboardContent(leaderboardViewModel: LeaderboardViewModel) {
     val listaEquipos by leaderboardViewModel.leaderboard.collectAsState()
     
-    Scaffold(
-        topBar = { InfoTopBarCustomTitle("Leaderboard") }
-    ) { paddingValues ->
-        Column(modifier = Modifier.padding(paddingValues).fillMaxWidth()) {
-            LazyVerticalGrid(
-                columns = GridCells.Adaptive(minSize = 300.dp),
-                horizontalArrangement = Arrangement.spacedBy(16.dp),
-                verticalArrangement = Arrangement.spacedBy(16.dp),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp)
-            ) {
-                items(listaEquipos, key = { it.idEquipo }) { equipo ->
-                    CardEquipo(
-                        nombreEquipo = equipo.titulo,
-                        puntosEquipo = equipo.puntuacion
-                    )
-                }
+    ScaffoldBase(titulo = "Leaderboard") { 
+        LazyVerticalGrid(
+            columns = GridCells.Adaptive(minSize = 300.dp),
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp),
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            items(listaEquipos, key = { it.idEquipo }) { equipo ->
+                CardEquipo(
+                    nombreEquipo = equipo.titulo,
+                    puntosEquipo = equipo.puntuacion
+                )
             }
         }
     }

@@ -19,31 +19,41 @@ class EquipoDaoImpl(appDatabase: AppDatabase) : EquipoDao {
         }
     }
 
-    override suspend fun insertEquipo(equipo: Equipo): Boolean {
+    override suspend fun crearEquipo(equipo: Equipo): Long {
+        queries.insertEquipo(
+            equipo.titulo,
+            equipo.idOrganizacion
+        )
+        return queries.lastInsertRowId().executeAsOne()
+    }
+
+    override suspend fun insertOrUpdateEquipo(equipo: Equipo): Boolean {
         return try {
-            queries.insertEquipo(
-                ID_Equipo = equipo.idEquipo,
-                Titulo = equipo.titulo,
-                Puntuacion = equipo.puntuacion ?: 0,
-                FK_ID_Org = equipo.idOrganizacion
+            queries.upsertEquipo(
+                equipo.idEquipo,
+                equipo.titulo,
+                equipo.puntuacion ?: 0,
+                equipo.idOrganizacion
             )
             true
         } catch (e: Exception) {
-            e.printStackTrace()
             false
         }
     }
 
-    override suspend fun updateEquipo(equipo: Equipo): Boolean {
+    override suspend fun actualizarEquipo(equipo: Equipo): Boolean {
         return try {
-            queries.updateEquipo(equipo.titulo, equipo.idEquipo)
+            queries.updateEquipo(
+                equipo.titulo,
+                equipo.idEquipo
+            )
             true
         } catch (e: Exception) {
             false
         }
     }
 
-    override suspend fun deleteEquipo(idEquipo: Long): Boolean {
+    override suspend fun eliminarEquipo(idEquipo: Long): Boolean {
         return try {
             queries.deleteEquipo(idEquipo)
             true

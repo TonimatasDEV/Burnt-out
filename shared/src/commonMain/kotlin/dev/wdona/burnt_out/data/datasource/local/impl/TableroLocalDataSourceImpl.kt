@@ -5,7 +5,7 @@ import dev.wdona.burnt_out.data.datasource.local.TableroLocalDataSource
 import dev.wdona.burnt_out.shared.domain.Tablero
 
 class TableroLocalDataSourceImpl(private val tableroDao: TableroDao) : TableroLocalDataSource {
-    override suspend fun getTableroById(idTablero: Long): Tablero? {
+    override suspend fun getTableroById(idTablero: Long): Tablero {
         return tableroDao.getTableroById(idTablero)
     }
 
@@ -13,20 +13,24 @@ class TableroLocalDataSourceImpl(private val tableroDao: TableroDao) : TableroLo
         return tableroDao.getTablerosByOrg(idOrg)
     }
 
-    override suspend fun crearTablero(tablero: Tablero): Boolean {
-        return tableroDao.insertTablero(tablero)
+    override suspend fun crearTablero(tablero: Tablero): Long {
+        return tableroDao.crearTablero(tablero)
     }
 
     override suspend fun actualizarTablero(tablero: Tablero): Boolean {
-        return tableroDao.updateTablero(tablero)
+        return tableroDao.actualizarTablero(tablero)
     }
 
     override suspend fun eliminarTablero(idTablero: Long): Boolean {
-        return tableroDao.deleteTablero(idTablero)
+        return tableroDao.eliminarTablero(idTablero)
+    }
+
+    override suspend fun insertOrUpdateTablero(tablero: Tablero): Boolean {
+        return tableroDao.insertOrUpdateTablero(tablero)
     }
 
     override suspend fun eliminarTablerosPorOrg(idOrg: Long) {
         val tableros = tableroDao.getTablerosByOrg(idOrg)
-        tableros.forEach { tableroDao.deleteTablero(it.idTablero) }
+        tableros.forEach { tableroDao.eliminarTablero(it.idTablero) }
     }
 }

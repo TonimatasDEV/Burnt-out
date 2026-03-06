@@ -10,10 +10,7 @@ class UsuarioDaoImpl(appDatabase: AppDatabase) : UsuarioDao {
 
     override suspend fun getUserById(idUsuario: Long): Usuario {
         val entity = queries.getUserById(idUsuario).executeAsOne()
-        // FIXME Esto no es correcto, necesito una query que de el idEquipo de un usuario
-        val idEquipo = queries.getUsuariosByEquipo(0).executeAsList()
-        // De momento paso 0
-        return UsuarioMapper.toDomain(entity, 0L)
+        return UsuarioMapper.toDomain(entity, 0L) // TODO: Obtener idEquipo real
     }
 
     override suspend fun getUsuariosByOrg(idOrg: Long): List<Usuario> {
@@ -33,32 +30,27 @@ class UsuarioDaoImpl(appDatabase: AppDatabase) : UsuarioDao {
         return UsuarioMapper.toDomain(entity, 0L)
     }
 
-    override suspend fun insertUsuario(usuario: Usuario): Boolean {
-        return try {
-            queries.insertUsuario(
-                usuario.idUsuario,
-                usuario.username,
-                usuario.password,
-                usuario.nombre,
-                usuario.riesgoBurnout,
-                usuario.descripcion,
-                usuario.idOrganizacion
-            )
-            true
-        } catch (e: Exception) {
-            false
-        }
+    override suspend fun crearUsuario(usuario: Usuario): Long {
+        queries.insertUsuario(
+            Username = usuario.username,
+            Contrasena = usuario.password,
+            Nombre = usuario.nombre,
+            Riesgo_Burnout = usuario.riesgoBurnout,
+            Descripcion = usuario.descripcion,
+            FK_ID_Organizacion = usuario.idOrganizacion
+        )
+        return queries.lastInsertRowId().executeAsOne()
     }
 
-    override suspend fun updateUsuario(usuario: Usuario): Boolean {
+    override suspend fun actualizarUsuario(usuario: Usuario): Boolean {
         return try {
             queries.updateUsuario(
-                usuario.username,
-                usuario.password,
-                usuario.nombre,
-                usuario.riesgoBurnout,
-                usuario.descripcion,
-                usuario.idUsuario
+                Username = usuario.username,
+                Contrasena = usuario.password,
+                Nombre = usuario.nombre,
+                Riesgo_Burnout = usuario.riesgoBurnout,
+                Descripcion = usuario.descripcion,
+                ID_Usuario = usuario.idUsuario
             )
             true
         } catch (e: Exception) {
@@ -66,9 +58,26 @@ class UsuarioDaoImpl(appDatabase: AppDatabase) : UsuarioDao {
         }
     }
 
-    override suspend fun deleteUsuario(idUsuario: Long): Boolean {
+    override suspend fun eliminarUsuario(idUsuario: Long): Boolean {
         return try {
             queries.deleteUsuario(idUsuario)
+            true
+        } catch (e: Exception) {
+            false
+        }
+    }
+
+    override suspend fun insertOrUpdateUsuario(usuario: Usuario): Boolean {
+        return try {
+            queries.upsertUsuario(
+                ID_Usuario = usuario.idUsuario,
+                Username = usuario.username,
+                Contrasena = usuario.password,
+                Nombre = usuario.nombre,
+                Riesgo_Burnout = usuario.riesgoBurnout,
+                Descripcion = usuario.descripcion,
+                FK_ID_Organizacion = usuario.idOrganizacion
+            )
             true
         } catch (e: Exception) {
             false

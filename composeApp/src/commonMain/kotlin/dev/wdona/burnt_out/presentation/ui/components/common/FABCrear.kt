@@ -14,7 +14,7 @@ fun FABCrear(textoBoton: String, onIrACrear: () -> Unit) {
     ExtendedFloatingActionButton(
         onClick = onIrACrear,
         icon = { Icon(Icons.Default.Add, contentDescription = "Crear") },
-        text = { Text("Nuevo Tablero") },
+        text = { Text(textoBoton) },
         shape = RoundedCornerShape(16.dp)
     )
 }

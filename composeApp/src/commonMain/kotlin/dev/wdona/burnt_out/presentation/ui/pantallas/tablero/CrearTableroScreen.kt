@@ -23,6 +23,7 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import dev.wdona.burnt_out.presentation.ui.components.template.CrearTemplate
+import dev.wdona.burnt_out.presentation.ui.components.template.ScaffoldBase
 import dev.wdona.burnt_out.shared.domain.Tablero
 
 
@@ -63,15 +64,14 @@ fun MenuCrearTableroContent(tableroViewModel: TableroViewModel, onVolver: () -> 
         }
 
     }
-    CrearTemplate(
+    ScaffoldBase(
         titulo = "Crear Tablero",
         onVolver = onVolver,
-        onCrear = ejecutarEnvio
+        onCrear = ejecutarEnvio,
+        textoFABCrear = "Crear"
     ) {
-     paddingValues ->
         Column(
             modifier = Modifier
-                .padding(paddingValues)
                 .padding(horizontal = 16.dp),
             horizontalAlignment = Alignment.CenterHorizontally) {
             OutlinedTextField(

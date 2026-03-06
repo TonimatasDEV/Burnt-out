@@ -17,7 +17,6 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.tab.*
 import cafe.adriel.voyager.transitions.SlideTransition
-import dev.wdona.burnt_out.presentation.ui.components.template.ScaffoldBase
 import dev.wdona.burnt_out.presentation.ui.pantallas.equipo.EquipoScreen
 import dev.wdona.burnt_out.presentation.ui.pantallas.equipo.LeaderboardScreen
 import dev.wdona.burnt_out.presentation.ui.pantallas.perfil.PerfilScreen
@@ -40,7 +39,12 @@ class MainScreen(
         val perfilTab = remember { PerfilTab(perfilFactory) }
 
         TabNavigator(tablerosTab) {
-            ScaffoldBase(
+            Scaffold(
+                content = { paddingValues ->
+                    Box(modifier = Modifier.padding(paddingValues)) {
+                        CurrentTab()
+                    }
+                },
                 bottomBar = {
                     NavigationBar {
                         TabNavigationItem(tablerosTab)
@@ -49,11 +53,7 @@ class MainScreen(
                         TabNavigationItem(perfilTab)
                     }
                 }
-            ) { paddingValues ->
-                Box(modifier = Modifier.padding(paddingValues)) {
-                    CurrentTab()
-                }
-            }
+            )
         }
     }
 }
@@ -75,8 +75,8 @@ private fun RowScope.TabNavigationItem(tab: Tab) {
 
 private class TablerosTab(val factory: TableroViewModelFactory, val tareaFactory: TareaViewModelFactory) : Tab {
     override val key = "TablerosTab"
+    @get:Composable
     override val options: TabOptions
-        @Composable
         get() = TabOptions(index = 0u, title = "Tableros", icon = rememberVectorPainter(Icons.Default.Home))
 
     @Composable
@@ -89,8 +89,8 @@ private class TablerosTab(val factory: TableroViewModelFactory, val tareaFactory
 
 private class EquipoTab(val factory: EquipoViewModelFactory) : Tab {
     override val key = "EquipoTab"
+    @get:Composable
     override val options: TabOptions
-        @Composable
         get() = TabOptions(index = 1u, title = "Equipo", icon = rememberVectorPainter(Icons.Default.Groups))
 
     @Composable
@@ -103,8 +103,8 @@ private class EquipoTab(val factory: EquipoViewModelFactory) : Tab {
 
 private class LeaderboardTab(val factory: LeaderboardViewModelFactory) : Tab {
     override val key = "LeaderboardTab"
+    @get:Composable
     override val options: TabOptions
-        @Composable
         get() = TabOptions(index = 2u, title = "Ranking", icon = rememberVectorPainter(Icons.Default.EmojiEvents))
 
     @Composable
@@ -117,8 +117,8 @@ private class LeaderboardTab(val factory: LeaderboardViewModelFactory) : Tab {
 
 private class PerfilTab(val factory: PerfilViewModelFactory) : Tab {
     override val key = "PerfilTab"
+    @get:Composable
     override val options: TabOptions
-        @Composable
         get() = TabOptions(index = 3u, title = "Perfil", icon = rememberVectorPainter(Icons.Default.AccountCircle))
 
     @Composable

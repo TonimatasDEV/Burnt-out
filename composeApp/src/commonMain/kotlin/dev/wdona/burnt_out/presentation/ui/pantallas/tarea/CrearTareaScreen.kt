@@ -5,12 +5,10 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -23,8 +21,7 @@ import cafe.adriel.voyager.core.model.rememberScreenModel
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
-import dev.wdona.burnt_out.presentation.ui.components.template.CrearTemplate
-import dev.wdona.burnt_out.presentation.ui.pantallas.SettingsScreen
+import dev.wdona.burnt_out.presentation.ui.components.template.ScaffoldBase
 import dev.wdona.burnt_out.presentation.viewmodel.viewmodelfactories.TareaViewModelFactory
 import dev.wdona.burnt_out.presentation.viewmodel.viewmodels.TareaViewModel
 import dev.wdona.burnt_out.shared.domain.Tarea
@@ -38,34 +35,21 @@ class MenuCrearTareaScreen(val factory: TareaViewModelFactory, val idTablero: Lo
         MenuCrearTareaContent(
             idTablero = idTablero,
             tareaViewModel = viewModel,
-            ajustes = {
-                navigator.push(SettingsScreen(factory))
-            },
             onVolver = { navigator.pop() }
         )
     }
 }
 
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MenuCrearTareaContent(idTablero: Long, tareaViewModel: TareaViewModel, ajustes: () -> Unit, onVolver: () -> Unit) {
-    // Actualiza la informacion segun uiState
-    // val uiState by viewModel.uiState.collectAsState()
+fun MenuCrearTareaContent(idTablero: Long, tareaViewModel: TareaViewModel, onVolver: () -> Unit) {
     var textStateNombreTarea by remember { mutableStateOf("") }
     var textStateDescripcion by remember { mutableStateOf("") }
-    val listaComponentes by tareaViewModel.listaTareas.collectAsState()
-
-    val navigator = LocalNavigator.currentOrThrow // Obtienes el GPS
-
-    Button(onClick = ajustes) {
-        Text("Ir a Ajustes")
-    }
 
     val ejecutarEnvio = {
         if (textStateNombreTarea.isNotBlank()) {
             val nuevaTarea = Tarea(
-                idTarea = 0, // La base de datos deberia generar el ID
+                idTarea = 0, // SQLite ignora este 0 y usa AUTOINCREMENT gracias a una nueva query insertTarea
                 titulo = textStateNombreTarea,
                 descripcion = textStateDescripcion,
                 estado = "PENDIENTE",
@@ -77,9 +61,16 @@ fun MenuCrearTareaContent(idTablero: Long, tareaViewModel: TareaViewModel, ajust
 
             textStateNombreTarea = ""
             textStateDescripcion = ""
+            onVolver()
         }
     }
-    CrearTemplate("Crear tarea", onVolver, ejecutarEnvio) { paddingValues ->
+
+    ScaffoldBase(
+        titulo = "Nueva Tarea", 
+        onVolver = onVolver, 
+        onCrear = ejecutarEnvio, 
+        textoFABCrear = "Crear Tarea"
+    ) { paddingValues ->
         Column(
             modifier = Modifier
                 .padding(paddingValues)
@@ -87,25 +78,22 @@ fun MenuCrearTareaContent(idTablero: Long, tareaViewModel: TareaViewModel, ajust
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             OutlinedTextField(
-                value = textStateNombreTarea, // El valor que se muestra
-                onValueChange = { newText ->
-                    textStateNombreTarea = newText },
-                label = { Text("Titulo") },
-                placeholder = { Text("Ej. Hacer la compra") },
+                value = textStateNombreTarea,
+                onValueChange = { textStateNombreTarea = it },
+                label = { Text("Título") },
+                placeholder = { Text("Hacer la compra...") },
                 singleLine = true,
-                modifier = Modifier
-                    .fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth(),
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next)
             )
 
             OutlinedTextField(
-                value = textStateDescripcion, // El valor que se muestra
-                onValueChange = { newText ->
-                    textStateDescripcion = newText },
-                label = { Text("Descripcion") },
-                placeholder = { Text("Ej. Comprar patatas y verduras") },
+                value = textStateDescripcion,
+                onValueChange = { textStateDescripcion = it },
+                label = { Text("Descripción") },
+                placeholder = { Text("Detalles de la tarea...") },
                 modifier = Modifier
-                    .fillMaxHeight((1f/6f))
+                    .fillMaxHeight(0.3f)
                     .fillMaxWidth(),
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
                 singleLine = false

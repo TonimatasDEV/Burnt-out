@@ -22,7 +22,6 @@ class TareaDaoImpl(appDatabase: AppDatabase) : TareaDao {
 
     override suspend fun crearTarea(tarea: Tarea) : Long {
         queries.insertTarea(
-            ID_Tarea = tarea.idTarea,
             Titulo = tarea.titulo,
             Descripcion = tarea.descripcion,
             Estado = tarea.estado,
@@ -41,10 +40,8 @@ class TareaDaoImpl(appDatabase: AppDatabase) : TareaDao {
                 Estado = tarea.estado
             )
         } catch (e: Exception) {
-            e.printStackTrace()
             return false
         }
-
         return true
     }
 
@@ -52,16 +49,15 @@ class TareaDaoImpl(appDatabase: AppDatabase) : TareaDao {
         try {
             queries.deleteTareaById(tareaId)
         } catch (e: Exception) {
-            e.printStackTrace()
             return false
         }
-
         return true
     }
 
     override suspend fun insertOrUpdateTarea(tarea: Tarea) : Boolean {
         try {
-            queries.insertOrUpdateTarea(
+            // Esta se usa para sincronización, aquí SÍ pasamos el ID
+            queries.upsertTarea(
                 ID_Tarea = tarea.idTarea,
                 Titulo = tarea.titulo,
                 Descripcion = tarea.descripcion,
@@ -70,19 +66,12 @@ class TareaDaoImpl(appDatabase: AppDatabase) : TareaDao {
                 FK_ID_Usuario = tarea.idUsuarioAsignado
             )
         } catch (e: Exception) {
-            e.printStackTrace()
             return false
         }
-
         return true
     }
 
     override suspend fun eliminarTareasByTableroId(tableroId: Long) {
-        try {
-            queries.deleteTareasByTablero(tableroId)
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
+        queries.deleteTareasByTablero(tableroId)
     }
-
 }

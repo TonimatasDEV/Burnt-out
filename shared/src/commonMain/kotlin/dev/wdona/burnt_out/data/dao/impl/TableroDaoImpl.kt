@@ -19,27 +19,45 @@ class TableroDaoImpl(appDatabase: AppDatabase) : TableroDao {
         }
     }
 
-    override suspend fun insertTablero(tablero: Tablero): Boolean {
+    override suspend fun crearTablero(tablero: Tablero): Long {
+        queries.insertTablero(
+            tablero.titulo,
+            tablero.idEquipo,
+            tablero.idOrganizacion
+        )
+        return queries.lastInsertRowId().executeAsOne()
+    }
+
+    override suspend fun actualizarTablero(tablero: Tablero): Boolean {
         return try {
-            queries.insertTablero(tablero.idTablero, tablero.titulo, tablero.idEquipo, tablero.idOrganizacion)
+            queries.updateTablero(
+                tablero.titulo,
+                tablero.idEquipo,
+                tablero.idTablero
+            )
             true
         } catch (e: Exception) {
             false
         }
     }
 
-    override suspend fun updateTablero(tablero: Tablero): Boolean {
-        return try {
-            queries.updateTablero(tablero.titulo, tablero.idEquipo, tablero.idTablero)
-            true
-        } catch (e: Exception) {
-            false
-        }
-    }
-
-    override suspend fun deleteTablero(idTablero: Long): Boolean {
+    override suspend fun eliminarTablero(idTablero: Long): Boolean {
         return try {
             queries.deleteTablero(idTablero)
+            true
+        } catch (e: Exception) {
+            false
+        }
+    }
+
+    override suspend fun insertOrUpdateTablero(tablero: Tablero): Boolean {
+        return try {
+            queries.upsertTablero(
+                tablero.idTablero,
+                tablero.titulo,
+                tablero.idEquipo,
+                tablero.idOrganizacion
+            )
             true
         } catch (e: Exception) {
             false

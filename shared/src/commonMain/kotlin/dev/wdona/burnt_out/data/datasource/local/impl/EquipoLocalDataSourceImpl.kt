@@ -5,7 +5,7 @@ import dev.wdona.burnt_out.data.datasource.local.EquipoLocalDataSource
 import dev.wdona.burnt_out.shared.domain.Equipo
 
 class EquipoLocalDataSourceImpl(private val equipoDao: EquipoDao) : EquipoLocalDataSource {
-    override suspend fun getEquipoById(idEquipo: Long): Equipo? {
+    override suspend fun getEquipoById(idEquipo: Long): Equipo {
         return equipoDao.getEquipoById(idEquipo)
     }
 
@@ -13,20 +13,20 @@ class EquipoLocalDataSourceImpl(private val equipoDao: EquipoDao) : EquipoLocalD
         return equipoDao.getEquiposByOrg(idOrg)
     }
 
-    override suspend fun insertEquipo(equipo: Equipo): Boolean {
-        return equipoDao.insertEquipo(equipo)
-    }
-
-    override suspend fun crearEquipo(equipo: Equipo): Boolean {
-        return equipoDao.insertEquipo(equipo)
+    override suspend fun crearEquipo(equipo: Equipo): Long {
+        return equipoDao.crearEquipo(equipo)
     }
 
     override suspend fun actualizarEquipo(equipo: Equipo): Boolean {
-        return equipoDao.updateEquipo(equipo)
+        return equipoDao.actualizarEquipo(equipo)
     }
 
     override suspend fun eliminarEquipo(idEquipo: Long): Boolean {
-        return equipoDao.deleteEquipo(idEquipo)
+        return equipoDao.eliminarEquipo(idEquipo)
+    }
+
+    override suspend fun insertOrUpdateEquipo(equipo: Equipo): Boolean {
+        return equipoDao.insertOrUpdateEquipo(equipo)
     }
 
     override suspend fun updatePuntuacion(idEquipo: Long, puntos: Long): Boolean {
@@ -35,6 +35,6 @@ class EquipoLocalDataSourceImpl(private val equipoDao: EquipoDao) : EquipoLocalD
 
     override suspend fun eliminarEquiposPorOrg(idOrg: Long) {
         val equipos = equipoDao.getEquiposByOrg(idOrg)
-        equipos.forEach { equipoDao.deleteEquipo(it.idEquipo) }
+        equipos.forEach { equipoDao.eliminarEquipo(it.idEquipo) }
     }
 }

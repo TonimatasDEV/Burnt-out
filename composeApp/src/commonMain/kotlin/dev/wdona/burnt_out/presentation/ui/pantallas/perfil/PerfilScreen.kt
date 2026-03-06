@@ -10,6 +10,7 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import dev.wdona.burnt_out.presentation.ui.components.common.InfoTopBarCustomTitle
+import dev.wdona.burnt_out.presentation.ui.components.template.ScaffoldBase
 import dev.wdona.burnt_out.presentation.viewmodel.viewmodelfactories.PerfilViewModelFactory
 
 class PerfilScreen(val factory: PerfilViewModelFactory) : Screen {
@@ -25,11 +26,10 @@ class PerfilScreen(val factory: PerfilViewModelFactory) : Screen {
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
 fun PerfilContent(onVolver: () -> Unit) {
-    Scaffold(
-        topBar = { InfoTopBarCustomTitle("Perfil") }
-    ) { paddingValues ->
-        Column (modifier = Modifier.padding(paddingValues)
-        ) {
+    ScaffoldBase(
+        titulo = "Perfil",
+    ) {
+        Column {
 
         }
 

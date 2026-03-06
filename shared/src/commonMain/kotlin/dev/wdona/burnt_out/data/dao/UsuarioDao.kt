@@ -7,8 +7,9 @@ interface UsuarioDao {
     suspend fun getUsuariosByOrg(idOrg: Long): List<Usuario>
     suspend fun getUsuariosByEquipo(idEquipo: Long): List<Usuario>
     suspend fun getUsuarioByUsername(username: String): Usuario
-    suspend fun insertUsuario(usuario: Usuario): Boolean
-    suspend fun updateUsuario(usuario: Usuario): Boolean
-    suspend fun deleteUsuario(idUsuario: Long): Boolean
+    suspend fun crearUsuario(usuario: Usuario): Long
+    suspend fun actualizarUsuario(usuario: Usuario): Boolean
+    suspend fun eliminarUsuario(idUsuario: Long): Boolean
+    suspend fun insertOrUpdateUsuario(usuario: Usuario): Boolean
     suspend fun updateRiesgoBurnout(idUsuario: Long, riesgo: Double): Boolean
 }

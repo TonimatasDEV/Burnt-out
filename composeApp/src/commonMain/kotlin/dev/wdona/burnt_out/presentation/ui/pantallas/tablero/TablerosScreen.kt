@@ -28,6 +28,7 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import dev.wdona.burnt_out.presentation.ui.components.common.InfoTopBarCustomTitle
 import dev.wdona.burnt_out.presentation.ui.components.tablero.CardTablero
+import dev.wdona.burnt_out.presentation.ui.components.template.ScaffoldBase
 import dev.wdona.burnt_out.presentation.viewmodel.viewmodelfactories.TableroViewModelFactory
 import dev.wdona.burnt_out.presentation.viewmodel.viewmodelfactories.TareaViewModelFactory
 import dev.wdona.burnt_out.presentation.viewmodel.viewmodels.TableroViewModel
@@ -50,9 +51,6 @@ class TablerosScreen(
 
         MenuTableros(
             tableroViewModel = tableroViewModel,
-            onVolver = { 
-                navigator.pop()
-            },
             onIrACrearTablero = { 
                 navigator.push(MenuCrearTableroScreen(tableroFactory)) 
             },
@@ -72,28 +70,19 @@ class TablerosScreen(
     @Composable
     fun MenuTableros(
         tableroViewModel: TableroViewModel,
-        onVolver: () -> Unit,
         onIrACrearTablero: () -> Unit,
         onVerTablero: (Long, String) -> Unit
     ) {
         val listaTableros by tableroViewModel.listaTableros.collectAsState()
 
-        Scaffold(
-            topBar = {
-                InfoTopBarCustomTitle("Mis Tableros", )
-            },
-            floatingActionButton = {
-                ExtendedFloatingActionButton(
-                    onClick = onIrACrearTablero,
-                    icon = { Icon(Icons.Default.Add, contentDescription = "Crear") },
-                    text = { Text("Nuevo Tablero") },
-                    shape = RoundedCornerShape(16.dp)
-                )
-            }
-        ) { paddingValues ->
+        ScaffoldBase(
+            titulo = "Tableros",
+            onCrear = onIrACrearTablero,
+            textoFABCrear = "Nuevo Tablero"
+        ) {
             if (listaTableros.isEmpty()) {
                 Box(
-                    modifier = Modifier.fillMaxSize().padding(paddingValues),
+                    modifier = Modifier.fillMaxSize(),
                     contentAlignment = androidx.compose.ui.Alignment.Center
                 ) {
                     Text(
@@ -108,7 +97,6 @@ class TablerosScreen(
                     verticalArrangement = Arrangement.spacedBy(16.dp),
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(paddingValues)
                         .padding(horizontal = 16.dp, vertical = 16.dp)
                 ) {
                     items(listaTableros) { tablero ->

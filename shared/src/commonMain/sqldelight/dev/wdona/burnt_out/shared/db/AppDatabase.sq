@@ -125,11 +125,13 @@ INSERT OR IGNORE INTO User_TeamEntity(ID_Usuario, ID_Equipo) VALUES(1, 1);
 
 -- ====== TAREAS ======
 
+-- Usar esta para crear tareas locales (ID autogenerado)
 insertTarea:
-INSERT OR REPLACE INTO TareaEntity(ID_Tarea, Titulo, Descripcion, Estado, FK_ID_Tabl, FK_ID_Usuario)
-VALUES(?, ?, ?, ?, ?, ?);
+INSERT INTO TareaEntity(Titulo, Descripcion, Estado, FK_ID_Tabl, FK_ID_Usuario)
+VALUES(?, ?, ?, ?, ?);
 
-insertOrUpdateTarea:
+-- Usar esta para sincronizar (ID específico)
+upsertTarea:
 INSERT OR REPLACE INTO TareaEntity(ID_Tarea, Titulo, Descripcion, Estado, FK_ID_Tabl, FK_ID_Usuario)
 VALUES(?, ?, ?, ?, ?, ?);
 
@@ -171,6 +173,10 @@ DELETE FROM OperacionPendienteEntity WHERE sincronizado = ?;
 
 -- ==== Tableros ====
 insertTablero:
+INSERT INTO TableroEntity(Titulo, FK_ID_Equipo, FK_ID_Org)
+VALUES(?, ?, ?);
+
+upsertTablero:
 INSERT OR REPLACE INTO TableroEntity(ID_Tabl, Titulo, FK_ID_Equipo, FK_ID_Org)
 VALUES(?, ?, ?, ?);
 
@@ -191,6 +197,10 @@ DELETE FROM TableroEntity WHERE FK_ID_Org = ?;
 
 -- ===== Equipos =====
 insertEquipo:
+INSERT INTO EquipoEntity(Titulo, FK_ID_Org)
+VALUES(?, ?);
+
+upsertEquipo:
 INSERT OR REPLACE INTO EquipoEntity(ID_Equipo, Titulo, Puntuacion, FK_ID_Org)
 VALUES(?, ?, ?, ?);
 
@@ -217,6 +227,10 @@ SELECT * FROM EquipoEntity ORDER BY Puntuacion DESC;
 
 -- ==== Usuarios ====
 insertUsuario:
+INSERT INTO UsuarioEntity(Username, Contrasena, Nombre, Riesgo_Burnout, Descripcion, FK_ID_Organizacion)
+VALUES(?, ?, ?, ?, ?, ?);
+
+upsertUsuario:
 INSERT OR REPLACE INTO UsuarioEntity(ID_Usuario, Username, Contrasena, Nombre, Riesgo_Burnout, Descripcion, FK_ID_Organizacion)
 VALUES(?, ?, ?, ?, ?, ?, ?);
 
@@ -251,6 +265,9 @@ SELECT * FROM UsuarioEntity WHERE Riesgo_Burnout > ?;
 
 -- ====== SUBTAREAS ======
 insertSubtarea:
+INSERT INTO SubtareaEntity(Titulo, Completado, FK_ID_Tarea) VALUES(?, ?, ?);
+
+upsertSubtarea:
 INSERT OR REPLACE INTO SubtareaEntity(ID_Subtarea, Titulo, Completado, FK_ID_Tarea) VALUES(?, ?, ?, ?);
 
 getSubtareasByTarea:
@@ -264,6 +281,9 @@ DELETE FROM SubtareaEntity WHERE ID_Subtarea = ?;
 
 -- ====== PREGUNTAS / ENCUESTAS ======
 insertPregunta:
+INSERT INTO PreguntaEntity(Pregunta, FK_ID_Org) VALUES(?, ?);
+
+upsertPregunta:
 INSERT OR REPLACE INTO PreguntaEntity(ID_Pregunta, Pregunta, FK_ID_Org) VALUES(?, ?, ?);
 
 getPreguntasByOrg:

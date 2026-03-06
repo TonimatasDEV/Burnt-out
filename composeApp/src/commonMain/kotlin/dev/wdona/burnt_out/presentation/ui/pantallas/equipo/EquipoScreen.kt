@@ -26,6 +26,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.model.rememberScreenModel
 import dev.wdona.burnt_out.presentation.ui.components.common.InfoTopBarCustomTitle
+import dev.wdona.burnt_out.presentation.ui.components.template.ScaffoldBase
 import dev.wdona.burnt_out.shared.domain.Usuario
 
 class EquipoScreen(val factory: EquipoViewModelFactory) : Screen {
@@ -51,13 +52,10 @@ class EquipoScreen(val factory: EquipoViewModelFactory) : Screen {
         val equipo by viewModel.uiStateEquipo.collectAsState()
         val miembros by viewModel.listaMiembros.collectAsState()
 
-        Scaffold(
-            topBar = {
-                InfoTopBarCustomTitle(equipo?.titulo ?: "Mi equipo")
-            }
-        ) { paddingValues ->
-            Column (modifier = Modifier.padding(paddingValues)
-            ) {
+        ScaffoldBase(
+            titulo = equipo?.titulo ?: "Mi equipo (off)",
+        ) {
+            Column {
                 LazyVerticalGrid(
                     columns = GridCells.Adaptive(minSize = 400.dp), // el min size es el tamanio ancho de cada tarjeta
                     horizontalArrangement = Arrangement.spacedBy(8.dp),

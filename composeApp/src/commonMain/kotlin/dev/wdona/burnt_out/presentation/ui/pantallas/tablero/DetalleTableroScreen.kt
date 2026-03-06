@@ -25,6 +25,7 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import dev.wdona.burnt_out.presentation.ui.components.common.InfoTopBarCustomOnVolver
 import dev.wdona.burnt_out.presentation.ui.components.tarea.CardTarea
+import dev.wdona.burnt_out.presentation.ui.components.template.ScaffoldBase
 import dev.wdona.burnt_out.presentation.ui.pantallas.tarea.MenuCrearTareaScreen
 import dev.wdona.burnt_out.presentation.viewmodel.viewmodelfactories.TareaViewModelFactory
 import dev.wdona.burnt_out.presentation.viewmodel.viewmodels.TareaViewModel
@@ -69,25 +70,16 @@ fun DetalleTableroContent(
 ) {
     val listaTareas by tareaViewModel.listaTareas.collectAsState()
 
-    Scaffold(
-        topBar = {
-            InfoTopBarCustomOnVolver(nombreTablero, onVolver)
-        }
-    ) { paddingValues ->
+    ScaffoldBase(
+        titulo = nombreTablero,
+        onVolver = onVolver,
+        onCrear = { onIrACrearTarea(idTablero) },
+        textoFABCrear = "Crear tarea"
+    ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(paddingValues)
         ) {
-            Button(
-                onClick = { onIrACrearTarea(idTablero) },
-                modifier = Modifier
-                    .align(Alignment.CenterHorizontally)
-                    .padding(8.dp)
-            ) {
-                Text("Crear tarea")
-            }
-
             if (listaTareas.isEmpty()) {
                 Text(
                     text = "No hay tareas en este tablero (o el servidor no responde)",
