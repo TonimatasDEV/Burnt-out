@@ -17,6 +17,7 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.tab.*
 import cafe.adriel.voyager.transitions.SlideTransition
+import dev.wdona.burnt_out.presentation.ui.components.template.ScaffoldBase
 import dev.wdona.burnt_out.presentation.ui.pantallas.equipo.EquipoScreen
 import dev.wdona.burnt_out.presentation.ui.pantallas.equipo.LeaderboardScreen
 import dev.wdona.burnt_out.presentation.ui.pantallas.perfil.PerfilScreen
@@ -39,7 +40,7 @@ class MainScreen(
         val perfilTab = remember { PerfilTab(perfilFactory) }
 
         TabNavigator(tablerosTab) {
-            Scaffold(
+            ScaffoldBase(
                 bottomBar = {
                     NavigationBar {
                         TabNavigationItem(tablerosTab)
@@ -71,8 +72,6 @@ private fun RowScope.TabNavigationItem(tab: Tab) {
         }
     )
 }
-
-
 
 private class TablerosTab(val factory: TableroViewModelFactory, val tareaFactory: TareaViewModelFactory) : Tab {
     override val key = "TablerosTab"
