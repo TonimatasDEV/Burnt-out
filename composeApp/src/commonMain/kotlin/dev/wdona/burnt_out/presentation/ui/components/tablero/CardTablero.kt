@@ -14,9 +14,8 @@ import androidx.compose.ui.unit.dp
 fun CardTablero(tituloTablero: String, onClick: () -> Unit) {
     OutlinedButton(
         modifier = Modifier
-            .fillMaxWidth(1f/3f)
-            .height(120.dp)
-            .padding(16.dp),
+            .fillMaxWidth()
+            .height(120.dp),
         onClick = {
             onClick()
         }
