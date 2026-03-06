@@ -5,6 +5,7 @@ import dev.wdona.burnt_out.presentation.viewmodel.viewmodels.TableroViewModel
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.OutlinedTextField
@@ -83,7 +84,10 @@ fun MenuCrearTableroContent(tableroViewModel: TableroViewModel, onVolver: () -> 
                 singleLine = true,
                 modifier = Modifier
                     .fillMaxWidth(),
-                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next)
+                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+                keyboardActions = KeyboardActions(
+                    onDone = { ejecutarEnvio() }
+                )
             )
         }
     }
