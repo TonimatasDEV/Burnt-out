@@ -24,6 +24,8 @@ fun Application.module() {
         json()
     }
 
+    // TODO: USAR Exposed (ORM de jetbrains) para db en lugar de sqdelight
+
     routing {
         post("$API_PATH/test") {
             val recibido = call.receive<Tarea>()
