@@ -1,5 +1,6 @@
 package dev.wdona.burnt_out.presentation.ui.components.common
 
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -19,6 +20,7 @@ fun CreationTopBarCustom(
         },
         actions = {
             AnadirButton { onCrear() }
-        }
+        },
+        windowInsets = WindowInsets(0, 0, 0, 0)
     )
 }

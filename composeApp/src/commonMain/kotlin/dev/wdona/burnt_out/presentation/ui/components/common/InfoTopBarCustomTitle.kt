@@ -1,5 +1,6 @@
 package dev.wdona.burnt_out.presentation.ui.components.common
 
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -22,5 +23,6 @@ fun InfoTopBarCustomTitle(
                 modifier = Modifier.fillMaxWidth()
             )
         },
+        windowInsets = WindowInsets(0, 0, 0, 0)
     )
 }
