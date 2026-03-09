@@ -1,4 +1,3 @@
--- C:/Users/donan/AndroidStudioProjects/Burnt-out/shared/src/commonMain/sqldelight/dev/wdona/burnt_out/shared/db/AppDatabase.sq
 
 CREATE TABLE OrganizacionEntity (
     ID_Org INTEGER NOT NULL PRIMARY KEY,
@@ -328,3 +327,13 @@ DELETE FROM User_TeamEntity WHERE ID_Usuario = ? AND ID_Equipo = ?;
 -- ===== OTROS =====
 getOrganizacionById:
 SELECT * FROM OrganizacionEntity WHERE ID_Org = ?;
+
+getAjustesByUsuario:
+SELECT a.ID_Ajuste, a.Nombre_Ajuste, au.Valor_Ajuste
+FROM AjusteEntity a JOIN Ajuste_UserEntity au ON a.ID_Ajuste = au.ID_Ajuste
+WHERE au.ID_Usuario = ?;
+
+getAjusteByIdYUsuario:
+SELECT a.ID_Ajuste, a.Nombre_Ajuste, au.Valor_Ajuste
+FROM AjusteEntity a JOIN Ajuste_UserEntity au ON a.ID_Ajuste = au.ID_Ajuste
+WHERE au.ID_Usuario = ? AND a.ID_Ajuste = ?;

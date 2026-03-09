@@ -8,11 +8,11 @@ import dev.wdona.burnt_out.data.datasource.local.impl.TableroLocalDataSourceImpl
 import dev.wdona.burnt_out.data.datasource.remote.impl.TableroRemoteDataSourceImpl
 import dev.wdona.burnt_out.data.repository.TableroRepositoryImpl
 import dev.wdona.burnt_out.domain.repository.TableroRepository
-import dev.wdona.burnt_out.presentation.viewmodel.viewmodels.TableroViewModel
+import dev.wdona.burnt_out.presentation.viewmodel.viewmodels.TablerosViewModel
 import dev.wdona.burnt_out.shared.db.DatabaseInit
 
-actual class TableroViewModelFactory {
-    actual fun create(): TableroViewModel {
+actual class TablerosViewModelFactory {
+    actual fun create(): TablerosViewModel {
         val database = DatabaseInit.getDatabase()
 
         val dao = TableroDaoImpl(database)
@@ -29,10 +29,10 @@ actual class TableroViewModelFactory {
     }
 
     companion object {
-        private var instance: TableroViewModel? = null
-        fun getInstance(repository: TableroRepository): TableroViewModel {
+        private var instance: TablerosViewModel? = null
+        fun getInstance(repository: TableroRepository): TablerosViewModel {
             if (instance == null) {
-                instance = TableroViewModel(repository)
+                instance = TablerosViewModel(repository)
             }
             return instance!!
         }

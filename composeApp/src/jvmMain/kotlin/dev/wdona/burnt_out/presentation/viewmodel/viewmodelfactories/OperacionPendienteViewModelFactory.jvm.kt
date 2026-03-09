@@ -5,11 +5,11 @@ import dev.wdona.burnt_out.data.datasource.local.impl.OperacionPendienteLocalDat
 import dev.wdona.burnt_out.data.repository.OperacionesPendientesRepositoryImpl
 import dev.wdona.burnt_out.domain.repository.OperacionesPendientesRepository
 import dev.wdona.burnt_out.shared.db.DatabaseDriverFactory
-import dev.wdona.burnt_out.presentation.viewmodel.viewmodels.OperacionPendienteViewModel
+import dev.wdona.burnt_out.presentation.viewmodel.viewmodels.OperacionesPendientesViewModel
 import dev.wdona.burnt_out.shared.db.AppDatabase
 
-actual class OperacionPendienteViewModelFactory {
-    actual fun create(): OperacionPendienteViewModel {
+actual class OperacionesPendientesViewModelFactory {
+    actual fun create(): OperacionesPendientesViewModel {
         val driverFactory = DatabaseDriverFactory()
         val database = AppDatabase(driverFactory.createDriver())
 
@@ -22,10 +22,10 @@ actual class OperacionPendienteViewModelFactory {
     }
 
     companion object {
-        private var instance: OperacionPendienteViewModel? = null
-        fun getInstance(repository: OperacionesPendientesRepository): OperacionPendienteViewModel {
+        private var instance: OperacionesPendientesViewModel? = null
+        fun getInstance(repository: OperacionesPendientesRepository): OperacionesPendientesViewModel {
             if (instance == null) {
-                instance = OperacionPendienteViewModel(repository)
+                instance = OperacionesPendientesViewModel(repository)
             }
             return instance!!
         }

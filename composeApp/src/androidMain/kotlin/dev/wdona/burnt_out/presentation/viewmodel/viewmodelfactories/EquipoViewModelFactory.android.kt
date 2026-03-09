@@ -1,7 +1,9 @@
 package dev.wdona.burnt_out.presentation.viewmodel.viewmodelfactories
 
 import android.content.Context
+import dev.wdona.burnt_out.data.api.UsuarioApi
 import dev.wdona.burnt_out.data.api.impl.EquipoApiImpl
+import dev.wdona.burnt_out.data.api.impl.UsuarioApiImpl
 import dev.wdona.burnt_out.data.dao.impl.EquipoDaoImpl
 import dev.wdona.burnt_out.data.dao.impl.OperacionPendienteDaoImpl
 import dev.wdona.burnt_out.data.dao.impl.UsuarioDaoImpl
@@ -9,38 +11,52 @@ import dev.wdona.burnt_out.data.datasource.local.impl.EquipoLocalDataSourceImpl
 import dev.wdona.burnt_out.data.datasource.local.impl.OperacionPendienteLocalDataSourceImpl
 import dev.wdona.burnt_out.data.datasource.local.impl.UsuarioLocalDataSourceImpl
 import dev.wdona.burnt_out.data.datasource.remote.impl.EquipoRemoteDataSourceImpl
+import dev.wdona.burnt_out.data.datasource.remote.impl.UsuarioRemoteDataSourceImpl
 import dev.wdona.burnt_out.data.repository.EquipoRepositoryImpl
+import dev.wdona.burnt_out.data.repository.UsuarioRepositoryImpl
 import dev.wdona.burnt_out.domain.repository.EquipoRepository
+import dev.wdona.burnt_out.domain.repository.UsuarioRepository
+import dev.wdona.burnt_out.domain.usecase.CargarMiembrosEquipo
 import dev.wdona.burnt_out.shared.db.DatabaseDriverFactory
-import dev.wdona.burnt_out.presentation.viewmodel.viewmodels.EquipoViewModel
+import dev.wdona.burnt_out.presentation.viewmodel.viewmodels.MiEquipoViewModel
 import dev.wdona.burnt_out.shared.db.AppDatabase
 
-actual class EquipoViewModelFactory(private val context: Context) {
-    actual fun create(): EquipoViewModel {
+actual class MiEquipoViewModelFactory(private val context: Context) {
+    actual fun create(): MiEquipoViewModel {
         val driverFactory = DatabaseDriverFactory(context)
         val database = AppDatabase(driverFactory.createDriver())
 
         val dao = EquipoDaoImpl(database)
         val api = EquipoApiImpl()
         val pendienteDao = OperacionPendienteDaoImpl(database)
-        val usuarioDao = UsuarioDaoImpl(database)
 
         val localDataSource = EquipoLocalDataSourceImpl(dao)
         val remoteDataSource = EquipoRemoteDataSourceImpl(api)
         val pendienteDataSource = OperacionPendienteLocalDataSourceImpl(pendienteDao)
+
+        val repository = EquipoRepositoryImpl(localDataSource, remoteDataSource, pendienteDataSource)
+
+        val usuarioDao = UsuarioDaoImpl(database)
         val usuarioLocalDataSource = UsuarioLocalDataSourceImpl(usuarioDao)
+        val usuarioApi = UsuarioApiImpl()
+        val usuarioRemoteDataSource = UsuarioRemoteDataSourceImpl(usuarioApi)
+        val usuarioRepository =
+            UsuarioRepositoryImpl(
+                usuarioLocalDataSource,
+                usuarioRemoteDataSource,
+                pendienteDataSource)
 
-        val repository = EquipoRepositoryImpl(localDataSource, remoteDataSource, pendienteDataSource, usuarioLocalDataSource)
 
-        return getInstance(repository)
+
+        return getInstance(repository, usuarioRepository)
     }
 
     companion object {
-        private var instance: EquipoViewModel? = null
+        private var instance: MiEquipoViewModel? = null
 
-        fun getInstance(repository: EquipoRepository): EquipoViewModel {
+        fun getInstance(repository: EquipoRepository, usuarioRepository: UsuarioRepository): MiEquipoViewModel {
             if (instance == null) {
-                instance = EquipoViewModel(repository)
+                instance = MiEquipoViewModel(repository, CargarMiembrosEquipo(usuarioRepository))
             }
             return instance!!
         }

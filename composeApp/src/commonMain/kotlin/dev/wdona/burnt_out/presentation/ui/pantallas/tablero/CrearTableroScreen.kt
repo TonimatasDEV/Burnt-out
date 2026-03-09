@@ -1,7 +1,7 @@
 package dev.wdona.burnt_out.presentation.ui.pantallas.tablero
 
-import dev.wdona.burnt_out.presentation.viewmodel.viewmodelfactories.TableroViewModelFactory
-import dev.wdona.burnt_out.presentation.viewmodel.viewmodels.TableroViewModel
+import dev.wdona.burnt_out.presentation.viewmodel.viewmodelfactories.TablerosViewModelFactory
+import dev.wdona.burnt_out.presentation.viewmodel.viewmodels.TablerosViewModel
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -23,19 +23,18 @@ import cafe.adriel.voyager.core.model.rememberScreenModel
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
-import dev.wdona.burnt_out.presentation.ui.components.template.CrearTemplate
 import dev.wdona.burnt_out.presentation.ui.components.template.ScaffoldBase
 import dev.wdona.burnt_out.shared.domain.Tablero
 
 
-class MenuCrearTableroScreen(val factory: TableroViewModelFactory) : Screen {
+class MenuCrearTableroScreen(val factory: TablerosViewModelFactory) : Screen {
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow // Para poder volver o ir a otra
-        val viewModel: TableroViewModel = rememberScreenModel { factory.create() }
+        val viewModel: TablerosViewModel = rememberScreenModel { factory.create() }
 
         MenuCrearTableroContent(
-            tableroViewModel = viewModel,
+            tablerosViewModel = viewModel,
             onVolver = { navigator.pop() }
         )
     }
@@ -44,14 +43,14 @@ class MenuCrearTableroScreen(val factory: TableroViewModelFactory) : Screen {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MenuCrearTableroContent(tableroViewModel: TableroViewModel, onVolver: () -> Unit) {
+fun MenuCrearTableroContent(tablerosViewModel: TablerosViewModel, onVolver: () -> Unit) {
     var textStateNombreTablero by remember { mutableStateOf("") }
 
     val navigator = LocalNavigator.currentOrThrow
 
     val ejecutarEnvio: () -> Unit = {
         if (textStateNombreTablero.isNotBlank()) {
-            tableroViewModel.crearTablero(
+            tablerosViewModel.crearTablero(
                 Tablero(
                     0L,
                     textStateNombreTablero,

@@ -4,11 +4,11 @@ import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import burnt_out.composeapp.generated.resources.Res
 import burnt_out.composeapp.generated.resources.logoBurntOutIcon
-import dev.wdona.burnt_out.presentation.viewmodel.viewmodelfactories.EquipoViewModelFactory
+import dev.wdona.burnt_out.presentation.viewmodel.viewmodelfactories.MiEquipoViewModelFactory
 import dev.wdona.burnt_out.presentation.viewmodel.viewmodelfactories.LeaderboardViewModelFactory
-import dev.wdona.burnt_out.presentation.viewmodel.viewmodelfactories.PerfilViewModelFactory
-import dev.wdona.burnt_out.presentation.viewmodel.viewmodelfactories.TableroViewModelFactory
-import dev.wdona.burnt_out.presentation.viewmodel.viewmodelfactories.TareaViewModelFactory
+import dev.wdona.burnt_out.presentation.viewmodel.viewmodelfactories.MiPerfilViewModelFactory
+import dev.wdona.burnt_out.presentation.viewmodel.viewmodelfactories.TablerosViewModelFactory
+import dev.wdona.burnt_out.presentation.viewmodel.viewmodelfactories.TareasViewModelFactory
 import dev.wdona.burnt_out.shared.db.DatabaseDriverFactory
 import dev.wdona.burnt_out.shared.db.DatabaseInit
 
@@ -23,17 +23,17 @@ fun main() {
             title = "Burnt out",
             icon = org.jetbrains.compose.resources.painterResource(Res.drawable.logoBurntOutIcon)
         ) {
-            val tareaViewModelFactory = TareaViewModelFactory()
-            val equipoViewModelFactory = EquipoViewModelFactory()
-            val perfilViewModelFactory = PerfilViewModelFactory()
-            val tableroViewModelFactory = TableroViewModelFactory()
+            val tareasViewModelFactory = TareasViewModelFactory()
+            val miEquipoViewModelFactory = MiEquipoViewModelFactory()
+            val miPerfilViewModelFactory = MiPerfilViewModelFactory()
+            val tablerosViewModelFactory = TablerosViewModelFactory()
             val leaderboardViewModelFactory = LeaderboardViewModelFactory()
 
             App(
-                tareaViewModelFactory,
-                equipoViewModelFactory = equipoViewModelFactory,
-                perfilViewModelFactory = perfilViewModelFactory,
-                tableroViewModelFactory = tableroViewModelFactory,
+                tareasViewModelFactory,
+                miEquipoViewModelFactory = miEquipoViewModelFactory,
+                miPerfilViewModelFactory = miPerfilViewModelFactory,
+                tablerosViewModelFactory = tablerosViewModelFactory,
                 leaderboardViewModelFactory = leaderboardViewModelFactory
             )
         }

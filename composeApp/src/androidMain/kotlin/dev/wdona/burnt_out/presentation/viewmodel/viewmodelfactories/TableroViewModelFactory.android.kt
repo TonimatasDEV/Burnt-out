@@ -10,11 +10,11 @@ import dev.wdona.burnt_out.data.datasource.remote.impl.TableroRemoteDataSourceIm
 import dev.wdona.burnt_out.data.repository.TableroRepositoryImpl
 import dev.wdona.burnt_out.domain.repository.TableroRepository
 import dev.wdona.burnt_out.shared.db.DatabaseDriverFactory
-import dev.wdona.burnt_out.presentation.viewmodel.viewmodels.TableroViewModel
+import dev.wdona.burnt_out.presentation.viewmodel.viewmodels.TablerosViewModel
 import dev.wdona.burnt_out.shared.db.AppDatabase
 
-actual class TableroViewModelFactory(private val context: Context) {
-    actual fun create(): TableroViewModel {
+actual class TablerosViewModelFactory(private val context: Context) {
+    actual fun create(): TablerosViewModel {
         val driverFactory = DatabaseDriverFactory(context)
         val database = AppDatabase(driverFactory.createDriver())
 
@@ -32,11 +32,11 @@ actual class TableroViewModelFactory(private val context: Context) {
     }
 
     companion object {
-        private var instance: TableroViewModel? = null
+        private var instance: TablerosViewModel? = null
 
-        fun getInstance(repository: TableroRepository): TableroViewModel {
+        fun getInstance(repository: TableroRepository): TablerosViewModel {
             if (instance == null) {
-                instance = TableroViewModel(repository)
+                instance = TablerosViewModel(repository)
             }
             return instance!!
         }

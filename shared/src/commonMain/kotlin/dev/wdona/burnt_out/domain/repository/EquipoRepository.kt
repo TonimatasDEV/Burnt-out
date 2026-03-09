@@ -9,6 +9,5 @@ interface EquipoRepository {
     suspend fun crearEquipo(equipo: Equipo)
     suspend fun actualizarEquipo(equipo: Equipo)
     suspend fun eliminarEquipo(idEquipo: Long)
-    suspend fun getMiembrosEquipo(idEquipo: Long): List<Usuario>
     suspend fun updatePuntuacion(idEquipo: Long, puntos: Long)
 }

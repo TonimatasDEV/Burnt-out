@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class TareaViewModel(private val repository: TareaRepository) : ScreenModel {
+class TareasViewModel(private val repository: TareaRepository) : ScreenModel {
     private val _uiState = MutableStateFlow<Tarea?>(null)
     val uiState: StateFlow<Tarea?> = _uiState.asStateFlow()
 

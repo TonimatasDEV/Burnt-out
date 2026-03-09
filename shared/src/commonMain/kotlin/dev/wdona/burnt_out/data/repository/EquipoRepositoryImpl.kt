@@ -19,7 +19,6 @@ class EquipoRepositoryImpl(
     private val local: EquipoLocalDataSource,
     private val remote: EquipoRemoteDataSource,
     private val pendiente: OperacionPendienteLocalDataSource,
-    private val usuarioLocal: UsuarioLocalDataSource
 ) : EquipoRepository {
 
     private val repositoryScope = CoroutineScope(Dispatchers.Default)
@@ -136,18 +135,7 @@ class EquipoRepositoryImpl(
         }
     }
 
-    override suspend fun getMiembrosEquipo(idEquipo: Long): List<Usuario> = withContext(Dispatchers.IO) {
-        repositoryScope.launch {
-            try {
-                remote.getMiembrosEquipo(idEquipo)
-            } catch (e: Exception) {}
-        }
-        try {
-            usuarioLocal.getUsuariosByEquipo(idEquipo)
-        } catch (e: Exception) {
-            emptyList()
-        }
-    }
+
 
     override suspend fun updatePuntuacion(idEquipo: Long, puntos: Long) {
         withContext(Dispatchers.IO) {

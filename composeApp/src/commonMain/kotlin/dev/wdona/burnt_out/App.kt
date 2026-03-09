@@ -17,10 +17,10 @@ import dev.wdona.burnt_out.presentation.viewmodel.viewmodelfactories.*
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun App(
-    tareaFactory: TareaViewModelFactory,
-    equipoViewModelFactory: EquipoViewModelFactory,
-    perfilViewModelFactory: PerfilViewModelFactory,
-    tableroViewModelFactory: TableroViewModelFactory,
+    tareaFactory: TareasViewModelFactory,
+    miEquipoViewModelFactory: MiEquipoViewModelFactory,
+    miPerfilViewModelFactory: MiPerfilViewModelFactory,
+    tablerosViewModelFactory: TablerosViewModelFactory,
     leaderboardViewModelFactory: LeaderboardViewModelFactory
 ) {
     CustomMaterialTheme {
@@ -31,9 +31,9 @@ fun App(
             Navigator(
                 MainScreen(
                     tareaFactory = tareaFactory,
-                    equipoFactory = equipoViewModelFactory,
-                    perfilFactory = perfilViewModelFactory,
-                    tableroFactory = tableroViewModelFactory,
+                    equipoFactory = miEquipoViewModelFactory,
+                    perfilFactory = miPerfilViewModelFactory,
+                    tableroFactory = tablerosViewModelFactory,
                     leaderboardFactory = leaderboardViewModelFactory
                 )
             ) { navigator ->

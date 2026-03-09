@@ -23,19 +23,19 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import dev.wdona.burnt_out.presentation.ui.components.template.ScaffoldBase
-import dev.wdona.burnt_out.presentation.viewmodel.viewmodelfactories.TareaViewModelFactory
-import dev.wdona.burnt_out.presentation.viewmodel.viewmodels.TareaViewModel
+import dev.wdona.burnt_out.presentation.viewmodel.viewmodelfactories.TareasViewModelFactory
+import dev.wdona.burnt_out.presentation.viewmodel.viewmodels.TareasViewModel
 import dev.wdona.burnt_out.shared.domain.Tarea
 
-class MenuCrearTareaScreen(val factory: TareaViewModelFactory, val idTablero: Long) : Screen {
+class MenuCrearTareaScreen(val factory: TareasViewModelFactory, val idTablero: Long) : Screen {
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow // Para poder volver o ir a otra
-        val viewModel: TareaViewModel = rememberScreenModel { factory.create() }
+        val viewModel: TareasViewModel = rememberScreenModel { factory.create() }
 
         MenuCrearTareaContent(
             idTablero = idTablero,
-            tareaViewModel = viewModel,
+            tareasViewModel = viewModel,
             onVolver = { navigator.pop() }
         )
     }
@@ -43,7 +43,7 @@ class MenuCrearTareaScreen(val factory: TareaViewModelFactory, val idTablero: Lo
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MenuCrearTareaContent(idTablero: Long, tareaViewModel: TareaViewModel, onVolver: () -> Unit) {
+fun MenuCrearTareaContent(idTablero: Long, tareasViewModel: TareasViewModel, onVolver: () -> Unit) {
     var textStateNombreTarea by remember { mutableStateOf("") }
     var textStateDescripcion by remember { mutableStateOf("") }
 
@@ -58,7 +58,7 @@ fun MenuCrearTareaContent(idTablero: Long, tareaViewModel: TareaViewModel, onVol
                 idUsuarioAsignado = 1, // TODO: Coger el usuario actual
                 idSubtareas = emptyList()
             )
-            tareaViewModel.crearTarea(nuevaTarea)
+            tareasViewModel.crearTarea(nuevaTarea)
 
             textStateNombreTarea = ""
             textStateDescripcion = ""

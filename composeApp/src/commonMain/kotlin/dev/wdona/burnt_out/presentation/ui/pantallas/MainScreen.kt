@@ -24,10 +24,10 @@ import dev.wdona.burnt_out.presentation.ui.pantallas.tablero.TablerosScreen
 import dev.wdona.burnt_out.presentation.viewmodel.viewmodelfactories.*
 
 class MainScreen(
-    private val tareaFactory: TareaViewModelFactory,
-    private val equipoFactory: EquipoViewModelFactory,
-    private val perfilFactory: PerfilViewModelFactory,
-    private val tableroFactory: TableroViewModelFactory,
+    private val tareaFactory: TareasViewModelFactory,
+    private val equipoFactory: MiEquipoViewModelFactory,
+    private val perfilFactory: MiPerfilViewModelFactory,
+    private val tableroFactory: TablerosViewModelFactory,
     private val leaderboardFactory: LeaderboardViewModelFactory
 ) : Screen {
 
@@ -73,7 +73,7 @@ private fun RowScope.TabNavigationItem(tab: Tab) {
     )
 }
 
-private class TablerosTab(val factory: TableroViewModelFactory, val tareaFactory: TareaViewModelFactory) : Tab {
+private class TablerosTab(val factory: TablerosViewModelFactory, val tareaFactory: TareasViewModelFactory) : Tab {
     override val key = "TablerosTab"
     @get:Composable
     override val options: TabOptions
@@ -87,7 +87,7 @@ private class TablerosTab(val factory: TableroViewModelFactory, val tareaFactory
     }
 }
 
-private class EquipoTab(val factory: EquipoViewModelFactory) : Tab {
+private class EquipoTab(val factory: MiEquipoViewModelFactory) : Tab {
     override val key = "EquipoTab"
     @get:Composable
     override val options: TabOptions
@@ -115,7 +115,7 @@ private class LeaderboardTab(val factory: LeaderboardViewModelFactory) : Tab {
     }
 }
 
-private class PerfilTab(val factory: PerfilViewModelFactory) : Tab {
+private class PerfilTab(val factory: MiPerfilViewModelFactory) : Tab {
     override val key = "PerfilTab"
     @get:Composable
     override val options: TabOptions

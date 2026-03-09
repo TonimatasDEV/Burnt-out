@@ -5,11 +5,11 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.remember
-import dev.wdona.burnt_out.presentation.viewmodel.viewmodelfactories.EquipoViewModelFactory
+import dev.wdona.burnt_out.presentation.viewmodel.viewmodelfactories.MiEquipoViewModelFactory
 import dev.wdona.burnt_out.presentation.viewmodel.viewmodelfactories.LeaderboardViewModelFactory
-import dev.wdona.burnt_out.presentation.viewmodel.viewmodelfactories.PerfilViewModelFactory
-import dev.wdona.burnt_out.presentation.viewmodel.viewmodelfactories.TableroViewModelFactory
-import dev.wdona.burnt_out.presentation.viewmodel.viewmodelfactories.TareaViewModelFactory
+import dev.wdona.burnt_out.presentation.viewmodel.viewmodelfactories.MiPerfilViewModelFactory
+import dev.wdona.burnt_out.presentation.viewmodel.viewmodelfactories.TablerosViewModelFactory
+import dev.wdona.burnt_out.presentation.viewmodel.viewmodelfactories.TareasViewModelFactory
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -17,14 +17,14 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            val tareaFactory = remember { TareaViewModelFactory(applicationContext) }
-            val equipoViewModelFactory = remember { EquipoViewModelFactory(applicationContext) }
-            val perfilViewModelFactory = remember { PerfilViewModelFactory(applicationContext) }
-            val tableroViewModelFactory = remember { TableroViewModelFactory(applicationContext) }
+            val tareaFactory = remember { TareasViewModelFactory(applicationContext) }
+            val miEquipoViewModelFactory = remember { MiEquipoViewModelFactory(applicationContext) }
+            val miPerfilViewModelFactory = remember { MiPerfilViewModelFactory(applicationContext) }
+            val tablerosViewModelFactory = remember { TablerosViewModelFactory(applicationContext) }
             val leaderboardViewModelFactory = remember { LeaderboardViewModelFactory(applicationContext) }
 
 
-            App(tareaFactory, equipoViewModelFactory, perfilViewModelFactory, tableroViewModelFactory, leaderboardViewModelFactory)
+            App(tareaFactory, miEquipoViewModelFactory, miPerfilViewModelFactory, tablerosViewModelFactory, leaderboardViewModelFactory)
         }
     }
 }

@@ -4,14 +4,12 @@ import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import dev.wdona.burnt_out.domain.repository.TableroRepository
 import dev.wdona.burnt_out.shared.domain.Tablero
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class TableroViewModel(private val repository: TableroRepository) : ScreenModel {
+class TablerosViewModel(private val repository: TableroRepository) : ScreenModel {
     private val _uiState = MutableStateFlow<Tablero?>(null)
     val uiState: StateFlow<Tablero?> = _uiState.asStateFlow()
 

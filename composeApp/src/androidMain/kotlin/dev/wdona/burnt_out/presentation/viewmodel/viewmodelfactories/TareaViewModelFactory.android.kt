@@ -10,12 +10,12 @@ import dev.wdona.burnt_out.data.datasource.local.impl.TareaLocalDataSourceImpl
 import dev.wdona.burnt_out.data.datasource.remote.impl.TareaRemoteDataSourceImpl
 import dev.wdona.burnt_out.data.repository.TareaRepositoryImpl
 import dev.wdona.burnt_out.shared.db.DatabaseDriverFactory
-import dev.wdona.burnt_out.presentation.viewmodel.viewmodels.TareaViewModel
+import dev.wdona.burnt_out.presentation.viewmodel.viewmodels.TareasViewModel
 import dev.wdona.burnt_out.shared.db.AppDatabase
 
-actual class TareaViewModelFactory(private val context: Context) {
+actual class TareasViewModelFactory(private val context: Context) {
 
-    actual fun create(): TareaViewModel {
+    actual fun create(): TareasViewModel {
         val driverFactory = DatabaseDriverFactory(context)
         val database = AppDatabase(driverFactory.createDriver())
 
@@ -33,11 +33,11 @@ actual class TareaViewModelFactory(private val context: Context) {
     }
 
     companion object {
-        private var instance: TareaViewModel? = null
+        private var instance: TareasViewModel? = null
 
-        fun getInstance(repository: TareaRepository): TareaViewModel {
+        fun getInstance(repository: TareaRepository): TareasViewModel {
             if (instance == null) {
-                instance = TareaViewModel(repository)
+                instance = TareasViewModel(repository)
             }
             return instance!!
         }

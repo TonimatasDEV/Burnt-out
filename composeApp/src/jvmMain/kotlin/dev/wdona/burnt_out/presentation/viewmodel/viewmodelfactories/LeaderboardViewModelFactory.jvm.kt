@@ -25,9 +25,8 @@ actual class LeaderboardViewModelFactory {
         val localDataSource = EquipoLocalDataSourceImpl(dao)
         val remoteDataSource = EquipoRemoteDataSourceImpl(api)
         val pendienteDataSource = OperacionPendienteLocalDataSourceImpl(pendienteDao)
-        val usuarioLocalDataSource = UsuarioLocalDataSourceImpl(usuarioDao)
 
-        val repository = EquipoRepositoryImpl(localDataSource, remoteDataSource, pendienteDataSource, usuarioLocalDataSource)
+        val repository = EquipoRepositoryImpl(localDataSource, remoteDataSource, pendienteDataSource)
 
         return getInstance(repository)
     }

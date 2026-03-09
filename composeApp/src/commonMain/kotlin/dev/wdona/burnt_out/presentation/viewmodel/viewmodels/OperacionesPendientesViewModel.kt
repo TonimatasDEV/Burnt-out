@@ -3,12 +3,10 @@ package dev.wdona.burnt_out.presentation.viewmodel.viewmodels
 import cafe.adriel.voyager.core.model.ScreenModel
 import dev.wdona.burnt_out.domain.model.OperacionPendiente
 import dev.wdona.burnt_out.domain.repository.OperacionesPendientesRepository
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
-class OperacionPendienteViewModel(private val repository: OperacionesPendientesRepository) : ScreenModel {
+class OperacionesPendientesViewModel(private val repository: OperacionesPendientesRepository) : ScreenModel {
     private val _uiState = MutableStateFlow<OperacionPendiente?>(null)
     val uiState = _uiState.asStateFlow()
     private val _listaOperaciones = MutableStateFlow<List<OperacionPendiente>>(emptyList())

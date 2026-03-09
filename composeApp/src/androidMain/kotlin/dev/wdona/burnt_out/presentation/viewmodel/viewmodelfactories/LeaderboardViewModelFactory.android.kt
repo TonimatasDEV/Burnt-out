@@ -30,7 +30,7 @@ actual class LeaderboardViewModelFactory(private val context: Context) {
         val pendienteDataSource = OperacionPendienteLocalDataSourceImpl(pendienteDao)
         val usuarioLocalDataSource = UsuarioLocalDataSourceImpl(usuarioDao)
 
-        val repository = EquipoRepositoryImpl(localDataSource, remoteDataSource, pendienteDataSource, usuarioLocalDataSource)
+        val repository = EquipoRepositoryImpl(localDataSource, remoteDataSource, pendienteDataSource)
 
         return getInstance(repository)
     }

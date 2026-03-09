@@ -10,11 +10,11 @@ import dev.wdona.burnt_out.data.datasource.remote.impl.UsuarioRemoteDataSourceIm
 import dev.wdona.burnt_out.data.repository.UsuarioRepositoryImpl
 import dev.wdona.burnt_out.domain.repository.UsuarioRepository
 import dev.wdona.burnt_out.shared.db.DatabaseDriverFactory
-import dev.wdona.burnt_out.presentation.viewmodel.viewmodels.PerfilViewModel
+import dev.wdona.burnt_out.presentation.viewmodel.viewmodels.MiPerfilViewModel
 import dev.wdona.burnt_out.shared.db.AppDatabase
 
-actual class PerfilViewModelFactory(private val context: Context) {
-    actual fun create(): PerfilViewModel {
+actual class MiPerfilViewModelFactory(private val context: Context) {
+    actual fun create(): MiPerfilViewModel {
         val driverFactory = DatabaseDriverFactory(context)
         val database = AppDatabase(driverFactory.createDriver())
 
@@ -32,10 +32,10 @@ actual class PerfilViewModelFactory(private val context: Context) {
     }
 
     companion object {
-        private var instance: PerfilViewModel? = null
-        fun getInstance(repository: UsuarioRepository): PerfilViewModel {
+        private var instance: MiPerfilViewModel? = null
+        fun getInstance(repository: UsuarioRepository): MiPerfilViewModel {
             if (instance == null) {
-                instance = PerfilViewModel(repository)
+                instance = MiPerfilViewModel(repository)
             }
             return instance!!
         }

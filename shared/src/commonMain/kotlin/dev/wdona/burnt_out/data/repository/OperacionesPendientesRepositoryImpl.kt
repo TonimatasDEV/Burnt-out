@@ -5,7 +5,9 @@ import dev.wdona.burnt_out.domain.model.OperacionPendiente
 import dev.wdona.burnt_out.domain.repository.OperacionesPendientesRepository
 
 
-class OperacionesPendientesRepositoryImpl(val operacionPendienteLocalDataSource: OperacionPendienteLocalDataSource) : OperacionesPendientesRepository {
+class OperacionesPendientesRepositoryImpl(
+    val operacionPendienteLocalDataSource: OperacionPendienteLocalDataSource
+) : OperacionesPendientesRepository {
     override suspend fun getOperacionesPendientes(): List<OperacionPendiente> {
         return operacionPendienteLocalDataSource.getOperacionesPendientes()
     }

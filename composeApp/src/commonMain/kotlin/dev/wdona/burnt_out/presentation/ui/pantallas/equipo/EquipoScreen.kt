@@ -3,33 +3,26 @@ package dev.wdona.burnt_out.presentation.ui.pantallas.equipo
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
-import dev.wdona.burnt_out.presentation.ui.components.common.BotonVolver
-import dev.wdona.burnt_out.presentation.viewmodel.viewmodelfactories.EquipoViewModelFactory
-import dev.wdona.burnt_out.presentation.viewmodel.viewmodels.EquipoViewModel
+import dev.wdona.burnt_out.presentation.viewmodel.viewmodelfactories.MiEquipoViewModelFactory
+import dev.wdona.burnt_out.presentation.viewmodel.viewmodels.MiEquipoViewModel
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.model.rememberScreenModel
-import dev.wdona.burnt_out.presentation.ui.components.common.InfoTopBarCustomTitle
 import dev.wdona.burnt_out.presentation.ui.components.template.ScaffoldBase
-import dev.wdona.burnt_out.shared.domain.Usuario
 
-class EquipoScreen(val factory: EquipoViewModelFactory) : Screen {
+class EquipoScreen(val factory: MiEquipoViewModelFactory) : Screen {
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow // Para poder volver o ir a otra
@@ -38,7 +31,6 @@ class EquipoScreen(val factory: EquipoViewModelFactory) : Screen {
         val idEquipo = 1L // TODO: COGER ID DEL EQUIPO DEL USUARIO ACTIVO
 
         LaunchedEffect(idEquipo) {
-            viewModel.cargarEquipoPorId(idEquipo)
             viewModel.cargarMiembrosEquipo(idEquipo)
         }
 
@@ -48,7 +40,7 @@ class EquipoScreen(val factory: EquipoViewModelFactory) : Screen {
 
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
-    fun EquipoContent(viewModel: EquipoViewModel, onVolver: () -> Unit) {
+    fun EquipoContent(viewModel: MiEquipoViewModel, onVolver: () -> Unit) {
         val equipo by viewModel.uiStateEquipo.collectAsState()
         val miembros by viewModel.listaMiembros.collectAsState()
 

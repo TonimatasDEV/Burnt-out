@@ -8,11 +8,11 @@ import dev.wdona.burnt_out.data.datasource.local.impl.UsuarioLocalDataSourceImpl
 import dev.wdona.burnt_out.data.datasource.remote.impl.UsuarioRemoteDataSourceImpl
 import dev.wdona.burnt_out.data.repository.UsuarioRepositoryImpl
 import dev.wdona.burnt_out.domain.repository.UsuarioRepository
-import dev.wdona.burnt_out.presentation.viewmodel.viewmodels.PerfilViewModel
+import dev.wdona.burnt_out.presentation.viewmodel.viewmodels.MiPerfilViewModel
 import dev.wdona.burnt_out.shared.db.DatabaseInit
 
-actual class PerfilViewModelFactory {
-    actual fun create(): PerfilViewModel {
+actual class MiPerfilViewModelFactory {
+    actual fun create(): MiPerfilViewModel {
         val database = DatabaseInit.getDatabase()
 
         val dao = UsuarioDaoImpl(database)
@@ -29,10 +29,10 @@ actual class PerfilViewModelFactory {
     }
 
     companion object {
-        private var instance: PerfilViewModel? = null
-        fun getInstance(repository: UsuarioRepository): PerfilViewModel {
+        private var instance: MiPerfilViewModel? = null
+        fun getInstance(repository: UsuarioRepository): MiPerfilViewModel {
             if (instance == null) {
-                instance = PerfilViewModel(repository)
+                instance = MiPerfilViewModel(repository)
             }
             return instance!!
         }

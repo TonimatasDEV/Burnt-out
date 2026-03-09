@@ -8,13 +8,11 @@ import dev.wdona.burnt_out.data.datasource.local.impl.OperacionPendienteLocalDat
 import dev.wdona.burnt_out.data.datasource.local.impl.TareaLocalDataSourceImpl
 import dev.wdona.burnt_out.data.datasource.remote.impl.TareaRemoteDataSourceImpl
 import dev.wdona.burnt_out.data.repository.TareaRepositoryImpl
-import dev.wdona.burnt_out.shared.db.DatabaseDriverFactory
-import dev.wdona.burnt_out.presentation.viewmodel.viewmodels.TareaViewModel
-import dev.wdona.burnt_out.shared.db.AppDatabase
+import dev.wdona.burnt_out.presentation.viewmodel.viewmodels.TareasViewModel
 import dev.wdona.burnt_out.shared.db.DatabaseInit
 
-actual class TareaViewModelFactory {
-    actual fun create(): TareaViewModel {
+actual class TareasViewModelFactory {
+    actual fun create(): TareasViewModel {
         val database = DatabaseInit.getDatabase()
 
         val dao = TareaDaoImpl(database)
@@ -31,10 +29,10 @@ actual class TareaViewModelFactory {
     }
 
     companion object {
-        private var instance: TareaViewModel? = null
-        fun getInstance(repository: TareaRepository): TareaViewModel {
+        private var instance: TareasViewModel? = null
+        fun getInstance(repository: TareaRepository): TareasViewModel {
             if (instance == null) {
-                instance = TareaViewModel(repository)
+                instance = TareasViewModel(repository)
             }
             return instance!!
         }
