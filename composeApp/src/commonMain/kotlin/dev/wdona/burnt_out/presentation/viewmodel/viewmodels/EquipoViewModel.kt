@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class MiEquipoViewModel(
+class EquipoViewModel(
     private val repository: EquipoRepository,
     private val cargarMiembrosEquipo: CargarMiembrosEquipo
 ) : ScreenModel {

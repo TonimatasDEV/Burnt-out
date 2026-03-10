@@ -42,7 +42,6 @@ fun ScaffoldBase(
         Box(modifier = Modifier
             .fillMaxSize()
             .padding(paddingValues)
-            .padding(horizontal = 16.dp)
         ) {
             content(PaddingValues(0.dp))
         }

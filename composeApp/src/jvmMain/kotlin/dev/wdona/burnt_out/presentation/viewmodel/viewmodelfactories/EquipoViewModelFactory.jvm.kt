@@ -15,11 +15,11 @@ import dev.wdona.burnt_out.data.repository.UsuarioRepositoryImpl
 import dev.wdona.burnt_out.domain.repository.EquipoRepository
 import dev.wdona.burnt_out.domain.repository.UsuarioRepository
 import dev.wdona.burnt_out.domain.usecase.CargarMiembrosEquipo
-import dev.wdona.burnt_out.presentation.viewmodel.viewmodels.MiEquipoViewModel
+import dev.wdona.burnt_out.presentation.viewmodel.viewmodels.EquipoViewModel
 import dev.wdona.burnt_out.shared.db.DatabaseInit
 
 actual class MiEquipoViewModelFactory {
-    actual fun create(): MiEquipoViewModel {
+    actual fun create(): EquipoViewModel {
         val database = DatabaseInit.getDatabase()
 
         val dao = EquipoDaoImpl(database)
@@ -47,10 +47,10 @@ actual class MiEquipoViewModelFactory {
     }
 
     companion object {
-        private var instance: MiEquipoViewModel? = null
-        fun getInstance(repository: EquipoRepository, usuarioRepository: UsuarioRepository): MiEquipoViewModel {
+        private var instance: EquipoViewModel? = null
+        fun getInstance(repository: EquipoRepository, usuarioRepository: UsuarioRepository): EquipoViewModel {
             if (instance == null) {
-                instance = MiEquipoViewModel(repository, CargarMiembrosEquipo(usuarioRepository))
+                instance = EquipoViewModel(repository, CargarMiembrosEquipo(usuarioRepository))
             }
             return instance!!
         }

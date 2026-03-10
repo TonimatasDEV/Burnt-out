@@ -10,12 +10,12 @@ import dev.wdona.burnt_out.data.datasource.remote.impl.UsuarioRemoteDataSourceIm
 import dev.wdona.burnt_out.data.repository.UsuarioRepositoryImpl
 import dev.wdona.burnt_out.domain.repository.UsuarioRepository
 import dev.wdona.burnt_out.shared.db.DatabaseDriverFactory
-import dev.wdona.burnt_out.presentation.viewmodel.viewmodels.MiPerfilViewModel
+import dev.wdona.burnt_out.presentation.viewmodel.viewmodels.PerfilViewModel
 import dev.wdona.burnt_out.shared.db.AppDatabase
 import java.io.Serializable
 import kotlin.jvm.Transient
 actual class MiPerfilViewModelFactory(@Transient private val context: Context) : Serializable {
-    actual fun create(): MiPerfilViewModel {
+    actual fun create(): PerfilViewModel {
         val driverFactory = DatabaseDriverFactory(context)
         val database = AppDatabase(driverFactory.createDriver())
 
@@ -33,10 +33,10 @@ actual class MiPerfilViewModelFactory(@Transient private val context: Context) :
     }
 
     companion object {
-        private var instance: MiPerfilViewModel? = null
-        fun getInstance(repository: UsuarioRepository): MiPerfilViewModel {
+        private var instance: PerfilViewModel? = null
+        fun getInstance(repository: UsuarioRepository): PerfilViewModel {
             if (instance == null) {
-                instance = MiPerfilViewModel(repository)
+                instance = PerfilViewModel(repository)
             }
             return instance!!
         }

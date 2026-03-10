@@ -35,18 +35,14 @@ class MainScreen(
 
     @Composable
     override fun Content() {
-        val settingsScreen = remember { SettingsScreen(ajustesFactory) }
-        val tablerosTab = remember { TablerosTab(tableroFactory, tareaFactory) }
-        val equipoTab = remember { EquipoTab(equipoFactory) }
-        val leaderboardTab = remember { LeaderboardTab(leaderboardFactory) }
-        val perfilTab = remember {
-            PerfilTab(
-                perfilFactory,
-                ajustesFactory
-            )
-        }
+        val tabNavigators = remember { mutableMapOf<String, Navigator>() }
 
-        TabNavigator(tablerosTab) {
+        val tablerosTab = remember { TablerosTab(tableroFactory, tareaFactory, tabNavigators) }
+        val equipoTab = remember { EquipoTab(equipoFactory, perfilFactory, ajustesFactory, tabNavigators) }
+        val leaderboardTab = remember { LeaderboardTab(leaderboardFactory, ajustesFactory, equipoFactory, perfilFactory, tabNavigators) }
+        val perfilTab = remember { PerfilTab(perfilFactory, ajustesFactory, tabNavigators) }
+
+        TabNavigator(tablerosTab) { tabNavigator ->
             Scaffold(
                 content = { paddingValues ->
                     Box(modifier = Modifier.padding(paddingValues)) {
@@ -55,10 +51,10 @@ class MainScreen(
                 },
                 bottomBar = {
                     NavigationBar {
-                        TabNavigationItem(tablerosTab)
-                        TabNavigationItem(equipoTab)
-                        TabNavigationItem(leaderboardTab)
-                        TabNavigationItem(perfilTab)
+                        TabNavigationItem(tablerosTab, tabNavigator, tabNavigators)
+                        TabNavigationItem(equipoTab, tabNavigator, tabNavigators)
+                        TabNavigationItem(leaderboardTab, tabNavigator, tabNavigators)
+                        TabNavigationItem(perfilTab, tabNavigator, tabNavigators)
                     }
                 }
             )
@@ -67,12 +63,22 @@ class MainScreen(
 }
 
 @Composable
-private fun RowScope.TabNavigationItem(tab: Tab) {
-    val tabNavigator = LocalTabNavigator.current
+private fun RowScope.TabNavigationItem(
+    tab: Tab,
+    tabNavigator: TabNavigator,
+    navigators: MutableMap<String, Navigator>
+) {
+    val isSelected = tabNavigator.current.key == tab.key
 
     NavigationBarItem(
-        selected = tabNavigator.current.key == tab.key,
-        onClick = { tabNavigator.current = tab },
+        selected = isSelected,
+        onClick = {
+            navigators.values.forEach { it.popUntilRoot() }
+            
+            if (!isSelected) {
+                tabNavigator.current = tab
+            }
+        },
         label = { Text(tab.options.title) },
         icon = {
             val icon = tab.options.icon ?: rememberVectorPainter(Icons.Default.Home)
@@ -81,7 +87,11 @@ private fun RowScope.TabNavigationItem(tab: Tab) {
     )
 }
 
-private class TablerosTab(val factory: TablerosViewModelFactory, val tareaFactory: TareasViewModelFactory) : Tab {
+private class TablerosTab(
+    val factory: TablerosViewModelFactory,
+    val tareaFactory: TareasViewModelFactory,
+    val navigators: MutableMap<String, Navigator>
+) : Tab {
     override val key = "TablerosTab"
     @get:Composable
     override val options: TabOptions
@@ -90,12 +100,18 @@ private class TablerosTab(val factory: TablerosViewModelFactory, val tareaFactor
     @Composable
     override fun Content() {
         Navigator(TablerosScreen(factory, tareaFactory)) { navigator ->
+            navigators[key] = navigator
             SlideTransition(navigator)
         }
     }
 }
 
-private class EquipoTab(val factory: MiEquipoViewModelFactory) : Tab {
+private class EquipoTab(
+    val factory: MiEquipoViewModelFactory,
+    val perfilFactory: MiPerfilViewModelFactory,
+    val settingsFactory: AjustesViewModelFactory,
+    val navigators: MutableMap<String, Navigator>
+) : Tab {
     override val key = "EquipoTab"
     @get:Composable
     override val options: TabOptions
@@ -103,13 +119,20 @@ private class EquipoTab(val factory: MiEquipoViewModelFactory) : Tab {
 
     @Composable
     override fun Content() {
-        Navigator(EquipoScreen(factory)) { navigator ->
+        Navigator(EquipoScreen(factory, perfilFactory, settingsFactory)) { navigator ->
+            navigators[key] = navigator
             SlideTransition(navigator)
         }
     }
 }
 
-private class LeaderboardTab(val factory: LeaderboardViewModelFactory) : Tab {
+private class LeaderboardTab(
+    val factory: LeaderboardViewModelFactory,
+    val settingsFactory: AjustesViewModelFactory,
+    val equipoFactory: MiEquipoViewModelFactory,
+    val perfilFactory: MiPerfilViewModelFactory,
+    val navigators: MutableMap<String, Navigator>
+) : Tab {
     override val key = "LeaderboardTab"
     @get:Composable
     override val options: TabOptions
@@ -117,13 +140,23 @@ private class LeaderboardTab(val factory: LeaderboardViewModelFactory) : Tab {
 
     @Composable
     override fun Content() {
-        Navigator(LeaderboardScreen(factory, SettingsManager.getIdOrganizacionActual())) { navigator ->
+        Navigator(LeaderboardScreen(
+            factory, SettingsManager.getIdOrganizacionActual(),
+            equipoFactory = equipoFactory,
+            perfilFactory = perfilFactory,
+            ajustesFactory = settingsFactory
+        )) { navigator ->
+            navigators[key] = navigator
             SlideTransition(navigator)
         }
     }
 }
 
-private class PerfilTab(val factory: MiPerfilViewModelFactory, val ajustesFactory: AjustesViewModelFactory) : Tab {
+private class PerfilTab(
+    val factory: MiPerfilViewModelFactory,
+    val ajustesFactory: AjustesViewModelFactory,
+    val navigators: MutableMap<String, Navigator>
+) : Tab {
     override val key = "PerfilTab"
     @get:Composable
     override val options: TabOptions
@@ -132,6 +165,7 @@ private class PerfilTab(val factory: MiPerfilViewModelFactory, val ajustesFactor
     @Composable
     override fun Content() {
         Navigator(PerfilScreen(factory, ajustesFactory)) { navigator ->
+            navigators[key] = navigator
             SlideTransition(navigator)
         }
     }

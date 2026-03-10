@@ -1,7 +1,7 @@
 package dev.wdona.burnt_out.presentation.viewmodel.viewmodelfactories
 
-import dev.wdona.burnt_out.presentation.viewmodel.viewmodels.MiPerfilViewModel
+import dev.wdona.burnt_out.presentation.viewmodel.viewmodels.PerfilViewModel
 
 expect class MiPerfilViewModelFactory {
-    fun create(): MiPerfilViewModel
+    fun create(): PerfilViewModel
 }

@@ -1,8 +1,7 @@
 package dev.wdona.burnt_out.presentation.viewmodel.viewmodelfactories
 
-import dev.wdona.burnt_out.domain.usecase.CargarMiembrosEquipo
-import dev.wdona.burnt_out.presentation.viewmodel.viewmodels.MiEquipoViewModel
+import dev.wdona.burnt_out.presentation.viewmodel.viewmodels.EquipoViewModel
 
 expect class MiEquipoViewModelFactory {
-    fun create(): MiEquipoViewModel
+    fun create(): EquipoViewModel
 }

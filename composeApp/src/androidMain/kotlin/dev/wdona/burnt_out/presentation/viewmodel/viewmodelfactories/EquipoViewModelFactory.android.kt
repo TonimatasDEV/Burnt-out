@@ -1,7 +1,6 @@
 package dev.wdona.burnt_out.presentation.viewmodel.viewmodelfactories
 
 import android.content.Context
-import dev.wdona.burnt_out.data.api.UsuarioApi
 import dev.wdona.burnt_out.data.api.impl.EquipoApiImpl
 import dev.wdona.burnt_out.data.api.impl.UsuarioApiImpl
 import dev.wdona.burnt_out.data.dao.impl.EquipoDaoImpl
@@ -18,12 +17,12 @@ import dev.wdona.burnt_out.domain.repository.EquipoRepository
 import dev.wdona.burnt_out.domain.repository.UsuarioRepository
 import dev.wdona.burnt_out.domain.usecase.CargarMiembrosEquipo
 import dev.wdona.burnt_out.shared.db.DatabaseDriverFactory
-import dev.wdona.burnt_out.presentation.viewmodel.viewmodels.MiEquipoViewModel
+import dev.wdona.burnt_out.presentation.viewmodel.viewmodels.EquipoViewModel
 import dev.wdona.burnt_out.shared.db.AppDatabase
 import java.io.Serializable
 import kotlin.jvm.Transient
 actual class MiEquipoViewModelFactory(@Transient private val context: Context) : Serializable {
-    actual fun create(): MiEquipoViewModel {
+    actual fun create(): EquipoViewModel {
         val driverFactory = DatabaseDriverFactory(context)
         val database = AppDatabase(driverFactory.createDriver())
 
@@ -53,11 +52,11 @@ actual class MiEquipoViewModelFactory(@Transient private val context: Context) :
     }
 
     companion object {
-        private var instance: MiEquipoViewModel? = null
+        private var instance: EquipoViewModel? = null
 
-        fun getInstance(repository: EquipoRepository, usuarioRepository: UsuarioRepository): MiEquipoViewModel {
+        fun getInstance(repository: EquipoRepository, usuarioRepository: UsuarioRepository): EquipoViewModel {
             if (instance == null) {
-                instance = MiEquipoViewModel(repository, CargarMiembrosEquipo(usuarioRepository))
+                instance = EquipoViewModel(repository, CargarMiembrosEquipo(usuarioRepository))
             }
             return instance!!
         }

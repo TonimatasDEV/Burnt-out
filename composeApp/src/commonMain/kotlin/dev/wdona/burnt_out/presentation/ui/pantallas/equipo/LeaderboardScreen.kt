@@ -18,27 +18,48 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import cafe.adriel.voyager.core.model.rememberScreenModel
 import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.currentOrThrow
 import dev.wdona.burnt_out.presentation.ui.components.equipo.EquipoCard
 import dev.wdona.burnt_out.presentation.ui.components.template.ScaffoldBase
+import dev.wdona.burnt_out.presentation.viewmodel.viewmodelfactories.AjustesViewModelFactory
 import dev.wdona.burnt_out.presentation.viewmodel.viewmodelfactories.LeaderboardViewModelFactory
+import dev.wdona.burnt_out.presentation.viewmodel.viewmodelfactories.MiEquipoViewModelFactory
+import dev.wdona.burnt_out.presentation.viewmodel.viewmodelfactories.MiPerfilViewModelFactory
 import dev.wdona.burnt_out.presentation.viewmodel.viewmodels.LeaderboardViewModel
 
-class LeaderboardScreen(val factory: LeaderboardViewModelFactory, val idOrg: Long) : Screen {
+class LeaderboardScreen(
+    val factory: LeaderboardViewModelFactory,
+    val idOrg: Long,
+    val equipoFactory: MiEquipoViewModelFactory,
+    val perfilFactory: MiPerfilViewModelFactory,
+    val ajustesFactory: AjustesViewModelFactory
+) : Screen {
     @Composable
     override fun Content() {
+        val navigator = LocalNavigator.currentOrThrow
         val viewModel = rememberScreenModel { factory.create() }
 
         LaunchedEffect(idOrg) {
             viewModel.cargarLeaderboard(idOrg)
         }
 
-        LeaderboardContent(viewModel)
+        LeaderboardContent(
+            leaderboardViewModel = viewModel,
+            onEquipoClick = { idEquipo ->
+                // TODO: Pasar idEquipo a EquipoScreen si es necesario para cargar uno concreto
+                navigator.push(EquipoScreen(equipoFactory, perfilFactory, ajustesFactory))
+            }
+        )
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LeaderboardContent(leaderboardViewModel: LeaderboardViewModel) {
+fun LeaderboardContent(
+    leaderboardViewModel: LeaderboardViewModel,
+    onEquipoClick: (Long) -> Unit
+) {
     val listaEquipos by leaderboardViewModel.leaderboard.collectAsStateWithLifecycle()
     
     ScaffoldBase(
@@ -52,7 +73,8 @@ fun LeaderboardContent(leaderboardViewModel: LeaderboardViewModel) {
         ) {
             items(listaEquipos, key = { it.idEquipo }) { equipo ->
                 EquipoCard(
-                    equipo, onClick = {}
+                    equipo, 
+                    onClick = { onEquipoClick(equipo.idEquipo) }
                 )
             }
         }
