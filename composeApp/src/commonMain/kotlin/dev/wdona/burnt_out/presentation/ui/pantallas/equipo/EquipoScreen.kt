@@ -41,8 +41,8 @@ class EquipoScreen(val factory: MiEquipoViewModelFactory) : Screen {
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     fun EquipoContent(viewModel: MiEquipoViewModel, onVolver: () -> Unit) {
-        val equipo by viewModel.uiStateEquipo.collectAsState()
-        val miembros by viewModel.listaMiembros.collectAsState()
+        val equipo by viewModel.uiStateEquipo.collectAsStateWithLifecycle()
+        val miembros by viewModel.listaMiembros.collectAsStateWithLifecycle()
 
         ScaffoldBase(
             titulo = equipo?.titulo ?: "Mi equipo (off)",
