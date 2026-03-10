@@ -53,7 +53,8 @@ fun MenuCrearTableroContent(tablerosViewModel: TablerosViewModel, onVolver: () -
                     0L,
                     textStateNombreTablero,
                     1L, // FIXME
-                    1L) // FIXME
+                    1L // FIXME
+                )
             )
 
             textStateNombreTablero = ""

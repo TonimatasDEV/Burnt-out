@@ -5,11 +5,31 @@ import cafe.adriel.voyager.core.model.screenModelScope
 import dev.wdona.burnt_out.domain.model.Ajuste
 import dev.wdona.burnt_out.domain.repository.AjusteRepository
 import dev.wdona.burnt_out.shared.domain.Usuario
+import dev.wdona.burnt_out.shared.utils.SettingsManager
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
+data class AjustesUiState(
+    val esPrimeraEjecucion: Boolean = true,
+    val token: String = "",
+    val idUsuario: Long = Long.MIN_VALUE,
+)
+
 class AjustesViewModel(private val repository: AjusteRepository) : ScreenModel {
+    private val _ajustesUiState = MutableStateFlow(
+        AjustesUiState(
+            esPrimeraEjecucion = SettingsManager.getPrimeraEjecucion(),
+            token = SettingsManager.getTokenUsuario(),
+            idUsuario = SettingsManager.getIdUsuarioActual()
+        )
+    )
+
+    val ajustesUiState = _ajustesUiState.asStateFlow()
+
+
+
+    // Deprecated??
     var _listaAjustes = MutableStateFlow<List<Ajuste?>>(emptyList())
     val listaAjustes = _listaAjustes.asStateFlow()
     var _uiStateUsuarioActual = MutableStateFlow<Usuario?>(null)
@@ -29,5 +49,11 @@ class AjustesViewModel(private val repository: AjusteRepository) : ScreenModel {
         _uiStateUsuarioActual.value = usuario
     }
 
+    fun togglePrimeraEjecucion() {
+        val nuevoValor = !SettingsManager.getPrimeraEjecucion()
+        SettingsManager.setPrimeraEjecucion(nuevoValor)
 
+        _ajustesUiState.value = _ajustesUiState.value.copy(esPrimeraEjecucion = nuevoValor)
+    }
 }
+

@@ -109,18 +109,14 @@ lastInsertRowId:
 SELECT last_insert_rowid();
 
 insertOrgbase:
-INSERT OR IGNORE INTO OrganizacionEntity(ID_Org, Org_Name) VALUES(1, 'Organizacion Predeterminada');
+INSERT OR IGNORE INTO OrganizacionEntity(ID_Org, Org_Name) VALUES(-9223372036854775808, 'Organizacion Predeterminada');
 
 insertEquipoBase:
-INSERT OR IGNORE INTO EquipoEntity(ID_Equipo, Titulo, FK_ID_Org) VALUES(1, 'Equipo Predeterminado', 1);
-
-insertAjustes:
-INSERT OR IGNORE INTO AjusteEntity(ID_Ajuste, Nombre_Ajuste) VALUES(1, 'Notificaciones');
-INSERT OR IGNORE INTO AjusteEntity(ID_Ajuste, Nombre_Ajuste) VALUES(2, 'Tema Oscuro');
+INSERT OR IGNORE INTO EquipoEntity(ID_Equipo, Titulo, FK_ID_Org) VALUES(-9223372036854775808, 'Equipo Predeterminado', -9223372036854775808);
 
 insertUsuarioBase:
-INSERT OR IGNORE INTO UsuarioEntity(ID_Usuario, Username, Contrasena, Nombre, FK_ID_Organizacion) VALUES(1, 'User', '********', 'Usuario Base', 1);
-INSERT OR IGNORE INTO User_TeamEntity(ID_Usuario, ID_Equipo) VALUES(1, 1);
+INSERT OR IGNORE INTO UsuarioEntity(ID_Usuario, Username, Contrasena, Nombre, FK_ID_Organizacion) VALUES(-9223372036854775808, 'User', '********', 'Usuario Offline', -9223372036854775808);
+INSERT OR IGNORE INTO User_TeamEntity(ID_Usuario, ID_Equipo) VALUES(-9223372036854775808, -9223372036854775808);
 
 -- ====== TAREAS ======
 

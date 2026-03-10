@@ -21,6 +21,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import cafe.adriel.voyager.core.model.rememberScreenModel
+import dev.wdona.burnt_out.presentation.ui.components.equipo.MiembroCard
 import dev.wdona.burnt_out.presentation.ui.components.template.ScaffoldBase
 
 class EquipoScreen(val factory: MiEquipoViewModelFactory) : Screen {
@@ -57,18 +58,10 @@ class EquipoScreen(val factory: MiEquipoViewModelFactory) : Screen {
                         .fillMaxWidth()
                 ) {
                     items(miembros) { miembro ->
-                        CardMiembro(miembro.idUsuario, miembro.nombre)
+                        MiembroCard(miembro, onClick = {})
                     }
                 }
             }
-
-        }
-    }
-
-    @Composable
-    fun CardMiembro(idUsuario: Long, nombre: String) {
-        Column {
-            Text("$idUsuario. $nombre")
         }
     }
 

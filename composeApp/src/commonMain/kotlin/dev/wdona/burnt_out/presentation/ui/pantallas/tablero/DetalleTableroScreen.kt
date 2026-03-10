@@ -86,6 +86,7 @@ fun DetalleTableroContent(
                         .padding(16.dp)
                 )
             } else {
+                Text( "Estado, Titulo, idUsuarioAsignado" )
                 LazyColumn(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.spacedBy(12.dp),
@@ -94,7 +95,7 @@ fun DetalleTableroContent(
                         .weight(1f) // Ocupa el espacio restante
                 ) {
                     items(listaTareas) { tarea ->
-                        CardTarea(tarea.titulo)
+                        CardTarea(tarea = tarea, onClick = {}, onCompletar = {})
                     }
                 }
             }

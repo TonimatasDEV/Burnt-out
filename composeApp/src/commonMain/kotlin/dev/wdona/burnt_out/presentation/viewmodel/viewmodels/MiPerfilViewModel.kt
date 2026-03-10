@@ -4,10 +4,13 @@ import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import dev.wdona.burnt_out.domain.repository.UsuarioRepository
 import dev.wdona.burnt_out.shared.domain.Usuario
+import dev.wdona.burnt_out.shared.utils.SettingsManager
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+
+
 
 class MiPerfilViewModel(private val repository: UsuarioRepository) : ScreenModel {
     private val _uiState = MutableStateFlow<Usuario?>(null)

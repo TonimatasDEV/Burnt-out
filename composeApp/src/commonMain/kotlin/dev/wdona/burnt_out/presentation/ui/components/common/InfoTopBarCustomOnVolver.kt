@@ -10,12 +10,18 @@ import androidx.compose.runtime.Composable
 @OptIn(ExperimentalMaterial3Api::class)
 fun InfoTopBarCustomOnVolver(
     title: String,
-    onVolver: () -> Unit
+    onVolver: () -> Unit,
+    onAjustes: (() -> Unit)? = {}
 ) {
     TopAppBar(
         title = { Text(title) },
         navigationIcon = {
             BotonVolver { onVolver() }
+        },
+        actions = {
+            if (onAjustes != null) {
+                BotonAjustes { onAjustes() }
+            }
         },
         windowInsets = WindowInsets(0, 0, 0, 0)
     )

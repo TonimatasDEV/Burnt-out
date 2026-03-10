@@ -21,7 +21,8 @@ fun App(
     miEquipoViewModelFactory: MiEquipoViewModelFactory,
     miPerfilViewModelFactory: MiPerfilViewModelFactory,
     tablerosViewModelFactory: TablerosViewModelFactory,
-    leaderboardViewModelFactory: LeaderboardViewModelFactory
+    leaderboardViewModelFactory: LeaderboardViewModelFactory,
+    ajustesViewModelFactory: AjustesViewModelFactory
 ) {
     CustomMaterialTheme {
         Surface(
@@ -34,7 +35,8 @@ fun App(
                     equipoFactory = miEquipoViewModelFactory,
                     perfilFactory = miPerfilViewModelFactory,
                     tableroFactory = tablerosViewModelFactory,
-                    leaderboardFactory = leaderboardViewModelFactory
+                    leaderboardFactory = leaderboardViewModelFactory,
+                    ajustesFactory = ajustesViewModelFactory
                 )
             ) { navigator ->
                 SlideTransition(navigator)

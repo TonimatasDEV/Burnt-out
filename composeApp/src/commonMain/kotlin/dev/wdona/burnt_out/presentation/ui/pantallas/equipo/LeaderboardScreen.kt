@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import cafe.adriel.voyager.core.model.rememberScreenModel
 import cafe.adriel.voyager.core.screen.Screen
+import dev.wdona.burnt_out.presentation.ui.components.equipo.EquipoCard
 import dev.wdona.burnt_out.presentation.ui.components.template.ScaffoldBase
 import dev.wdona.burnt_out.presentation.viewmodel.viewmodelfactories.LeaderboardViewModelFactory
 import dev.wdona.burnt_out.presentation.viewmodel.viewmodels.LeaderboardViewModel
@@ -40,7 +41,9 @@ class LeaderboardScreen(val factory: LeaderboardViewModelFactory, val idOrg: Lon
 fun LeaderboardContent(leaderboardViewModel: LeaderboardViewModel) {
     val listaEquipos by leaderboardViewModel.leaderboard.collectAsStateWithLifecycle()
     
-    ScaffoldBase(titulo = "Leaderboard") { 
+    ScaffoldBase(
+        titulo = "Leaderboard"
+    ) {
         LazyVerticalGrid(
             columns = GridCells.Adaptive(minSize = 300.dp),
             horizontalArrangement = Arrangement.spacedBy(16.dp),
@@ -48,19 +51,10 @@ fun LeaderboardContent(leaderboardViewModel: LeaderboardViewModel) {
             modifier = Modifier.fillMaxWidth()
         ) {
             items(listaEquipos, key = { it.idEquipo }) { equipo ->
-                CardEquipo(
-                    nombreEquipo = equipo.titulo,
-                    puntosEquipo = equipo.puntuacion
+                EquipoCard(
+                    equipo, onClick = {}
                 )
             }
         }
-    }
-}
-
-@Composable
-fun CardEquipo(nombreEquipo: String, puntosEquipo: Long?) {
-    Column(modifier = Modifier.padding(8.dp)) {
-        Text(text = nombreEquipo, style = androidx.compose.material3.MaterialTheme.typography.titleMedium)
-        Text(text = "Puntos: ${puntosEquipo ?: 0}", style = androidx.compose.material3.MaterialTheme.typography.bodyMedium)
     }
 }

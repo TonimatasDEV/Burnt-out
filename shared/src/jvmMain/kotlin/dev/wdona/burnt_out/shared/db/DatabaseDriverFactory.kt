@@ -23,7 +23,6 @@ actual class DatabaseDriverFactory {
 
     private fun insertarDatosIniciales(database: AppDatabase) {
         database.appDatabaseQueries.insertOrgbase()
-        database.appDatabaseQueries.insertAjustes()
         database.appDatabaseQueries.insertEquipoBase()
         database.appDatabaseQueries.insertUsuarioBase()
     }

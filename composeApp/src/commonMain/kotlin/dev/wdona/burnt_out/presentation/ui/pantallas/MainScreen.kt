@@ -28,15 +28,22 @@ class MainScreen(
     private val equipoFactory: MiEquipoViewModelFactory,
     private val perfilFactory: MiPerfilViewModelFactory,
     private val tableroFactory: TablerosViewModelFactory,
-    private val leaderboardFactory: LeaderboardViewModelFactory
+    private val leaderboardFactory: LeaderboardViewModelFactory,
+    private val ajustesFactory: AjustesViewModelFactory
 ) : Screen {
 
     @Composable
     override fun Content() {
+        val settingsScreen = remember { SettingsScreen(ajustesFactory) }
         val tablerosTab = remember { TablerosTab(tableroFactory, tareaFactory) }
         val equipoTab = remember { EquipoTab(equipoFactory) }
         val leaderboardTab = remember { LeaderboardTab(leaderboardFactory) }
-        val perfilTab = remember { PerfilTab(perfilFactory) }
+        val perfilTab = remember {
+            PerfilTab(
+                perfilFactory,
+                ajustesFactory
+            )
+        }
 
         TabNavigator(tablerosTab) {
             Scaffold(
@@ -115,7 +122,7 @@ private class LeaderboardTab(val factory: LeaderboardViewModelFactory) : Tab {
     }
 }
 
-private class PerfilTab(val factory: MiPerfilViewModelFactory) : Tab {
+private class PerfilTab(val factory: MiPerfilViewModelFactory, val ajustesFactory: AjustesViewModelFactory) : Tab {
     override val key = "PerfilTab"
     @get:Composable
     override val options: TabOptions
@@ -123,7 +130,7 @@ private class PerfilTab(val factory: MiPerfilViewModelFactory) : Tab {
 
     @Composable
     override fun Content() {
-        Navigator(PerfilScreen(factory)) { navigator ->
+        Navigator(PerfilScreen(factory, ajustesFactory)) { navigator ->
             SlideTransition(navigator)
         }
     }

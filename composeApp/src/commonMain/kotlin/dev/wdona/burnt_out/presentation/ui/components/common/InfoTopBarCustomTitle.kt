@@ -13,6 +13,7 @@ import androidx.compose.ui.text.style.TextAlign
 @OptIn(ExperimentalMaterial3Api::class)
 fun InfoTopBarCustomTitle(
     title: String,
+    onAjustes: (() -> Unit)? = null
 ) {
     CenterAlignedTopAppBar(
         title = {
@@ -22,6 +23,11 @@ fun InfoTopBarCustomTitle(
                 textAlign = TextAlign.Center,
                 modifier = Modifier.fillMaxWidth()
             )
+        },
+        actions = {
+            if (onAjustes != null) {
+                BotonAjustes { onAjustes() }
+            }
         },
         windowInsets = WindowInsets(0, 0, 0, 0)
     )

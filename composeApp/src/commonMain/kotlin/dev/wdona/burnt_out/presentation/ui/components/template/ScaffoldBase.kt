@@ -17,6 +17,7 @@ import dev.wdona.burnt_out.presentation.ui.components.common.InfoTopBarCustomTit
 fun ScaffoldBase(
     titulo: String = "",
     onVolver: (() -> Unit)? = null,
+    onAjustes: (() -> Unit)? = null,
     onCrear: (() -> Unit)? = null,
     textoFABCrear: String? = null,
     bottomBar: @Composable () -> Unit = {},
@@ -26,9 +27,9 @@ fun ScaffoldBase(
         contentWindowInsets = WindowInsets(0, 0, 0, 0),
         topBar = {
             if (onVolver != null) {
-                InfoTopBarCustomOnVolver(titulo, onVolver)
+                InfoTopBarCustomOnVolver(titulo, onVolver, onAjustes)
             } else {
-                InfoTopBarCustomTitle(titulo)
+                InfoTopBarCustomTitle(titulo, onAjustes)
             }
         },
         floatingActionButton = {

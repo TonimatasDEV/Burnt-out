@@ -87,16 +87,15 @@ class TablerosScreen(
             } else {
                 LazyVerticalGrid(
                     columns = GridCells.Fixed(1),
-                    horizontalArrangement = Arrangement.spacedBy(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(16.dp),
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(horizontal = 16.dp, vertical = 16.dp)
                 ) {
                     items(listaTableros) { tablero ->
                         CardTablero(
-                            tituloTablero = tablero.titulo,
-                            onClick = { onVerTablero(tablero.idTablero, tablero.titulo) }
+                            tablero,
+                            onClick = {
+                                onVerTablero(tablero.idTablero, tablero.titulo)
+                            }
                         )
                     }
                 }
