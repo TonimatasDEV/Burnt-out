@@ -32,7 +32,7 @@ fun CardTablero(tablero: Tablero, onClick: () -> Unit) {
         Icon(
             imageVector = Icons.AutoMirrored.Filled.List,
             contentDescription = "Tablero: ${tablero.titulo}",
-            modifier = Modifier.padding(end = 16.dp)
+            modifier = Modifier.padding(horizontal = 16.dp)
         )
         Text(
             text = tablero.titulo,

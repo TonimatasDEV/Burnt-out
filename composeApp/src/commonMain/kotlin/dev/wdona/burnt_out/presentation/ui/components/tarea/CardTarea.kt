@@ -30,7 +30,7 @@ fun CardTarea(tarea: Tarea, onClick: () -> Unit, onCompletar: () -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .height(56.dp)
+            .height(40.dp)
             .clickable {
                 onClick()
             },
@@ -39,7 +39,9 @@ fun CardTarea(tarea: Tarea, onClick: () -> Unit, onCompletar: () -> Unit) {
         Icon(
             imageVector = Icons.Default.Square,
             contentDescription = "Icono de tarea: ${tarea.titulo}",
-            modifier = Modifier.padding(end = 16.dp),
+            modifier = Modifier
+                .padding(horizontal = 16.dp)
+                .height(24.dp),
             tint = color
         )
         Text(
