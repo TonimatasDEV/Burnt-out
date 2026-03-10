@@ -13,7 +13,7 @@ class AjustesViewModel(private val repository: AjusteRepository) : ScreenModel {
     var _listaAjustes = MutableStateFlow<List<Ajuste?>>(emptyList())
     val listaAjustes = _listaAjustes.asStateFlow()
     var _uiStateUsuarioActual = MutableStateFlow<Usuario?>(null)
-    val uiStateUsuarioActual = _uiStateUsuarioActual
+    val uiStateUsuarioActual = _uiStateUsuarioActual.asStateFlow()
 
     fun cargarAjustesUsuarioActual() {
         assert(uiStateUsuarioActual.value != null)
@@ -24,9 +24,9 @@ class AjustesViewModel(private val repository: AjusteRepository) : ScreenModel {
     }
 
     fun cargarUsuarioActual(usuario: Usuario) {
-        assert(uiStateUsuarioActual.value == null)
+        assert(_uiStateUsuarioActual.value == null)
 
-        uiStateUsuarioActual.value = usuario
+        _uiStateUsuarioActual.value = usuario
     }
 
 
