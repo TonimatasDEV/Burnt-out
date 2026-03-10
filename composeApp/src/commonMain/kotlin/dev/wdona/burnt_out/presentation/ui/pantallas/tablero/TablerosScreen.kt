@@ -16,6 +16,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import cafe.adriel.voyager.core.model.rememberScreenModel
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
@@ -66,7 +67,7 @@ class TablerosScreen(
         onIrACrearTablero: () -> Unit,
         onVerTablero: (Long, String) -> Unit
     ) {
-        val listaTableros by tablerosViewModel.listaTableros.collectAsState()
+        val listaTableros by tablerosViewModel.listaTableros.collectAsStateWithLifecycle()
 
         ScaffoldBase(
             titulo = "Tableros",

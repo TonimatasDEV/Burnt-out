@@ -19,6 +19,7 @@ import dev.wdona.burnt_out.presentation.viewmodel.viewmodels.MiEquipoViewModel
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import cafe.adriel.voyager.core.model.rememberScreenModel
 import dev.wdona.burnt_out.presentation.ui.components.template.ScaffoldBase
 

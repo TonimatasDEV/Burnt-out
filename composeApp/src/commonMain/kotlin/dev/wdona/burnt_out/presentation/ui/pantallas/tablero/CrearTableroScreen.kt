@@ -46,8 +46,6 @@ class MenuCrearTableroScreen(val factory: TablerosViewModelFactory) : Screen {
 fun MenuCrearTableroContent(tablerosViewModel: TablerosViewModel, onVolver: () -> Unit) {
     var textStateNombreTablero by remember { mutableStateOf("") }
 
-    val navigator = LocalNavigator.currentOrThrow
-
     val ejecutarEnvio: () -> Unit = {
         if (textStateNombreTablero.isNotBlank()) {
             tablerosViewModel.crearTablero(

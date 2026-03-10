@@ -26,6 +26,7 @@ fun SettingsContent(onVolver: () -> Unit) {
     ScaffoldBase(titulo = "Ajustes") {
         Column {
             Text(text = "Ajustes")
+
         }
     }
 }
