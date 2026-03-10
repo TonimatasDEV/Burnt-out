@@ -37,7 +37,7 @@ class LeaderboardScreen(val factory: LeaderboardViewModelFactory, val idOrg: Lon
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LeaderboardContent(leaderboardViewModel: LeaderboardViewModel) {
-    val listaEquipos by leaderboardViewModel.leaderboard.collectAsState()
+    val listaEquipos by leaderboardViewModel.leaderboard.collectAsStateWithLifecycle()
     
     ScaffoldBase(titulo = "Leaderboard") { 
         LazyVerticalGrid(
