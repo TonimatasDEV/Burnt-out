@@ -65,7 +65,7 @@ fun DetalleTableroContent(
     onVolver: () -> Unit,
     onIrACrearTarea: (Long) -> Unit
 ) {
-    val listaTareas by tareasViewModel.listaTareas.collectAsState()
+    val listaTareas by tareasViewModel.listaTareas.collectAsStateWithLifecycle()
 
     ScaffoldBase(
         titulo = nombreTablero,
