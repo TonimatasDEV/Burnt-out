@@ -12,8 +12,9 @@ import dev.wdona.burnt_out.domain.repository.UsuarioRepository
 import dev.wdona.burnt_out.shared.db.DatabaseDriverFactory
 import dev.wdona.burnt_out.presentation.viewmodel.viewmodels.MiPerfilViewModel
 import dev.wdona.burnt_out.shared.db.AppDatabase
-
-actual class MiPerfilViewModelFactory(private val context: Context) {
+import java.io.Serializable
+import kotlin.jvm.Transient
+actual class MiPerfilViewModelFactory(@Transient private val context: Context) : Serializable {
     actual fun create(): MiPerfilViewModel {
         val driverFactory = DatabaseDriverFactory(context)
         val database = AppDatabase(driverFactory.createDriver())

@@ -12,8 +12,9 @@ import dev.wdona.burnt_out.data.repository.TareaRepositoryImpl
 import dev.wdona.burnt_out.shared.db.DatabaseDriverFactory
 import dev.wdona.burnt_out.presentation.viewmodel.viewmodels.TareasViewModel
 import dev.wdona.burnt_out.shared.db.AppDatabase
-
-actual class TareasViewModelFactory(private val context: Context) {
+import java.io.Serializable
+import kotlin.jvm.Transient
+actual class TareasViewModelFactory(@Transient private val context: Context) : Serializable {
 
     actual fun create(): TareasViewModel {
         val driverFactory = DatabaseDriverFactory(context)

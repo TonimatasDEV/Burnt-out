@@ -20,8 +20,9 @@ import dev.wdona.burnt_out.domain.usecase.CargarMiembrosEquipo
 import dev.wdona.burnt_out.shared.db.DatabaseDriverFactory
 import dev.wdona.burnt_out.presentation.viewmodel.viewmodels.MiEquipoViewModel
 import dev.wdona.burnt_out.shared.db.AppDatabase
-
-actual class MiEquipoViewModelFactory(private val context: Context) {
+import java.io.Serializable
+import kotlin.jvm.Transient
+actual class MiEquipoViewModelFactory(@Transient private val context: Context) : Serializable {
     actual fun create(): MiEquipoViewModel {
         val driverFactory = DatabaseDriverFactory(context)
         val database = AppDatabase(driverFactory.createDriver())

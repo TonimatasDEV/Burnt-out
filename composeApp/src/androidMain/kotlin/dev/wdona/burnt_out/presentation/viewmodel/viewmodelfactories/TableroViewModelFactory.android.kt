@@ -12,8 +12,10 @@ import dev.wdona.burnt_out.domain.repository.TableroRepository
 import dev.wdona.burnt_out.shared.db.DatabaseDriverFactory
 import dev.wdona.burnt_out.presentation.viewmodel.viewmodels.TablerosViewModel
 import dev.wdona.burnt_out.shared.db.AppDatabase
+import java.io.Serializable
+import kotlin.jvm.Transient
 
-actual class TablerosViewModelFactory(private val context: Context) {
+actual class TablerosViewModelFactory(@Transient private val context: Context) : Serializable {
     actual fun create(): TablerosViewModel {
         val driverFactory = DatabaseDriverFactory(context)
         val database = AppDatabase(driverFactory.createDriver())
