@@ -16,6 +16,12 @@ import dev.wdona.burnt_out.shared.domain.Usuario
 
 @Composable
 fun MiembroCard(miembro: Usuario, onClick: () -> Unit) {
+    val id = if (miembro.idUsuario == Long.MIN_VALUE) {
+        ""
+    } else {
+        miembro.idUsuario.toString() + ""
+    }
+
     Row (
         modifier = Modifier
             .fillMaxWidth()
@@ -26,7 +32,7 @@ fun MiembroCard(miembro: Usuario, onClick: () -> Unit) {
         verticalAlignment = Alignment.CenterVertically
     ){
         Text(
-            text = "${miembro.idUsuario}. ${miembro.nombre}",
+            text = "$id ${miembro.nombre}",
             style = MaterialTheme.typography.titleMedium
 
         )

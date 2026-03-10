@@ -12,6 +12,7 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import cafe.adriel.voyager.core.model.rememberScreenModel
@@ -38,8 +39,11 @@ class PerfilScreen(val factory: MiPerfilViewModelFactory, val ajustesFactory: Aj
         val navigator = LocalNavigator.currentOrThrow // Para poder volver o ir a otra
 
         val viewmodel = rememberScreenModel { factory.create() }
+        val idUsuario = SettingsManager.getIdUsuarioActual()
 
-        val uiState by viewmodel.uiState.collectAsStateWithLifecycle()
+        LaunchedEffect(idUsuario) {
+            viewmodel.cargarUsuario(idUsuario)
+        }
 
         PerfilContent(
             viewmodel,
@@ -52,11 +56,26 @@ class PerfilScreen(val factory: MiPerfilViewModelFactory, val ajustesFactory: Aj
 @Composable
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 fun PerfilContent(viewModel: MiPerfilViewModel, onAjustes: () -> Unit) {
+    val usuario by viewModel.uiState.collectAsStateWithLifecycle()
 
     ScaffoldBase(
-        titulo = "Perfil",
+        titulo = usuario?.nombre ?: SettingsManager.getNombreUsuario(),
         onAjustes = onAjustes
     ) {
-
+        if (usuario == null) {
+            Text(
+                text = "No se ha podido cargar el usuario",
+                style = MaterialTheme.typography.titleLarge,
+                modifier = Modifier.padding(16.dp)
+            )
+        } else {
+            Column {
+                Text("ID: ${usuario!!.idUsuario}", style = MaterialTheme.typography.titleMedium)
+//                Text(usuario!!.nombre, style = MaterialTheme.typography.titleLarge)
+                Text(usuario!!.username, style = MaterialTheme.typography.titleMedium)
+                Text(usuario!!.descripcion?: "Sin descripcion", style = MaterialTheme.typography.titleMedium)
+                Text(if ((usuario!!.riesgoBurnout ?: 0.0) > 33.0) "Riesgo de Burn out" else "No hay riesgo")
+            }
+        }
     }
 }

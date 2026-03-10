@@ -23,6 +23,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import cafe.adriel.voyager.core.model.rememberScreenModel
 import dev.wdona.burnt_out.presentation.ui.components.equipo.MiembroCard
 import dev.wdona.burnt_out.presentation.ui.components.template.ScaffoldBase
+import dev.wdona.burnt_out.shared.utils.SettingsManager
 
 class EquipoScreen(val factory: MiEquipoViewModelFactory) : Screen {
     @Composable
@@ -30,9 +31,10 @@ class EquipoScreen(val factory: MiEquipoViewModelFactory) : Screen {
         val navigator = LocalNavigator.currentOrThrow // Para poder volver o ir a otra
 
         val viewModel = rememberScreenModel { factory.create() }
-        val idEquipo = 1L // TODO: COGER ID DEL EQUIPO DEL USUARIO ACTIVO
+        val idEquipo = SettingsManager.getIdEquipoActual()
 
         LaunchedEffect(idEquipo) {
+            viewModel.cargarEquipoPorId(idEquipo)
             viewModel.cargarMiembrosEquipo(idEquipo)
         }
 
@@ -47,7 +49,7 @@ class EquipoScreen(val factory: MiEquipoViewModelFactory) : Screen {
         val miembros by viewModel.listaMiembros.collectAsStateWithLifecycle()
 
         ScaffoldBase(
-            titulo = equipo?.titulo ?: "Mi equipo (off)",
+            titulo = (equipo?.titulo ?: "Mi equipo (off)") + " (" + (equipo?.puntuacion ?: "0") + "pts)",
         ) {
             Column {
                 LazyVerticalGrid(

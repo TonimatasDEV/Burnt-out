@@ -14,6 +14,11 @@ data class AjustesUiState(
     val esPrimeraEjecucion: Boolean = true,
     val token: String = "",
     val idUsuario: Long = Long.MIN_VALUE,
+    val idOrganizacion: Long = Long.MIN_VALUE,
+    val idEquipo: Long = Long.MIN_VALUE,
+    val nombreUsuario: String = "Offline",
+    val versionApp: String = "0.1.03",
+    // w.x.yz -> w. major version, x. centena de commits, yz. -> decena/ud de commit
 )
 
 class AjustesViewModel(private val repository: AjusteRepository) : ScreenModel {
@@ -21,13 +26,14 @@ class AjustesViewModel(private val repository: AjusteRepository) : ScreenModel {
         AjustesUiState(
             esPrimeraEjecucion = SettingsManager.getPrimeraEjecucion(),
             token = SettingsManager.getTokenUsuario(),
-            idUsuario = SettingsManager.getIdUsuarioActual()
+            idUsuario = SettingsManager.getIdUsuarioActual(),
+            idOrganizacion = SettingsManager.getIdOrganizacionActual(),
+            idEquipo = SettingsManager.getIdEquipoActual(),
+            nombreUsuario = SettingsManager.getNombreUsuario(),
         )
     )
 
     val ajustesUiState = _ajustesUiState.asStateFlow()
-
-
 
     // Deprecated??
     var _listaAjustes = MutableStateFlow<List<Ajuste?>>(emptyList())

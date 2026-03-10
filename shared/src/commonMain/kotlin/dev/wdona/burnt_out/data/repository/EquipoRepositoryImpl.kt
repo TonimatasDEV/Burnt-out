@@ -31,7 +31,7 @@ class EquipoRepositoryImpl(
                     equiposRemotos.forEach { local.insertOrUpdateEquipo(it) }
                 }
             } catch (e: Exception) {
-                println("Sincronización de equipos omitida (servidor offline)")
+                println("Error al sincronizar equipos")
             }
         }
         try {
@@ -47,7 +47,7 @@ class EquipoRepositoryImpl(
                 val equipoRemoto = remote.getEquipoById(idEquipo)
                 local.insertOrUpdateEquipo(equipoRemoto)
             } catch (e: Exception) {
-                println("Sincronización de equipo individual omitida")
+                println("Error al sincronizar equipos")
             }
         }
         try {

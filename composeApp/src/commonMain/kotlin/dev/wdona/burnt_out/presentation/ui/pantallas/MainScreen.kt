@@ -22,6 +22,7 @@ import dev.wdona.burnt_out.presentation.ui.pantallas.equipo.LeaderboardScreen
 import dev.wdona.burnt_out.presentation.ui.pantallas.perfil.PerfilScreen
 import dev.wdona.burnt_out.presentation.ui.pantallas.tablero.TablerosScreen
 import dev.wdona.burnt_out.presentation.viewmodel.viewmodelfactories.*
+import dev.wdona.burnt_out.shared.utils.SettingsManager
 
 class MainScreen(
     private val tareaFactory: TareasViewModelFactory,
@@ -116,7 +117,7 @@ private class LeaderboardTab(val factory: LeaderboardViewModelFactory) : Tab {
 
     @Composable
     override fun Content() {
-        Navigator(LeaderboardScreen(factory, 1L)) { navigator ->
+        Navigator(LeaderboardScreen(factory, SettingsManager.getIdOrganizacionActual())) { navigator ->
             SlideTransition(navigator)
         }
     }

@@ -1,21 +1,23 @@
 package dev.wdona.burnt_out.data.dao.impl
 
+import com.russhwolf.settings.Settings
 import dev.wdona.burnt_out.data.dao.UsuarioDao
 import dev.wdona.burnt_out.data.datasource.mapper.UsuarioMapper
 import dev.wdona.burnt_out.shared.db.AppDatabase
 import dev.wdona.burnt_out.shared.domain.Usuario
+import dev.wdona.burnt_out.shared.utils.SettingsManager
 
 class UsuarioDaoImpl(appDatabase: AppDatabase) : UsuarioDao {
     private val queries = appDatabase.appDatabaseQueries
 
     override suspend fun getUserById(idUsuario: Long): Usuario {
         val entity = queries.getUserById(idUsuario).executeAsOne()
-        return UsuarioMapper.toDomain(entity, 0L) // TODO: Obtener idEquipo real
+        return UsuarioMapper.toDomain(entity, SettingsManager.getIdEquipoActual()) // FIXME: Obtener idEquipo real
     }
 
     override suspend fun getUsuariosByOrg(idOrg: Long): List<Usuario> {
         return queries.getUsuariosByOrg(idOrg).executeAsList().map {
-            UsuarioMapper.toDomain(it, 0L)
+            UsuarioMapper.toDomain(it, SettingsManager.getIdEquipoActual()) // FIXME
         }
     }
 

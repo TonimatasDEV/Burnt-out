@@ -35,15 +35,18 @@ fun SettingsContent(viewModel: AjustesViewModel, onVolver: () -> Unit) {
     ){
         Column {
             FilaAjusteSwitch(
-                if (ajustes.esPrimeraEjecucion) "Primera" else "Otra ejecucion",
+                if (ajustes.esPrimeraEjecucion) "Es primera ejecucion" else "No es primera ejecucion",
                 ajustes.esPrimeraEjecucion,
                 onSwitch = {
                     viewModel.togglePrimeraEjecucion()
                 }
             )
             FilaAjusteInfo("Id de usuario: " + ajustes.idUsuario)
-
             FilaAjusteInfo("Token de usuario: " + ajustes.token.ifEmpty { "No hay token" })
+            FilaAjusteInfo("Nombre de usuario: " + ajustes.nombreUsuario.ifEmpty { "Offline" })
+            FilaAjusteInfo("Organizacion de usuario: " + ajustes.idOrganizacion)
+            FilaAjusteInfo("Equipo de usuario: " + ajustes.idEquipo)
+            FilaAjusteInfo("Version de app: " + ajustes.versionApp)
         }
     }
 

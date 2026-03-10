@@ -12,7 +12,6 @@ object SettingsManager {
     private const val KEY_ID_EQUIPO_ACTUAL = "id_equipo"
     private const val KEY_TOKEN_USUARIO = "token_usuario"
 
-
     fun setIdUsuarioActual(id: Long?) {
         settings.putLong(KEY_ID_USUARIO_ACTUAL, id ?: Long.MIN_VALUE)
     }
@@ -37,5 +36,41 @@ object SettingsManager {
 
     fun getPrimeraEjecucion(): Boolean {
         return settings.getBoolean(KEY_PRIMERA_EJECUCION, true)
+    }
+
+    fun getIdEquipoActual(): Long {
+        val id = settings.getLong(KEY_ID_EQUIPO_ACTUAL, Long.MIN_VALUE)
+        return id
+    }
+
+    fun getRolActual(): Long {
+        val id = settings.getLong(KEY_ROL_ACTUAL, Long.MIN_VALUE)
+        return id
+    }
+
+    fun getIdOrganizacionActual(): Long {
+        val id = settings.getLong(KEY_ID_ORGANIZACION_ACTUAL, Long.MIN_VALUE)
+        return id
+    }
+
+    fun getNombreUsuario(): String {
+        val nombre = settings.getString(KEY_NOMBRE_USUARIO, "")
+        return nombre
+    }
+
+    fun setNombreUsuario(nombre: String) {
+        settings.putString(KEY_NOMBRE_USUARIO, nombre)
+    }
+
+    fun setIdOrganizacionActual(id: Long) {
+        settings.putLong(KEY_ID_ORGANIZACION_ACTUAL, id)
+    }
+
+    fun setRolActual(id: Long) {
+        settings.putLong(KEY_ROL_ACTUAL, id)
+    }
+
+    fun setIdEquipoActual(id: Long) {
+        settings.putLong(KEY_ID_EQUIPO_ACTUAL, id)
     }
 }

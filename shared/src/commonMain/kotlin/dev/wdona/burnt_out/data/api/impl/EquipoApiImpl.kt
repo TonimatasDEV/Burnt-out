@@ -6,7 +6,7 @@ import dev.wdona.burnt_out.shared.domain.Usuario
 
 class EquipoApiImpl : EquipoApi {
     override suspend fun getEquipoById(idEquipo: Long): Equipo {
-        return Equipo(idEquipo, "Equipo Remoto", 100, 1, emptyList())
+        throw Exception("Error al obtener el equipo del servidor")
     }
 
     override suspend fun getEquiposByOrg(idOrg: Long): List<Equipo> {

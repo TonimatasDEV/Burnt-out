@@ -5,26 +5,27 @@ import dev.wdona.burnt_out.shared.domain.Usuario
 
 class UsuarioApiImpl : UsuarioApi {
     override suspend fun getUserById(idUsuario: Long): Usuario {
-        return Usuario(idUsuario, "user_remote", "pass", "Nombre Remoto", 0.1, "Desc", 1, 1)
+//        return Usuario(idUsuario, "nombre api", "pass", "Nombre api", 0.1, "Descripcion aoehudtanoeusahoenuts aotnehuano  tuahoteus  utahs", 1, 1)
+        throw Exception("No hay conexion todavia")
     }
 
     override suspend fun getUsuariosByOrg(idOrg: Long): List<Usuario> {
-        return emptyList()
+        throw Exception("No hay conexion todavia")
     }
 
     override suspend fun crearUsuario(usuario: Usuario): Boolean {
-        return true
+        throw Exception("No hay conexion todavia")
     }
 
     override suspend fun actualizarUsuario(usuario: Usuario): Boolean {
-        return true
+        throw Exception("No hay conexion todavia")
     }
 
     override suspend fun eliminarUsuario(idUsuario: Long): Boolean {
-        return true
+        throw Exception("No hay conexion todavia")
     }
 
     override suspend fun login(username: String, contrasena: String): Usuario {
-        return Usuario(1, username, contrasena, "Usuario Logueado", 0.0, "", 1, 1)
+        throw Exception("No hay conexion todavia")
     }
 }

@@ -23,16 +23,18 @@ class UsuarioRepositoryImpl(
     private val repositoryScope = CoroutineScope(Dispatchers.Default)
 
     override suspend fun getUserById(idUsuario: Long): Usuario = withContext(Dispatchers.IO) {
-        repositoryScope.launch {
-            try {
-                val usuario = remote.getUserById(idUsuario)
+        try {
+            val usuario = remote.getUserById(idUsuario)
+            if (usuario != null) {
                 local.eliminarUsuario(usuario.idUsuario)
                 local.crearUsuario(usuario)
-            } catch (e: Exception) {
-                println("Servidor offline (getUserById): ${e.message}")
             }
+            usuario
+        } catch (e: Exception) {
+            println("Servidor offline (getUserById): ${e.message}")
+            local.getUserById(idUsuario)
         }
-        local.getUserById(idUsuario)
+
     }
 
     override suspend fun getUsuariosByOrg(idOrg: Long): List<Usuario> = withContext(Dispatchers.IO) {
