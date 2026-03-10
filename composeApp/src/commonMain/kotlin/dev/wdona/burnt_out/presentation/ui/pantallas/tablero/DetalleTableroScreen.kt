@@ -12,7 +12,6 @@ import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -25,6 +24,7 @@ import cafe.adriel.voyager.navigator.currentOrThrow
 import dev.wdona.burnt_out.presentation.ui.components.tarea.CardTarea
 import dev.wdona.burnt_out.presentation.ui.components.template.ScaffoldBase
 import dev.wdona.burnt_out.presentation.ui.pantallas.tarea.MenuCrearTareaScreen
+import dev.wdona.burnt_out.presentation.ui.pantallas.tarea.TareaDetalleScreen
 import dev.wdona.burnt_out.presentation.viewmodel.viewmodelfactories.TareasViewModelFactory
 import dev.wdona.burnt_out.presentation.viewmodel.viewmodels.TareasViewModel
 
@@ -49,9 +49,12 @@ class DetalleTableroScreen(val idTablero: Long, val nombreTablero: String, val t
                 navigator.push(
                     MenuCrearTareaScreen(
                         factory = tareasViewModelFactory,
-                        idTablero = idTablero
+                        idTablero = idTablero,
                     )
                 )
+            },
+            onIrATarea = { idTarea, idTablero ->
+                navigator.push(TareaDetalleScreen(idTarea, idTablero, tareasViewModelFactory))
             }
         )
     }
@@ -64,15 +67,16 @@ fun DetalleTableroContent(
     nombreTablero: String,
     idTablero: Long,
     onVolver: () -> Unit,
-    onIrACrearTarea: (Long) -> Unit
+    onIrACrearTarea: (Long) -> Unit,
+    onIrATarea: (Long, Long) -> Unit
 ) {
     val listaTareas by tareasViewModel.listaTareas.collectAsStateWithLifecycle()
 
     ScaffoldBase(
         titulo = nombreTablero,
         onVolver = onVolver,
-        onCrear = { onIrACrearTarea(idTablero) },
-        textoFABCrear = "Crear tarea"
+        onFAB = { onIrACrearTarea(idTablero) },
+        textoFAB = "Crear tarea"
     ) {
         Column(
             modifier = Modifier
@@ -95,7 +99,7 @@ fun DetalleTableroContent(
                         .weight(1f) // Ocupa el espacio restante
                 ) {
                     items(listaTareas) { tarea ->
-                        CardTarea(tarea = tarea, onClick = {}, onCompletar = {})
+                        CardTarea(tarea = tarea, onClick = { onIrATarea(tarea.idTarea, idTablero)}, onCompletar = {})
                     }
                 }
             }

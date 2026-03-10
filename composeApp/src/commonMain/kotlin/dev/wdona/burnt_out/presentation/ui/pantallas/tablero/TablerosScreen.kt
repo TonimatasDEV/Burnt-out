@@ -1,9 +1,7 @@
 package dev.wdona.burnt_out.presentation.ui.pantallas.tablero
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
@@ -12,10 +10,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import cafe.adriel.voyager.core.model.rememberScreenModel
 import cafe.adriel.voyager.core.screen.Screen
@@ -26,6 +22,7 @@ import dev.wdona.burnt_out.presentation.ui.components.template.ScaffoldBase
 import dev.wdona.burnt_out.presentation.viewmodel.viewmodelfactories.TablerosViewModelFactory
 import dev.wdona.burnt_out.presentation.viewmodel.viewmodelfactories.TareasViewModelFactory
 import dev.wdona.burnt_out.presentation.viewmodel.viewmodels.TablerosViewModel
+import dev.wdona.burnt_out.shared.utils.SettingsManager
 
 class TablerosScreen(
     private val tableroFactory: TablerosViewModelFactory,
@@ -37,7 +34,7 @@ class TablerosScreen(
         val navigator = LocalNavigator.currentOrThrow
 
         val tablerosViewModel: TablerosViewModel = rememberScreenModel { tableroFactory.create() }
-        val idOrg = 1L
+        val idOrg = SettingsManager.getIdOrganizacionActual()
 
         LaunchedEffect(idOrg) {
             tablerosViewModel.cargarTableros(idOrg)
@@ -71,8 +68,8 @@ class TablerosScreen(
 
         ScaffoldBase(
             titulo = "Tableros",
-            onCrear = onIrACrearTablero,
-            textoFABCrear = "Nuevo Tablero"
+            onFAB = onIrACrearTablero,
+            textoFAB = "Nuevo Tablero"
         ) {
             if (listaTableros.isEmpty()) {
                 Box(

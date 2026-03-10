@@ -14,6 +14,7 @@ import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -22,6 +23,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import cafe.adriel.voyager.core.model.rememberScreenModel
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
@@ -33,15 +35,18 @@ import dev.wdona.burnt_out.presentation.viewmodel.viewmodels.TareasViewModel
 import dev.wdona.burnt_out.shared.domain.Tarea
 import dev.wdona.burnt_out.shared.utils.SettingsManager
 
-class MenuCrearTareaScreen(val factory: TareasViewModelFactory, val idTablero: Long) : Screen {
+class TareaDetalleScreen(private val idTarea: Long, private val idTablero: Long, private val factory: TareasViewModelFactory) : Screen {
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
-        val viewModel: TareasViewModel = rememberScreenModel { factory.create() }
+        val viewModel = rememberScreenModel { factory.create() }
 
-        MenuCrearTareaContent(
-            idTablero = idTablero,
-            tareasViewModel = viewModel,
+        LaunchedEffect(idTarea, idTablero) {
+            viewModel.cargarTareaPorId(idTarea, idTablero)
+        }
+
+        TareaDetalleContent(
+            viewModel,
             onVolver = { navigator.pop() }
         )
     }
@@ -49,38 +54,47 @@ class MenuCrearTareaScreen(val factory: TareasViewModelFactory, val idTablero: L
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MenuCrearTareaContent(idTablero: Long, tareasViewModel: TareasViewModel, onVolver: () -> Unit) {
+fun TareaDetalleContent(viewModel: TareasViewModel, onVolver: () -> Unit) {
+    val tarea by viewModel.uiState.collectAsStateWithLifecycle()
+
     var textStateNombreTarea by remember { mutableStateOf("") }
     var textStateDescripcion by remember { mutableStateOf("") }
 
     var estadoExpanded by remember { mutableStateOf(false) }
     var estadoSelected by remember { mutableStateOf(TipoEstadoTarea.PENDIENTE) }
 
+    LaunchedEffect(tarea) {
+        textStateNombreTarea = tarea?.titulo ?: ""
+        textStateDescripcion = tarea?.descripcion ?: ""
 
+        for (estado in TipoEstadoTarea.entries) {
+            if (estado.string.equals(tarea?.estado, ignoreCase = true)) {
+                estadoSelected = estado
+                break
+            }
+        }
+    }
     val ejecutarEnvio = {
         if (textStateNombreTarea.isNotBlank()) {
-            val nuevaTarea = Tarea(
-                idTarea = 0, // FIXME
+            val tarea = Tarea(
+                idTarea = tarea?.idTarea ?: Long.MIN_VALUE,
                 titulo = textStateNombreTarea,
                 descripcion = textStateDescripcion,
                 estado = estadoSelected.string,
-                idTableroPerteneciente = idTablero,
+                idTableroPerteneciente = tarea?.idTableroPerteneciente ?: Long.MIN_VALUE,
                 idUsuarioAsignado = SettingsManager.getIdUsuarioActual(),
                 idSubtareas = emptyList()
             )
-            tareasViewModel.crearTarea(nuevaTarea)
-
-            textStateNombreTarea = ""
-            textStateDescripcion = ""
+            viewModel.actualizarTarea(tarea)
             onVolver()
         }
     }
 
     ScaffoldBase(
-        titulo = "Nueva Tarea",
+        titulo = "Editar Tarea: " + (tarea?.titulo ?: ""),
         onVolver = onVolver,
         onFAB = ejecutarEnvio,
-        textoFAB = "Crear Tarea"
+        textoFAB = "Editar Tarea"
     ) {
         Column(
             modifier = Modifier
@@ -133,7 +147,7 @@ fun MenuCrearTareaContent(idTablero: Long, tareasViewModel: TareasViewModel, onV
             OutlinedTextField(
                 value = textStateDescripcion,
                 onValueChange = { textStateDescripcion = it },
-                label = { Text("Descripción") },
+                label = { Text("Descripcion") },
                 placeholder = { Text("Detalles de la tarea...") },
                 modifier = Modifier
                     .fillMaxHeight(0.4f)
@@ -148,3 +162,6 @@ fun MenuCrearTareaContent(idTablero: Long, tareasViewModel: TareasViewModel, onV
         }
     }
 }
+
+
+

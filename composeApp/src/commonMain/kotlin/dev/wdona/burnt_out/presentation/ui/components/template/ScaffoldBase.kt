@@ -18,8 +18,8 @@ fun ScaffoldBase(
     titulo: String = "",
     onVolver: (() -> Unit)? = null,
     onAjustes: (() -> Unit)? = null,
-    onCrear: (() -> Unit)? = null,
-    textoFABCrear: String? = null,
+    onFAB: (() -> Unit)? = null,
+    textoFAB: String? = null,
     bottomBar: @Composable () -> Unit = {},
     content: @Composable (PaddingValues) -> Unit
 ) {
@@ -33,8 +33,8 @@ fun ScaffoldBase(
             }
         },
         floatingActionButton = {
-            if (onCrear != null) {
-                FABCrear(textoFABCrear ?: "Nuevo", onCrear)
+            if (onFAB != null) {
+                FABCrear(textoFAB ?: "Nuevo", onFAB)
             }
         },
         bottomBar = bottomBar

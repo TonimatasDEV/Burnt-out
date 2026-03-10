@@ -24,7 +24,9 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import dev.wdona.burnt_out.presentation.ui.components.template.ScaffoldBase
+import dev.wdona.burnt_out.presentation.ui.pantallas.SettingsContent
 import dev.wdona.burnt_out.shared.domain.Tablero
+import dev.wdona.burnt_out.shared.utils.SettingsManager
 
 
 class MenuCrearTableroScreen(val factory: TablerosViewModelFactory) : Screen {
@@ -52,8 +54,8 @@ fun MenuCrearTableroContent(tablerosViewModel: TablerosViewModel, onVolver: () -
                 Tablero(
                     0L,
                     textStateNombreTablero,
-                    1L, // FIXME
-                    1L // FIXME
+                    SettingsManager.getIdOrganizacionActual(), // FIXME
+                    SettingsManager.getIdEquipoActual() // FIXME
                 )
             )
 
@@ -66,8 +68,8 @@ fun MenuCrearTableroContent(tablerosViewModel: TablerosViewModel, onVolver: () -
     ScaffoldBase(
         titulo = "Crear Tablero",
         onVolver = onVolver,
-        onCrear = ejecutarEnvio,
-        textoFABCrear = "Crear"
+        onFAB = ejecutarEnvio,
+        textoFAB = "Crear"
     ) {
         Column(
             modifier = Modifier
