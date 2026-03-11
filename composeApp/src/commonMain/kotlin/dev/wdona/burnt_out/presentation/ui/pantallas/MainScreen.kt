@@ -36,12 +36,10 @@ class MainScreen(
 
     @Composable
     override fun Content() {
-        val tabNavigators = remember { mutableMapOf<String, Navigator>() }
-
-        val tablerosTab = remember { TablerosTab(tableroFactory, tareaFactory, tabNavigators) }
-        val equipoTab = remember { EquipoTab(equipoFactory, perfilFactory, ajustesFactory, tabNavigators) }
-        val leaderboardTab = remember { LeaderboardTab(leaderboardFactory, ajustesFactory, equipoFactory, perfilFactory, tabNavigators) }
-        val perfilTab = remember { PerfilTab(perfilFactory, ajustesFactory, tabNavigators) }
+        val tablerosTab = remember { TablerosTab(tableroFactory, tareaFactory) }
+        val equipoTab = remember { EquipoTab(equipoFactory, perfilFactory, ajustesFactory) }
+        val leaderboardTab = remember { LeaderboardTab(leaderboardFactory, ajustesFactory, equipoFactory, perfilFactory) }
+        val perfilTab = remember { PerfilTab(perfilFactory, ajustesFactory) }
 
         TabNavigator(tablerosTab) { tabNavigator ->
             Scaffold(
@@ -80,10 +78,10 @@ class MainScreen(
                 },
                 bottomBar = {
                     NavigationBar {
-                        TabNavigationItem(tablerosTab, tabNavigator, tabNavigators)
-                        TabNavigationItem(equipoTab, tabNavigator, tabNavigators)
-                        TabNavigationItem(leaderboardTab, tabNavigator, tabNavigators)
-                        TabNavigationItem(perfilTab, tabNavigator, tabNavigators)
+                        TabNavigationItem(tablerosTab, tabNavigator)
+                        TabNavigationItem(equipoTab, tabNavigator)
+                        TabNavigationItem(leaderboardTab, tabNavigator)
+                        TabNavigationItem(perfilTab, tabNavigator)
                     }
                 }
             )
@@ -94,16 +92,13 @@ class MainScreen(
 @Composable
 private fun RowScope.TabNavigationItem(
     tab: Tab,
-    tabNavigator: TabNavigator,
-    navigators: MutableMap<String, Navigator>
+    tabNavigator: TabNavigator
 ) {
     val isSelected = tabNavigator.current.key == tab.key
 
     NavigationBarItem(
         selected = isSelected,
         onClick = {
-            navigators.values.forEach { it.popUntilRoot() }
-            
             if (!isSelected) {
                 tabNavigator.current = tab
             }
@@ -118,8 +113,7 @@ private fun RowScope.TabNavigationItem(
 
 private class TablerosTab(
     val factory: TablerosViewModelFactory,
-    val tareaFactory: TareasViewModelFactory,
-    val navigators: MutableMap<String, Navigator>
+    val tareaFactory: TareasViewModelFactory
 ) : Tab {
     override val key = "TablerosTab"
     @get:Composable
@@ -129,7 +123,6 @@ private class TablerosTab(
     @Composable
     override fun Content() {
         Navigator(TablerosScreen(factory, tareaFactory)) { navigator ->
-            navigators[key] = navigator
             SlideTransition(navigator)
         }
     }
@@ -138,8 +131,7 @@ private class TablerosTab(
 private class EquipoTab(
     val factory: MiEquipoViewModelFactory,
     val perfilFactory: MiPerfilViewModelFactory,
-    val settingsFactory: AjustesViewModelFactory,
-    val navigators: MutableMap<String, Navigator>
+    val settingsFactory: AjustesViewModelFactory
 ) : Tab {
     override val key = "EquipoTab"
     @get:Composable
@@ -149,7 +141,6 @@ private class EquipoTab(
     @Composable
     override fun Content() {
         Navigator(EquipoScreen(factory, perfilFactory, settingsFactory)) { navigator ->
-            navigators[key] = navigator
             SlideTransition(navigator)
         }
     }
@@ -159,8 +150,7 @@ private class LeaderboardTab(
     val factory: LeaderboardViewModelFactory,
     val settingsFactory: AjustesViewModelFactory,
     val equipoFactory: MiEquipoViewModelFactory,
-    val perfilFactory: MiPerfilViewModelFactory,
-    val navigators: MutableMap<String, Navigator>
+    val perfilFactory: MiPerfilViewModelFactory
 ) : Tab {
     override val key = "LeaderboardTab"
     @get:Composable
@@ -175,7 +165,6 @@ private class LeaderboardTab(
             perfilFactory = perfilFactory,
             ajustesFactory = settingsFactory
         )) { navigator ->
-            navigators[key] = navigator
             SlideTransition(navigator)
         }
     }
@@ -183,8 +172,7 @@ private class LeaderboardTab(
 
 private class PerfilTab(
     val factory: MiPerfilViewModelFactory,
-    val ajustesFactory: AjustesViewModelFactory,
-    val navigators: MutableMap<String, Navigator>
+    val ajustesFactory: AjustesViewModelFactory
 ) : Tab {
     override val key = "PerfilTab"
     @get:Composable
@@ -194,7 +182,6 @@ private class PerfilTab(
     @Composable
     override fun Content() {
         Navigator(PerfilScreen(factory, ajustesFactory)) { navigator ->
-            navigators[key] = navigator
             SlideTransition(navigator)
         }
     }

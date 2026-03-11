@@ -27,7 +27,7 @@ fun App(
     BurntOutMaterialTheme {
         Surface(
             modifier = Modifier.fillMaxSize(),
-            color = if (isSystemInDarkTheme()) DarkColorScheme.background else LightColorScheme.background
+            color = BurntOutMaterialTheme.getColorScheme().background
         ) {
             Navigator(
                 MainScreen(
@@ -39,6 +39,9 @@ fun App(
                     ajustesFactory = ajustesViewModelFactory
                 )
             ) { navigator ->
+                PressBackHandler(enabled = navigator.canPop) {
+                    navigator.pop()
+                }
                 SlideTransition(navigator)
             }
         }
