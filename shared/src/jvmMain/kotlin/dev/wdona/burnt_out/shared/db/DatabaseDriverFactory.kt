@@ -6,15 +6,22 @@ import java.io.File
 
 actual class DatabaseDriverFactory {
     actual fun createDriver(): SqlDriver {
-        val databasePath = "test.db"
-        val dbFile = File(databasePath)
+        val userHome = System.getProperty("user.home")
+        val appDataDir = File(userHome, ".burnt_out_app")
+        
+        if (!appDataDir.exists()) {
+            appDataDir.mkdirs()
+        }
+
+        val databaseFile = File(appDataDir, "burnt_out.db")
+        val databasePath = databaseFile.absolutePath
+        
         val driver: SqlDriver = JdbcSqliteDriver("jdbc:sqlite:$databasePath")
 
-        val isNewDatabase = !dbFile.exists()
+        val isNewDatabase = !databaseFile.exists()
         if (isNewDatabase) {
             AppDatabase.Schema.create(driver)
             val database = AppDatabase(driver)
-
             insertarDatosIniciales(database)
         }
 

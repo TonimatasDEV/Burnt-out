@@ -20,8 +20,8 @@ fun main() {
     application {
         Window(
             onCloseRequest = ::exitApplication,
-            alwaysOnTop = true,
-            title = "Burnt out",
+//            alwaysOnTop = true,
+            title = "Burn't out",
             icon = org.jetbrains.compose.resources.painterResource(Res.drawable.logoBurntOutIcon)
         ) {
             val tareasViewModelFactory = TareasViewModelFactory()

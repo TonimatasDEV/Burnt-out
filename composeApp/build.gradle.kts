@@ -11,13 +11,19 @@ plugins {
 }
 
 kotlin {
+    jvmToolchain(17)
+
     androidTarget {
         compilerOptions {
             jvmTarget.set(JvmTarget.JVM_11)
         }
     }
     
-    jvm()
+    jvm {
+        compilerOptions {
+            jvmTarget.set(JvmTarget.JVM_11)
+        }
+    }
     
     sourceSets {
         androidMain.dependencies {
@@ -65,11 +71,18 @@ android {
         minSdk = libs.versions.android.minSdk.get().toInt()
         targetSdk = libs.versions.android.targetSdk.get().toInt()
         versionCode = 1
-        versionName = "1.0"
+        versionName = "1.1.13"
     }
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
+            excludes += "/META-INF/DEPENDENCIES"
+            excludes += "/META-INF/LICENSE*"
+            excludes += "/META-INF/NOTICE*"
+            excludes += "/META-INF/*.kotlin_module"
+            excludes += "**/kotlin/**"
+            excludes += "**/*.txt"
+            excludes += "/META-INF/io.netty.versions.properties"
         }
     }
     buildTypes {
@@ -95,9 +108,27 @@ compose.desktop {
         mainClass = "dev.wdona.burnt_out.MainKt"
 
         nativeDistributions {
-            targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
-            packageName = "dev.wdona.burnt_out"
-            packageVersion = "1.0.01"
+            // WIN - DEB - ARCH
+            targetFormats(TargetFormat.Msi, TargetFormat.Deb, TargetFormat.Rpm)
+            packageName = "BurntOutApp"
+            packageVersion = "1.1.13"
+            
+             buildTypes.release.proguard {
+                isEnabled.set(false)
+            }
+
+            linux {
+                shortcut = true
+                menuGroup = "Office"
+                appCategory = "Office"
+            }
+
+            windows {
+                shortcut = true
+                menu = true
+                menuGroup = "BurntOut"
+                console = true
+            }
         }
     }
 }
