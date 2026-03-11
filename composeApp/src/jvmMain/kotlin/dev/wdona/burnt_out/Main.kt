@@ -1,45 +1,68 @@
 package dev.wdona.burnt_out
 
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Surface
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import burnt_out.composeapp.generated.resources.Res
 import burnt_out.composeapp.generated.resources.logoBurntOutIcon
-import dev.wdona.burnt_out.presentation.viewmodel.viewmodelfactories.AjustesViewModelFactory
-import dev.wdona.burnt_out.presentation.viewmodel.viewmodelfactories.MiEquipoViewModelFactory
-import dev.wdona.burnt_out.presentation.viewmodel.viewmodelfactories.LeaderboardViewModelFactory
-import dev.wdona.burnt_out.presentation.viewmodel.viewmodelfactories.MiPerfilViewModelFactory
-import dev.wdona.burnt_out.presentation.viewmodel.viewmodelfactories.TablerosViewModelFactory
-import dev.wdona.burnt_out.presentation.viewmodel.viewmodelfactories.TareasViewModelFactory
+import dev.wdona.burnt_out.presentation.ui.theme.BurntOutMaterialTheme
+import dev.wdona.burnt_out.presentation.viewmodel.viewmodelfactories.*
 import dev.wdona.burnt_out.shared.db.DatabaseDriverFactory
 import dev.wdona.burnt_out.shared.db.DatabaseInit
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import org.jetbrains.compose.resources.painterResource
 
-fun main() {
-    val driver = DatabaseDriverFactory().createDriver()
-    DatabaseInit.init(driver)
+fun main() = application {
+    var isDatabaseReady by remember { mutableStateOf(false) }
 
-    application {
-        Window(
-            onCloseRequest = ::exitApplication,
-//            alwaysOnTop = true,
-            title = "Burn't out",
-            icon = org.jetbrains.compose.resources.painterResource(Res.drawable.logoBurntOutIcon)
-        ) {
-            val tareasViewModelFactory = TareasViewModelFactory()
-            val miEquipoViewModelFactory = MiEquipoViewModelFactory()
-            val miPerfilViewModelFactory = MiPerfilViewModelFactory()
-            val tablerosViewModelFactory = TablerosViewModelFactory()
-            val leaderboardViewModelFactory = LeaderboardViewModelFactory()
-            val ajustesViewModelFactory = AjustesViewModelFactory()
+    LaunchedEffect(Unit) {
+        try {
+            withContext(Dispatchers.IO) {
+                val driver = DatabaseDriverFactory().createDriver()
+                DatabaseInit.init(driver)
+            }
+            isDatabaseReady = true
+        } catch (e: Exception) {
+            println("Error al inicializar la base de datos: ${e.message}")
+            e.printStackTrace()
+        }
+    }
 
-
-            App(
-                tareasViewModelFactory,
-                miEquipoViewModelFactory = miEquipoViewModelFactory,
-                miPerfilViewModelFactory = miPerfilViewModelFactory,
-                tablerosViewModelFactory = tablerosViewModelFactory,
-                leaderboardViewModelFactory = leaderboardViewModelFactory,
-                ajustesViewModelFactory = ajustesViewModelFactory
-            )
+    Window(
+        onCloseRequest = ::exitApplication,
+        title = "Burn't out",
+        icon = painterResource(Res.drawable.logoBurntOutIcon) // FIXME NO FUNCINOA
+    ) {
+        BurntOutMaterialTheme {
+            Surface (
+                modifier = Modifier.fillMaxSize(),
+                color = BurntOutMaterialTheme.getColorScheme().background
+            ){
+                if (isDatabaseReady) {
+                    App(
+                        tareaFactory = TareasViewModelFactory(),
+                        miEquipoViewModelFactory = MiEquipoViewModelFactory(),
+                        miPerfilViewModelFactory = MiPerfilViewModelFactory(),
+                        tablerosViewModelFactory = TablerosViewModelFactory(),
+                        leaderboardViewModelFactory = LeaderboardViewModelFactory(),
+                        ajustesViewModelFactory = AjustesViewModelFactory()
+                    )
+                } else {
+                    Box(
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        CircularProgressIndicator()
+                    }
+                }
+            }
         }
     }
 }

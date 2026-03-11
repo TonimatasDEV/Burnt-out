@@ -111,9 +111,11 @@ compose.desktop {
             // WIN - DEB - ARCH
             targetFormats(TargetFormat.Msi, TargetFormat.Deb, TargetFormat.Rpm)
             packageName = "BurntOutApp"
-            packageVersion = "1.1.13"
+            packageVersion = "1.1.14"
             
-             buildTypes.release.proguard {
+            modules("java.sql")
+
+            buildTypes.release.proguard {
                 isEnabled.set(false)
             }
 
@@ -127,7 +129,6 @@ compose.desktop {
                 shortcut = true
                 menu = true
                 menuGroup = "BurntOut"
-                console = true
             }
         }
     }
