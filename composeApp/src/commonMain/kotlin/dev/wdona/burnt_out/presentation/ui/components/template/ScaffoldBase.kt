@@ -10,27 +10,29 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import dev.wdona.burnt_out.presentation.ui.components.common.FABCrear
-import dev.wdona.burnt_out.presentation.ui.components.common.InfoTopBarCustomOnVolver
-import dev.wdona.burnt_out.presentation.ui.components.common.InfoTopBarCustomTitle
+import dev.wdona.burnt_out.presentation.ui.components.common.MainTopBar
 
 @Composable
 fun ScaffoldBase(
     titulo: String = "",
+    titleIcon: @Composable (() -> Unit)? = null,
     onVolver: (() -> Unit)? = null,
     onAjustes: (() -> Unit)? = null,
     onFAB: (() -> Unit)? = null,
     textoFAB: String? = null,
+
     bottomBar: @Composable () -> Unit = {},
     content: @Composable (PaddingValues) -> Unit
 ) {
     Scaffold(
         contentWindowInsets = WindowInsets(0, 0, 0, 0),
         topBar = {
-            if (onVolver != null) {
-                InfoTopBarCustomOnVolver(titulo, onVolver, onAjustes)
-            } else {
-                InfoTopBarCustomTitle(titulo, onAjustes)
-            }
+            MainTopBar(
+                title = titulo,
+                onVolver = onVolver,
+                onAjustes = onAjustes,
+                titleIcon = titleIcon
+            )
         },
         floatingActionButton = {
             if (onFAB != null) {

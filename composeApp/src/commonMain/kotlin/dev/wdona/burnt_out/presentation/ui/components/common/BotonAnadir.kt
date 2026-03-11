@@ -6,7 +6,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 
 @Composable
-fun AnadirButton(accion: () -> Unit) {
+fun BotonAnadir(accion: () -> Unit) {
     TextButton(onClick = { accion() }) {
         Text(text = "+",
             style = MaterialTheme.typography.headlineMedium

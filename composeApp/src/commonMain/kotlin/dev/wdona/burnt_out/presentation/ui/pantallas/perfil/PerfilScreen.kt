@@ -12,6 +12,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ExitToApp
 import androidx.compose.material.icons.filled.CloudOff
+import androidx.compose.material.icons.filled.Person4
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
@@ -67,10 +68,29 @@ class PerfilScreen(val factory: MiPerfilViewModelFactory, val ajustesFactory: Aj
 fun PerfilContent(viewModel: PerfilViewModel, onAjustes: () -> Unit, onVolver: (() -> Unit)? = null) {
     val usuario by viewModel.uiState.collectAsStateWithLifecycle()
 
+    val titleIcon = @Composable {
+        if (usuario != null) {
+            Icon(
+                imageVector = Icons.Default.Person4,
+                contentDescription = "Icono de usuario",
+                modifier = Modifier.padding(end = 8.dp)
+            )
+        } else {
+            Icon(
+                imageVector = Icons.Default.CloudOff,
+                contentDescription = "Icono de nube tachada",
+                modifier = Modifier
+                    .alpha(0.2f)
+                    .padding(end = 8.dp)
+            )
+        }
+    }
+
     ScaffoldBase(
         titulo = usuario?.nombre ?: "No se ha cargado el usuario",
         onAjustes = onAjustes,
-        onVolver = onVolver
+        onVolver = onVolver,
+        titleIcon = titleIcon
     ) {
         BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
             val tamanioIconoResponsive = (maxWidth * 0.5f).coerceIn(100.dp, 300.dp)
