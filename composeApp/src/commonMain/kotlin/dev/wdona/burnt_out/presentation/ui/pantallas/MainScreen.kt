@@ -1,5 +1,6 @@
 package dev.wdona.burnt_out.presentation.ui.pantallas
 
+import androidx.compose.animation.*
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.padding
@@ -46,7 +47,35 @@ class MainScreen(
             Scaffold(
                 content = { paddingValues ->
                     Box(modifier = Modifier.padding(paddingValues)) {
-                        CurrentTab()
+                        AnimatedContent(
+                            targetState = tabNavigator.current,
+                            transitionSpec = {
+                                fun getIndiceTab(tab: Tab): Int {
+                                    return when (tab) {
+                                        is TablerosTab -> 0
+                                        is EquipoTab -> 1
+                                        is LeaderboardTab -> 2
+                                        is PerfilTab -> 3
+                                        else -> 0
+                                    }
+                                }
+
+                                val indiceTarget = getIndiceTab(targetState)
+                                val indiceInicial = getIndiceTab(initialState)
+
+                                val direccion = if (indiceTarget > indiceInicial) {
+                                    AnimatedContentTransitionScope.SlideDirection.Left
+                                } else {
+                                    AnimatedContentTransitionScope.SlideDirection.Right
+                                }
+                                slideIntoContainer(direccion) togetherWith slideOutOfContainer(direccion)
+                            },
+                            label = "TransicionTab"
+                        ) { tab ->
+                            tabNavigator.saveableState(tab.key) {
+                                tab.Content()
+                            }
+                        }
                     }
                 },
                 bottomBar = {
