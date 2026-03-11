@@ -23,7 +23,7 @@ import androidx.compose.ui.unit.dp
 import dev.wdona.burnt_out.presentation.ui.pantallas.SettingsScreen
 import dev.wdona.burnt_out.presentation.viewmodel.viewmodelfactories.AjustesViewModelFactory
 
-class PerfilScreen(val factory: MiPerfilViewModelFactory, val ajustesFactory: AjustesViewModelFactory) : Screen {
+class PerfilScreen(val factory: MiPerfilViewModelFactory, val ajustesFactory: AjustesViewModelFactory, val onVolver: (() -> Unit)? = null) : Screen {
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow // Para poder volver o ir a otra
@@ -37,7 +37,8 @@ class PerfilScreen(val factory: MiPerfilViewModelFactory, val ajustesFactory: Aj
 
         PerfilContent(
             viewmodel,
-            onAjustes = { navigator.push(SettingsScreen(ajustesFactory)) }
+            onAjustes = { navigator.push(SettingsScreen(ajustesFactory)) },
+            onVolver = onVolver
         )
     }
 
@@ -45,12 +46,13 @@ class PerfilScreen(val factory: MiPerfilViewModelFactory, val ajustesFactory: Aj
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
-fun PerfilContent(viewModel: PerfilViewModel, onAjustes: () -> Unit) {
+fun PerfilContent(viewModel: PerfilViewModel, onAjustes: () -> Unit, onVolver: (() -> Unit)? = null) {
     val usuario by viewModel.uiState.collectAsStateWithLifecycle()
 
     ScaffoldBase(
         titulo = usuario?.nombre ?: SettingsManager.getNombreUsuario(),
-        onAjustes = onAjustes
+        onAjustes = onAjustes,
+        onVolver = onVolver
     ) {
         if (usuario == null) {
             Text(

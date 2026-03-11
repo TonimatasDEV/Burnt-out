@@ -27,7 +27,7 @@ import dev.wdona.burnt_out.presentation.viewmodel.viewmodelfactories.MiPerfilVie
 import dev.wdona.burnt_out.presentation.viewmodel.viewmodels.PerfilViewModel
 import dev.wdona.burnt_out.shared.utils.SettingsManager
 
-class EquipoScreen(val factory: MiEquipoViewModelFactory, val perfilFactory: MiPerfilViewModelFactory, val ajustesFactory: AjustesViewModelFactory) : Screen {
+class EquipoScreen(val factory: MiEquipoViewModelFactory, val perfilFactory: MiPerfilViewModelFactory, val ajustesFactory: AjustesViewModelFactory, val onVolver: (() -> Unit)? = null) : Screen {
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow // Para poder volver o ir a otra
@@ -43,24 +43,24 @@ class EquipoScreen(val factory: MiEquipoViewModelFactory, val perfilFactory: MiP
 
         EquipoContent(
             viewModel,
-            onVolver = { navigator.pop() },
+            onVolver = onVolver,
             onClickUsuario = {
-                navigator.push(PerfilScreen(perfilFactory, ajustesFactory))
+                navigator.push(PerfilScreen(perfilFactory, ajustesFactory, onVolver = { navigator.pop() }))
             },
             perfilViewModel
         )
     }
-
 }
 
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
-    fun EquipoContent(viewModel: EquipoViewModel, onVolver: () -> Unit, onClickUsuario: (Long) -> Unit, perfilViewModel: PerfilViewModel) {
+    fun EquipoContent(viewModel: EquipoViewModel, onVolver: (() -> Unit)? = null, onClickUsuario: (Long) -> Unit, perfilViewModel: PerfilViewModel) {
         val equipo by viewModel.uiStateEquipo.collectAsStateWithLifecycle()
         val miembros by viewModel.listaMiembros.collectAsStateWithLifecycle()
 
         ScaffoldBase(
             titulo = (equipo?.titulo ?: "Mi equipo (off)") + " (" + (equipo?.puntuacion ?: "0") + "pts)",
+            onVolver = onVolver
         ) {
             Column {
                 LazyVerticalGrid(

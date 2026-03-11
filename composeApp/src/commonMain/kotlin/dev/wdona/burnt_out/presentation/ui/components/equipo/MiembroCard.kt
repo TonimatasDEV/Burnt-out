@@ -6,6 +6,13 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Person2
+import androidx.compose.material.icons.filled.Person3
+import androidx.compose.material.icons.filled.Person4
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -31,6 +38,11 @@ fun MiembroCard(miembro: Usuario, onClick: () -> Unit) {
 
         verticalAlignment = Alignment.CenterVertically
     ){
+        Icon(
+            imageVector = Icons.Default.Person4,
+            contentDescription = "Icono de usuario",
+            modifier = Modifier.padding(start = 16.dp, end = 8.dp)
+        )
         Text(
             text = "$id ${miembro.nombre}",
             style = MaterialTheme.typography.titleMedium

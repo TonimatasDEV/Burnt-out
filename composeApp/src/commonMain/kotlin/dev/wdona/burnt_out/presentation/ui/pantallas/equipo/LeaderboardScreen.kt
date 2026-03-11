@@ -33,7 +33,8 @@ class LeaderboardScreen(
     val idOrg: Long,
     val equipoFactory: MiEquipoViewModelFactory,
     val perfilFactory: MiPerfilViewModelFactory,
-    val ajustesFactory: AjustesViewModelFactory
+    val ajustesFactory: AjustesViewModelFactory,
+    val onVolver: (() -> Unit)? = null
 ) : Screen {
     @Composable
     override fun Content() {
@@ -47,8 +48,8 @@ class LeaderboardScreen(
         LeaderboardContent(
             leaderboardViewModel = viewModel,
             onEquipoClick = { idEquipo ->
-                // TODO: Pasar idEquipo a EquipoScreen si es necesario para cargar uno concreto
-                navigator.push(EquipoScreen(equipoFactory, perfilFactory, ajustesFactory))
+                // TODO: Pasar idEquipo a EquipoScreen para cargar uno concreto
+                navigator.push(EquipoScreen(equipoFactory, perfilFactory, ajustesFactory, onVolver = { navigator.pop() }))
             }
         )
     }
@@ -58,7 +59,8 @@ class LeaderboardScreen(
 @Composable
 fun LeaderboardContent(
     leaderboardViewModel: LeaderboardViewModel,
-    onEquipoClick: (Long) -> Unit
+    onEquipoClick: (Long) -> Unit,
+    onVolver: (() -> Unit)? = null
 ) {
     val listaEquipos by leaderboardViewModel.leaderboard.collectAsStateWithLifecycle()
     
