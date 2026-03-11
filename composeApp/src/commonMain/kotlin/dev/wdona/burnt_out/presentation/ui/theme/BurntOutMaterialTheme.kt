@@ -155,24 +155,35 @@ val DarkColorScheme = darkColorScheme(
     surfaceContainerHigh = darkSurfaceContainerHigh,
     surfaceContainerHighest = darkSurfaceContainerHighest,
     surfaceContainerLow = darkSurfaceContainerLow,
-    surfaceContainerLowest = darkSurfaceContainerLowest,
+    surfaceContainerLowest = darkSurfaceContainerLowest
 )
 
 @Composable
-fun CustomMaterialTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
+fun BurntOutMaterialTheme(
+    isDarkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit
 ) {
-    val colorScheme = if (darkTheme) DarkColorScheme else LightColorScheme
+    val colorScheme = BurntOutMaterialTheme.getColorScheme(isDarkTheme)
 
     MaterialTheme(
         colorScheme = colorScheme,
-//        typography = Typography, // Puedes personalizarla también
-//        shapes = Shapes,         // Puedes personalizar bordes aquí
         content = content
     )
 }
 
-@Composable
-fun getColorScheme(darkTheme: Boolean = isSystemInDarkTheme()) = if (darkTheme) DarkColorScheme else LightColorScheme
+class BurntOutMaterialTheme() {
+    companion object {
+        @Composable
+        fun getColorScheme(darkTheme: Boolean = isSystemInDarkTheme()) = if (darkTheme) DarkColorScheme else LightColorScheme
+
+        @Composable
+        fun getSuccessColor() = if (isSystemInDarkTheme()) Color(0xFF81C784) else Color(0xFF2E7D32)
+
+        @Composable
+        fun getWarningColor() = if (isSystemInDarkTheme()) Color(0xFFFFB871) else Color(0xFFA25000)
+
+
+    }
+}
+
 

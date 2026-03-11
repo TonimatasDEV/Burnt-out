@@ -9,7 +9,7 @@ import androidx.compose.ui.Modifier
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.transitions.SlideTransition
 import dev.wdona.burnt_out.presentation.ui.pantallas.MainScreen
-import dev.wdona.burnt_out.presentation.ui.theme.CustomMaterialTheme
+import dev.wdona.burnt_out.presentation.ui.theme.BurntOutMaterialTheme
 import dev.wdona.burnt_out.presentation.ui.theme.DarkColorScheme
 import dev.wdona.burnt_out.presentation.ui.theme.LightColorScheme
 import dev.wdona.burnt_out.presentation.viewmodel.viewmodelfactories.*
@@ -24,7 +24,7 @@ fun App(
     leaderboardViewModelFactory: LeaderboardViewModelFactory,
     ajustesViewModelFactory: AjustesViewModelFactory
 ) {
-    CustomMaterialTheme {
+    BurntOutMaterialTheme {
         Surface(
             modifier = Modifier.fillMaxSize(),
             color = if (isSystemInDarkTheme()) DarkColorScheme.background else LightColorScheme.background

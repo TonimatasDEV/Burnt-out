@@ -65,7 +65,8 @@ fun LeaderboardContent(
     val listaEquipos by leaderboardViewModel.leaderboard.collectAsStateWithLifecycle()
     
     ScaffoldBase(
-        titulo = "Leaderboard"
+        titulo = "Leaderboard",
+        onVolver = onVolver
     ) {
         LazyVerticalGrid(
             columns = GridCells.Adaptive(minSize = 300.dp),
