@@ -23,16 +23,18 @@ import androidx.compose.ui.unit.dp
 import dev.wdona.burnt_out.presentation.ui.pantallas.SettingsScreen
 import dev.wdona.burnt_out.presentation.viewmodel.viewmodelfactories.AjustesViewModelFactory
 
-class PerfilScreen(val factory: MiPerfilViewModelFactory, val ajustesFactory: AjustesViewModelFactory, val onVolver: (() -> Unit)? = null) : Screen {
+class PerfilScreen(val factory: MiPerfilViewModelFactory, val ajustesFactory: AjustesViewModelFactory, val onVolver: (() -> Unit)? = null, var idUsuario: Long? = null) : Screen {
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow // Para poder volver o ir a otra
 
         val viewmodel = rememberScreenModel { factory.create() }
-        val idUsuario = SettingsManager.getIdUsuarioActual()
+        if (idUsuario == null) {
+            idUsuario = SettingsManager.getIdUsuarioActual()
+        }
 
         LaunchedEffect(idUsuario) {
-            viewmodel.cargarUsuario(idUsuario)
+            viewmodel.cargarUsuario(idUsuario!!)
         }
 
         PerfilContent(
@@ -54,18 +56,22 @@ fun PerfilContent(viewModel: PerfilViewModel, onAjustes: () -> Unit, onVolver: (
         onAjustes = onAjustes,
         onVolver = onVolver
     ) {
-        if (usuario == null) {
-            Text(
-                text = "No se ha podido cargar el usuario",
-                style = MaterialTheme.typography.titleLarge,
-                modifier = Modifier.padding(16.dp)
-            )
-        } else {
-            Column {
-                Text("ID: ${usuario!!.idUsuario}", style = MaterialTheme.typography.titleMedium)
-                Text(usuario!!.username, style = MaterialTheme.typography.titleMedium)
-                Text(usuario!!.descripcion?: "Sin descripcion", style = MaterialTheme.typography.titleMedium)
-                Text(if ((usuario!!.riesgoBurnout ?: 0.0) > 33.0) "Riesgo de Burn out" else "No hay riesgo")
+        Column(
+            modifier = Modifier.padding(start = 16.dp),
+        ) {
+            if (usuario == null) {
+                Text(
+                    text = "No se ha podido cargar el usuario",
+                    style = MaterialTheme.typography.titleLarge,
+                    modifier = Modifier.padding(16.dp)
+                )
+            } else {
+                Column {
+                    Text("ID: ${usuario!!.idUsuario}", style = MaterialTheme.typography.titleMedium)
+                    Text(usuario!!.username, style = MaterialTheme.typography.titleMedium)
+                    Text(usuario!!.descripcion?: "Sin descripcion", style = MaterialTheme.typography.titleMedium)
+                    Text(if ((usuario!!.riesgoBurnout ?: 0.0) > 33.0) "Riesgo de Burn out" else "No hay riesgo")
+                }
             }
         }
     }
