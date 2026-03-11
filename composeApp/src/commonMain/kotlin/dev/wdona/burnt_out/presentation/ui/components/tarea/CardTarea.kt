@@ -52,6 +52,7 @@ fun CardTarea(tarea: Tarea, onClick: () -> Unit, onCompletar: () -> Unit) {
         Text(
             text = "${tarea.idUsuarioAsignado}" ,
             textAlign = TextAlign.End,
+            modifier = Modifier.padding(end = 8.dp)
         )
     }
 }

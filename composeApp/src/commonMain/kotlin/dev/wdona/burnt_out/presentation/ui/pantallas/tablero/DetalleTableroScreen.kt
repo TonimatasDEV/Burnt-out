@@ -1,10 +1,6 @@
 package dev.wdona.burnt_out.presentation.ui.pantallas.tablero
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -90,7 +86,17 @@ fun DetalleTableroContent(
                         .padding(16.dp)
                 )
             } else {
-                Text( "Estado, Titulo, idUsuarioAsignado" )
+                Row(
+                    modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Row {
+                        Text("Estado")
+                        Text("Título", Modifier.padding(start = 8.dp))
+                    }
+
+                    Text(text = "idUsuarioAsignado")
+                }
                 LazyColumn(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.spacedBy(12.dp),
