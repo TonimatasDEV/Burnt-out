@@ -70,9 +70,7 @@ class MainScreen(
                             },
                             label = "TransicionTab"
                         ) { tab ->
-                            tabNavigator.saveableState(tab.key) {
-                                tab.Content()
-                            }
+                            tab.Content()
                         }
                     }
                 },

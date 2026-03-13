@@ -46,7 +46,6 @@ fun MiembroCard(miembro: Usuario, onClick: () -> Unit) {
         Text(
             text = "$id ${miembro.nombre}",
             style = MaterialTheme.typography.titleMedium
-
         )
     }
 }
