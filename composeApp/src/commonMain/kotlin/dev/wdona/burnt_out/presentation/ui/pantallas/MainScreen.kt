@@ -1,6 +1,5 @@
 package dev.wdona.burnt_out.presentation.ui.pantallas
 
-import androidx.compose.animation.*
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.padding
@@ -11,6 +10,7 @@ import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Groups
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.key
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
@@ -45,32 +45,8 @@ class MainScreen(
             Scaffold(
                 content = { paddingValues ->
                     Box(modifier = Modifier.padding(paddingValues)) {
-                        AnimatedContent(
-                            targetState = tabNavigator.current,
-                            transitionSpec = {
-                                fun getIndiceTab(tab: Tab): Int {
-                                    return when (tab) {
-                                        is TablerosTab -> 0
-                                        is EquipoTab -> 1
-                                        is LeaderboardTab -> 2
-                                        is PerfilTab -> 3
-                                        else -> 0
-                                    }
-                                }
-
-                                val indiceTarget = getIndiceTab(targetState)
-                                val indiceInicial = getIndiceTab(initialState)
-
-                                val direccion = if (indiceTarget > indiceInicial) {
-                                    AnimatedContentTransitionScope.SlideDirection.Left
-                                } else {
-                                    AnimatedContentTransitionScope.SlideDirection.Right
-                                }
-                                slideIntoContainer(direccion) togetherWith slideOutOfContainer(direccion)
-                            },
-                            label = "TransicionTab"
-                        ) { tab ->
-                            tab.Content()
+                        key(tabNavigator.current.key) {
+                            tabNavigator.current.Content()
                         }
                     }
                 },
