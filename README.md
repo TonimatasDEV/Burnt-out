@@ -3,6 +3,8 @@
 **Burn't out** es una plataforma de gestión de tareas y proyectos diseñada para equilibrar la productividad con el bienestar mental. 
 Inspirada en herramientas como Trello, su objetivo principal es prevenir el síndrome de Burnout en entornos corporativos mediante el monitoreo saludable del estado de ánimo y la carga de trabajo.
 
+Es mi proyecto intermodular para el Grado Superior de Desarrollo de Aplicaciones Multiplataforma que estoy haciendo.
+
 [![Ver Anteproyecto](https://img.shields.io/badge/Ver%20Anteproyecto-📄-red?style=for-the-badge)](./Burn't_Out_Anteproyecto.pdf)
 
 ---
