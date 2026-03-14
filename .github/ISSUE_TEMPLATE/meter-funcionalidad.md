@@ -7,14 +7,14 @@ assignees: wDona
 
 ---
 
-**Is your feature request related to a problem? Please describe.**
-A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]
+## Tu idea resuelve algun problema o soluciona algo? Describe el problema
+Descripcion del problema, por ejemplo: "Estoy frustrado con x [...]", "Necesito hacer x [...]".
 
-**Describe the solution you'd like**
-A clear and concise description of what you want to happen.
+## Describe la solucion que te gustaria
+Una descripcion clara y concisa de la solucion que propones.
 
-**Describe alternatives you've considered**
-A clear and concise description of any alternative solutions or features you've considered.
+## Describe alternativas que hayas considerado para parchear el problema
+Describe soluciones alternativas que has usado o considerado.
 
-**Additional context**
-Add any other context or screenshots about the feature request here.
+## Contexto adicional
+Cuenta mas detalles sobre lo que quieres agregar, e incluso adjunta screenshots o especifica mas sobre las funcionalidades
