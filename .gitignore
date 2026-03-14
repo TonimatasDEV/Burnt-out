@@ -1,4 +1,5 @@
 *.iml
+*.md
 .kotlin
 .gradle
 **/build/
@@ -15,5 +16,6 @@ captures
 !*.xcodeproj/xcshareddata/
 !*.xcodeproj/project.xcworkspace/
 !*.xcworkspace/contents.xcworkspacedata
+!README.md
 **/xcshareddata/WorkspaceSettings.xcsettings
 node_modules/
